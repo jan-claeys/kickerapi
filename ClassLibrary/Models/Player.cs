@@ -9,6 +9,7 @@ namespace ClassLibrary.Models
         public string Name { get; private set; }
         public int AttackRating { get; set; }
         public int DeffendRating { get; set; }
+        public string Password { get; private set; }
 
         //ef
         private Player()
@@ -16,9 +17,10 @@ namespace ClassLibrary.Models
 
         }
 
-        public Player(string name)
+        public Player(string name, string password)
         {
             this.Name = name;
+            Password = password;
         }
 
         public int Rating()
