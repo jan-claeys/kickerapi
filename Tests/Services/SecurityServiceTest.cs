@@ -1,18 +1,19 @@
 ﻿using kickerapi.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
 
 namespace Tests.Services
 {
-    public class SecurityServiceTest : BaseTest
+    public class SecurityServiceTest
     {
         private readonly SecurityService _service;
 
-        public SecurityServiceTest(SecurityService service) {
-            _service = service;
+        public SecurityServiceTest() {
+            var configuration = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.development.json")
+                .Build();
+
+            _service = new SecurityService(configuration);
         }
 
         [Fact]
