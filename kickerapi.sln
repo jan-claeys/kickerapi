@@ -5,7 +5,9 @@ VisualStudioVersion = 17.5.33530.505
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "kickerapi", "kickerapi\kickerapi.csproj", "{F3998F7A-E5F1-4D62-8E7C-DD2A7891ECAA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClassLibrary", "ClassLibrary\ClassLibrary.csproj", "{771C26E1-6C48-450A-A26C-EAD0C62209DB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ClassLibrary", "ClassLibrary\ClassLibrary.csproj", "{771C26E1-6C48-450A-A26C-EAD0C62209DB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{28486C57-B477-4BB5-ACF0-920CE53D1AC1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{771C26E1-6C48-450A-A26C-EAD0C62209DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{771C26E1-6C48-450A-A26C-EAD0C62209DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{771C26E1-6C48-450A-A26C-EAD0C62209DB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{28486C57-B477-4BB5-ACF0-920CE53D1AC1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{28486C57-B477-4BB5-ACF0-920CE53D1AC1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{28486C57-B477-4BB5-ACF0-920CE53D1AC1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{28486C57-B477-4BB5-ACF0-920CE53D1AC1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

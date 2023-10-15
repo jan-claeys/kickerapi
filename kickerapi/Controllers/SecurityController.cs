@@ -1,4 +1,4 @@
-﻿using kickerapi.dtos.Security;
+﻿using kickerapi.Dtos.Security;
 using kickerapi.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -10,6 +10,8 @@ using System.Text;
 
 namespace kickerapi.Controllers
 {
+    [ApiController]
+    [Route("[controller]")]
     public class SecurityController : Controller
     {
         private readonly KickerContext _context;

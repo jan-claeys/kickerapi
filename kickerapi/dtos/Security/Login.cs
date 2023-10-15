@@ -1,4 +1,4 @@
-﻿namespace kickerapi.dtos.Security
+﻿namespace kickerapi.Dtos.Security
 {
     public class Login
     {
