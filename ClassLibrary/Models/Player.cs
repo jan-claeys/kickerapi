@@ -20,7 +20,7 @@ namespace ClassLibrary.Models
         public Player(string name, string password)
         {
             this.Name = name;
-            Password = password;
+            this.Password = password;
         }
 
         public int Rating()

@@ -14,7 +14,7 @@ namespace kickerapi.Services
             this._configuration = configuration;
         }
 
-        public string GenerateToken(string name)
+        public string GenerateJwtToken(string name)
         {
             var issuer = _configuration["Jwt:Issuer"];
             var audience = _configuration["Jwt:Audience"];
@@ -40,6 +40,32 @@ namespace kickerapi.Services
             var tokenHandler = new JwtSecurityTokenHandler();
             var token = tokenHandler.CreateToken(tokenDescriptor);
             return tokenHandler.WriteToken(token);
+        }
+
+        //public string GetUserNameFromToken(string token)
+        //{
+        //    var tokenHandler = new JwtSecurityTokenHandler();
+        //    var jwtToken = tokenHandler.ReadJwtToken(token);
+        //    var name = jwtToken.Claims.First(claim => claim.Type == "sub").Value;
+        //    return name;
+        //}
+
+        //public string GetUserIdFromToken(string token)
+        //{
+        //    var tokenHandler = new JwtSecurityTokenHandler();
+        //    var jwtToken = tokenHandler.ReadJwtToken(token);
+        //    var id = jwtToken.Claims.First(claim => claim.Type == "Id").Value;
+        //    return id;
+        //}
+
+        public string HashPassword (string password)
+        {
+            return BCrypt.Net.BCrypt.HashPassword(password);
+        }
+
+        public bool VerifyPassword(string password, string hash)
+        {
+            return BCrypt.Net.BCrypt.Verify(password, hash);
         }
     }
 }

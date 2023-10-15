@@ -19,8 +19,8 @@ namespace Tests.Services
         [Fact]
         public void ItGenerateAToken()
         { 
-           Assert.NotNull(_service.GenerateToken("test"));
-           Assert.NotEmpty(_service.GenerateToken("test"));
+           Assert.NotNull(_service.GenerateJwtToken("test"));
+           Assert.NotEmpty(_service.GenerateJwtToken("test"));
         }
     }
 }
