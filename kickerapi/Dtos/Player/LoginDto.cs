@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace kickerapi.Dtos.Player
 {
-    public class Login
+    public class LoginDto
     {
         [Required]
         public string Name { get; set; }

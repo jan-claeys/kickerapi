@@ -42,7 +42,6 @@ builder.Services.AddAuthorization();
 
 //services
 builder.Services.AddScoped<SecurityService>();
-builder.Services.AddScoped<PlayerService>();
 
 var app = builder.Build();
 
@@ -61,3 +60,6 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+//testing
+public partial class Program { }

@@ -1,4 +1,6 @@
-﻿using kickerapi.Services;
+﻿using kickerapi;
+using kickerapi.Services;
+using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -13,7 +15,8 @@ namespace Tests
     {
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddScoped<SecurityService>();
+            //services.AddScoped<SecurityService>();
+            
         }
     }
 }

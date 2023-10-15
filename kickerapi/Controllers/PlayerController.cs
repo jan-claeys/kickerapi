@@ -16,25 +16,23 @@ namespace kickerapi.Controllers
     public class PlayerController : Controller
     {
         private readonly KickerContext _context;
-        private readonly SecurityService _securityService;
-        private readonly PlayerService _playerService;
+        private readonly SecurityService _service;
 
-        public PlayerController(KickerContext context, SecurityService service, PlayerService playerService)
+        public PlayerController(KickerContext context, SecurityService service)
         {
             this._context = context;
-            this._securityService = service;
-            this._playerService = playerService;
+            this._service = service;
         }
 
         [AllowAnonymous]
         [HttpPost("login")]
-        public async Task<IResult> Login([FromBody] Login req)
+        public async Task<IResult> Login([FromBody] LoginDto req)
         {
             var player = await _context.Players.FirstOrDefaultAsync(p => p.Name == req.Name);
 
-            if (player != null && _securityService.VerifyPassword(req.Password, player.Password))
+            if (player != null && _service.VerifyPassword(req.Password, player.Password))
             {
-                var token = _securityService.GenerateJwtToken(player.Name);
+                var token = _service.GenerateJwtToken(player.Name);
                 return Results.Ok(token);
             }
 
@@ -43,7 +41,7 @@ namespace kickerapi.Controllers
 
         [AllowAnonymous]
         [HttpPost("register")]
-        public async Task<IResult> Register([FromBody] Register req)
+        public async Task<IResult> Register([FromBody] RegisterDto req)
         {
             var player = await _context.Players.FirstOrDefaultAsync(p => p.Name == req.Name);
 
@@ -52,11 +50,11 @@ namespace kickerapi.Controllers
                 return Results.BadRequest("Player already exists");
             }
 
-            var newPlayer = new Player(req.Name, _securityService.HashPassword(req.Password));
+            var newPlayer = new Player(req.Name, _service.HashPassword(req.Password));
             await _context.Players.AddAsync(newPlayer);
             await _context.SaveChangesAsync();
 
-            var token = _securityService.GenerateJwtToken(newPlayer.Name);
+            var token = _service.GenerateJwtToken(newPlayer.Name);
             return Results.Ok(token);
         }
     }
