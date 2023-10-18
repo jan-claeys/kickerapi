@@ -15,8 +15,12 @@ namespace Tests
     {
         public void ConfigureServices(IServiceCollection services)
         {
-            //services.AddScoped<SecurityService>();
-            
+            var configuration = new ConfigurationBuilder()
+               .SetBasePath(Directory.GetCurrentDirectory())
+               .AddJsonFile("appsettings.development.json")
+               .Build();
+
+            services.AddScoped<SecurityService>(x=> new SecurityService(configuration));
         }
     }
 }

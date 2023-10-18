@@ -10,51 +10,47 @@ using System.Net.Http.Json;
 using kickerapi.Controllers;
 using kickerapi.Dtos.Player;
 using Microsoft.EntityFrameworkCore;
+using kickerapi.Services;
+using Moq;
+using ClassLibrary.Models;
 
 namespace Tests.Controllers
 {
-    public class PlayerControllerTest : IClassFixture<WebApplicationFactory<Program>>
+    public class PlayerControllerTest: IDisposable
     {
-        private readonly HttpClient _client;
+        private readonly PlayerController _controller;
+        private readonly KickerContext _context;
 
-
-        public PlayerControllerTest(WebApplicationFactory<Program> application)
+        public PlayerControllerTest(SecurityService securityService)
         {
-            _client = application.CreateClient();
+            _context = new KickerContext(new DbContextOptionsBuilder<KickerContext>()
+                               .UseSqlite("DataSource=file::memory:?cache=shared")
+                                              .Options);
+          
+            _controller = new PlayerController(_context, securityService);
         }
 
-        //[Fact]
-        //public async void ItRegistersAPlayer()
-        //{
-        //    var payload = "{\"name\":\"test\",\"password\":\"test\"}";
-        //    HttpContent content = new StringContent(payload, Encoding.UTF8, "application/json");
-        //    var response = await _client.PostAsync("player/register", content);
-
-        //    Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-
-        //}
 
         [Fact]
-        public async void ItRequiresNameAndPassword()
+        public async void ItRegistersAPlayer()
         {
-            //this._client = new WebApplicationFactory<Program>().CreateClient();
+            await _context.Database.OpenConnectionAsync();
+            await _context.Database.EnsureCreatedAsync();
 
-            var payload = "{\"name\":\"fsfsf\"}";
-            HttpContent content = new StringContent(payload, Encoding.UTF8, "application/json");
-            var response = await _client.PostAsync("player/login", content);
+            var payload = new RegisterDto
+            {
+                Name = "test",
+                Password = "test"
+            };
+            var response = await _controller.Register(payload);
 
-            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
-
-            payload = "{\"password\":\"fsfsf\"}";
-            content = new StringContent(payload, Encoding.UTF8, "application/json");
-            response = await _client.PostAsync("player/login", content);
-
-            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+            var player  = await _context.Players.FirstOrDefaultAsync(p => p.Name == payload.Name);
+            Assert.NotNull(player);
         }
 
         public void Dispose()
         {
-            _client.Dispose();
+            _context.Database.CloseConnectionAsync();
         }
     }
 }
