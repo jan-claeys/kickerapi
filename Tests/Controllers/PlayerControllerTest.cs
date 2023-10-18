@@ -21,11 +21,9 @@ namespace Tests.Controllers
         private readonly PlayerController _controller;
         private readonly KickerContext _context;
 
-        public PlayerControllerTest(SecurityService securityService)
+        public PlayerControllerTest(KickerContext context,SecurityService securityService)
         {
-            _context = new KickerContext(new DbContextOptionsBuilder<KickerContext>()
-                               .UseSqlite("DataSource=file::memory:?cache=shared")
-                                              .Options);
+            _context = context;
           
             _controller = new PlayerController(_context, securityService);
         }

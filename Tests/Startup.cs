@@ -1,6 +1,7 @@
 ﻿using kickerapi;
 using kickerapi.Services;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -20,7 +21,11 @@ namespace Tests
                .AddJsonFile("appsettings.development.json")
                .Build();
 
-            services.AddScoped<SecurityService>(x=> new SecurityService(configuration));
+            services.AddTransient<SecurityService>(x=> new SecurityService(configuration));
+
+            services.AddTransient<KickerContext>(x => new KickerContext(new DbContextOptionsBuilder<KickerContext>()
+                               .UseSqlite("DataSource=file::memory:?cache=shared")
+                                              .Options));
         }
     }
 }
