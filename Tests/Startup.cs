@@ -26,6 +26,8 @@ namespace Tests
             services.AddTransient<KickerContext>(x => new KickerContext(new DbContextOptionsBuilder<KickerContext>()
                                .UseSqlite("DataSource=:memory:")
                                               .Options));
+
+            services.AddAutoMapper(typeof(Startup));
         }
     }
 }

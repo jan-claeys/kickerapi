@@ -14,6 +14,7 @@ using kickerapi.Services;
 using Moq;
 using ClassLibrary.Models;
 using Microsoft.AspNetCore.Mvc;
+using AutoMapper;
 
 namespace Tests.Controllers
 {
@@ -23,11 +24,11 @@ namespace Tests.Controllers
         private readonly KickerContext _context;
         private readonly SecurityService _securityService;
 
-        public PlayerControllerTest(KickerContext context,SecurityService securityService)
+        public PlayerControllerTest(KickerContext context,SecurityService securityService, IMapper mapper)
         {
             _context = context;
             _securityService = securityService;
-            _controller = new PlayerController(_context, _securityService);
+            _controller = new PlayersController(_context, _securityService, mapper);
         }
 
         [Fact]

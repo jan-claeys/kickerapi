@@ -8,7 +8,7 @@ namespace kickerapi
     {
         public MappingProfiles()
         {
-            CreateMap<Player, PlayerDto>();
+            CreateProjection<Player, PlayerDto>();
         }
     }
 }

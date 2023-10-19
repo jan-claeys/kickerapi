@@ -29,12 +29,12 @@ namespace kickerapi.Controllers
             this._mapper = mapper;
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpGet]
         public async Task<IStatusCodeActionResult> Get()
         {
-            var players = await _context.Players.ToListAsync();
-            return Ok(_mapper.Map<List<PlayerDto>>(players));
+            var players = await _mapper.ProjectTo<PlayerDto>(_context.Players).ToListAsync();
+            return Ok(players);
         }
 
         [AllowAnonymous]
