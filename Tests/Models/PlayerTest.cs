@@ -12,7 +12,7 @@ namespace Tests.Models
         [Fact]
         public void ItCalculatesRating()
         {
-            Player player = new Player("test", "test");
+            Player player = new Player("test");
             player.AttackRating = 10;
             player.DeffendRating = 20;
 

@@ -12,8 +12,8 @@ namespace Tests.Models
         [Fact]
         public void ItSetsCollors()
         {
-            Team team1 = new Team(new Player("test1", "test1"), new Player("test2", "test2"));
-            Team team2 = new Team(new Player("test3", "test3"), new Player("test4", "test4"));
+            Team team1 = new Team(new Player("test1"), new Player("test2"));
+            Team team2 = new Team(new Player("test3"), new Player("test4"));
 
             Match match = new Match(team1, team2);
 

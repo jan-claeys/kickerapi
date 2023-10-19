@@ -15,6 +15,7 @@ using Moq;
 using ClassLibrary.Models;
 using Microsoft.AspNetCore.Mvc;
 using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 
 namespace Tests.Controllers
 {
@@ -23,12 +24,14 @@ namespace Tests.Controllers
         private readonly PlayersController _controller;
         private readonly KickerContext _context;
         private readonly SecurityService _securityService;
+        private readonly UserManager<Player> _userManager;
 
-        public PlayerControllerTest(KickerContext context,SecurityService securityService, IMapper mapper)
+        public PlayerControllerTest(KickerContext context,SecurityService securityService, IMapper mapper, UserManager<Player> userManager)
         {
             _context = context;
             _securityService = securityService;
-            _controller = new PlayersController(_context, _securityService, mapper);
+            _controller = new PlayersController(_context, _securityService, mapper, userManager);
+            _userManager = userManager;
         }
 
         [Fact]
@@ -40,12 +43,12 @@ namespace Tests.Controllers
             var payload = new RegisterDto
             {
                 Name = "test",
-                Password = "test"
+                Password = "Test1*"
             };
             var response = await _controller.Register(payload);
             Assert.Equal(200, response.StatusCode);
 
-            var player = await _context.Players.FirstOrDefaultAsync(p => p.Name == payload.Name);
+            var player = await _context.Players.FirstOrDefaultAsync(p => p.UserName == payload.Name);
             Assert.NotNull(player);
         }
 
@@ -77,14 +80,13 @@ namespace Tests.Controllers
             await _context.Database.OpenConnectionAsync();
             await _context.Database.EnsureCreatedAsync();
 
-            Player player = new Player("test", _securityService.HashPassword("test"));
-            _context.Players.Add(player);
-            await _context.SaveChangesAsync();
+            Player player = new Player("test");
+            await _userManager.CreateAsync(player, "Test1*");
 
             var payload = new LoginDto
             {
                 Name = "test",
-                Password = "test"
+                Password = "Test1*"
             };
 
             var response = await _controller.Login(payload);
@@ -97,9 +99,8 @@ namespace Tests.Controllers
             await _context.Database.OpenConnectionAsync();
             await _context.Database.EnsureCreatedAsync();
 
-            Player player = new Player("test", _securityService.HashPassword("test"));
-            _context.Players.Add(player);
-            await _context.SaveChangesAsync();
+            Player player = new Player("test");
+            await _userManager.CreateAsync(player, "test");
 
             var payload = new LoginDto
             {

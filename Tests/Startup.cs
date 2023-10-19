@@ -1,5 +1,7 @@
-﻿using kickerapi;
+﻿using ClassLibrary.Models;
+using kickerapi;
 using kickerapi.Services;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -23,9 +25,14 @@ namespace Tests
 
             services.AddTransient<SecurityService>(x=> new SecurityService(configuration));
 
-            services.AddTransient<KickerContext>(x => new KickerContext(new DbContextOptionsBuilder<KickerContext>()
+            services.AddScoped<KickerContext>(x => new KickerContext(new DbContextOptionsBuilder<KickerContext>()
                                .UseSqlite("DataSource=:memory:")
                                               .Options));
+
+            //Identity
+            services.AddIdentity<Player, IdentityRole>()
+                .AddEntityFrameworkStores<KickerContext>()
+                .AddDefaultTokenProviders();
 
             services.AddAutoMapper(typeof(Startup));
         }

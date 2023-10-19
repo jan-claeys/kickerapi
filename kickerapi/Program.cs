@@ -5,6 +5,8 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using kickerapi.Services;
 using Microsoft.OpenApi.Models;
+using Microsoft.AspNetCore.Identity;
+using ClassLibrary.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -45,24 +47,28 @@ builder.Services.AddSwaggerGen(
 // Add databasecontext
 builder.Services.AddDbContext<KickerContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("KickerContext")));
 
+//Identity
+builder.Services.AddIdentity<Player, IdentityRole>()
+    .AddEntityFrameworkStores<KickerContext>()
+    .AddDefaultTokenProviders();
+
 // Add authentication
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
     options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-}).AddJwtBearer(o =>
+}).AddJwtBearer(options =>
 {
-    o.TokenValidationParameters = new TokenValidationParameters
+    options.SaveToken = true;
+    options.RequireHttpsMetadata = false;
+    options.TokenValidationParameters = new TokenValidationParameters()
     {
-        ValidIssuer = builder.Configuration["Jwt:Issuer"],
-        ValidAudience = builder.Configuration["Jwt:Audience"],
-        IssuerSigningKey = new SymmetricSecurityKey
-        (Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"])),
         ValidateIssuer = true,
         ValidateAudience = true,
-        ValidateLifetime = false,
-        ValidateIssuerSigningKey = true
+        ValidAudience = builder.Configuration["JWT:ValidAudience"],
+        ValidIssuer = builder.Configuration["JWT:ValidIssuer"],
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Secret"]))
     };
 });
 

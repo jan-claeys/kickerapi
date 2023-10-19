@@ -1,26 +1,24 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations;
 
 namespace ClassLibrary.Models
 {
-    public class Player
+    public class Player: IdentityUser
     {
         [Key]
         public int Id { get; private set; }
-        public string Name { get; private set; }
         public int AttackRating { get; set; }
         public int DeffendRating { get; set; }
-        public string Password { get; private set; }
-
+        
         //ef
         private Player()
         {
 
         }
 
-        public Player(string name, string password)
+        public Player(string name)
         {
-            this.Name = name;
-            this.Password = password;
+            this.UserName = name;
         }
 
         public int Rating()

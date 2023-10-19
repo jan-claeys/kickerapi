@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using Azure;
 using ClassLibrary.Models;
 using kickerapi.Dtos.Player;
 using kickerapi.Services;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.EntityFrameworkCore;
@@ -21,15 +23,17 @@ namespace kickerapi.Controllers
         private readonly KickerContext _context;
         private readonly SecurityService _securityService;
         private readonly IMapper _mapper;
+        private readonly UserManager<Player> _userManager;
 
-        public PlayersController(KickerContext context, SecurityService securityService, IMapper mapper)
+        public PlayersController(KickerContext context, SecurityService securityService, IMapper mapper, UserManager<Player> userManager)
         {
             this._context = context;
             this._securityService = securityService;
             this._mapper = mapper;
+            this._userManager = userManager;
         }
 
-        //[Authorize]
+        [Authorize]
         [HttpGet]
         public async Task<IStatusCodeActionResult> Get()
         {
@@ -44,18 +48,19 @@ namespace kickerapi.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IStatusCodeActionResult> Login([FromBody] LoginDto req)
         {
-            var player = await _context.Players.FirstOrDefaultAsync(p => p.Name == req.Name);
+            var player = await _userManager.FindByNameAsync(req.Name);
 
-            if (player != null && _securityService.VerifyPassword(req.Password, player.Password))
+            if(player == null || !await _userManager.CheckPasswordAsync(player, req.Password))
             {
-                var token = _securityService.GenerateJwtToken(player.Name);
-                return Ok(new TokenDto
-                {
-                    Token = token
-                });
+                return Unauthorized("Invalid username or password");
             }
 
-            return Unauthorized();
+            var token = _securityService.GenerateJwtToken(player);
+
+            return Ok(new
+            {
+                token
+            });
         }
 
         [AllowAnonymous]
@@ -65,22 +70,22 @@ namespace kickerapi.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IStatusCodeActionResult> Register([FromBody] RegisterDto req)
         {
-            var player = await _context.Players.FirstOrDefaultAsync(p => p.Name == req.Name);
-
-            if (player != null)
-            {
+            var userExists = await _userManager.FindByNameAsync(req.Name);
+            if (userExists != null)
                 return BadRequest("Player already exists");
+
+            var player = new Player(req.Name)
+            {
+                SecurityStamp = Guid.NewGuid().ToString(),
+            };
+
+            var response = await _userManager.CreateAsync(player, req.Password);
+            if (!response.Succeeded)
+            {
+                return BadRequest(response.Errors);
             }
 
-            var newPlayer = new Player(req.Name, _securityService.HashPassword(req.Password));
-            await _context.Players.AddAsync(newPlayer);
-            await _context.SaveChangesAsync();
-
-            var token = _securityService.GenerateJwtToken(newPlayer.Name);
-            return Ok(new TokenDto
-            {
-                Token = token
-            });
+            return Ok();
         }
     }
 }

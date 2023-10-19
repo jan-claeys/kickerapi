@@ -1,4 +1,5 @@
-﻿using kickerapi.Services;
+﻿using ClassLibrary.Models;
+using kickerapi.Services;
 using Microsoft.Extensions.Configuration;
 
 namespace Tests.Services
@@ -18,9 +19,10 @@ namespace Tests.Services
 
         [Fact]
         public void ItGenerateAToken()
-        { 
-           Assert.NotNull(_service.GenerateJwtToken("test"));
-           Assert.NotEmpty(_service.GenerateJwtToken("test"));
+        {
+           Player player = new Player("test");
+
+           Assert.NotNull(_service.GenerateJwtToken(player));
         }
     }
 }
