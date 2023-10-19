@@ -19,7 +19,7 @@ namespace Tests.Controllers
 {
     public class PlayerControllerTest: IDisposable
     {
-        private readonly PlayerController _controller;
+        private readonly PlayersController _controller;
         private readonly KickerContext _context;
         private readonly SecurityService _securityService;
 

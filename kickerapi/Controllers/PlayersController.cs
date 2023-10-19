@@ -16,21 +16,20 @@ namespace kickerapi.Controllers
 {
     [Route("[controller]")]
     [ApiController]
-    public class PlayerController : Controller
+    public class PlayersController : Controller
     {
         private readonly KickerContext _context;
         private readonly SecurityService _securityService;
         private readonly IMapper _mapper;
 
-        public PlayerController(KickerContext context, SecurityService securityService, IMapper mapper)
+        public PlayersController(KickerContext context, SecurityService securityService, IMapper mapper)
         {
             this._context = context;
             this._securityService = securityService;
             this._mapper = mapper;
         }
 
-        //[Authorize]
-        [AllowAnonymous]
+        [Authorize]
         [HttpGet]
         public async Task<IStatusCodeActionResult> Get()
         {
