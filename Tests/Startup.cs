@@ -24,7 +24,7 @@ namespace Tests
             services.AddTransient<SecurityService>(x=> new SecurityService(configuration));
 
             services.AddTransient<KickerContext>(x => new KickerContext(new DbContextOptionsBuilder<KickerContext>()
-                               .UseSqlite("DataSource=file::memory:?cache=shared")
+                               .UseSqlite("DataSource=:memory:")
                                               .Options));
         }
     }
