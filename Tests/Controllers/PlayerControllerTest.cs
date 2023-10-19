@@ -61,16 +61,32 @@ namespace Tests.Controllers
             var payload = new RegisterDto
             {
                 Name = "test",
-                Password = "test"
+                Password = "Test1*"
             };
             var response = await _controller.Register(payload);
 
              payload = new RegisterDto
             {
                 Name = "test",
+                Password = "Test1*"
+             };
+            response = await _controller.Register(payload);
+            Assert.Equal(400, response.StatusCode);
+        }
+
+        [Fact]
+        public async void ItDoNotRegisterPlayerWeakPassword()
+        {
+            await _context.Database.OpenConnectionAsync();
+            await _context.Database.EnsureCreatedAsync();
+
+            var payload = new RegisterDto
+            {
+                Name = "test",
                 Password = "test"
             };
-            response = await _controller.Register(payload);
+            var response = await _controller.Register(payload);
+
             Assert.Equal(400, response.StatusCode);
         }
 
@@ -113,7 +129,7 @@ namespace Tests.Controllers
         }
 
         [Fact]
-        public async void ItDoNotLoginPlayerWhoWithoutAccount()
+        public async void ItDoNotLoginPlayerWithoutAccount()
         {
 
             await _context.Database.OpenConnectionAsync();

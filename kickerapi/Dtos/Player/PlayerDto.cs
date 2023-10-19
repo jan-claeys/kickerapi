@@ -7,6 +7,5 @@
         public int AttackRating { get; set; }
         public int DeffendRating { get; set; }
         public int Rating { get; set; }
-        
     }
 }

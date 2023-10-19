@@ -59,7 +59,7 @@ namespace kickerapi.Controllers
 
             return Ok(new
             {
-                token
+                token = new JwtSecurityTokenHandler().WriteToken(token)
             });
         }
 
