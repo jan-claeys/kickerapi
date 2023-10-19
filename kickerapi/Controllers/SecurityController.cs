@@ -16,14 +16,12 @@ namespace kickerapi.Controllers
     {
         private readonly KickerContext _context;
         private readonly SecurityService _service;
-        private readonly IMapper _mapper;
         private readonly UserManager<Player> _userManager;
 
-        public SecurityController(KickerContext context, SecurityService service, IMapper mapper, UserManager<Player> userManager)
+        public SecurityController(KickerContext context, SecurityService service, UserManager<Player> userManager)
         {
             this._context = context;
             this._service = service;
-            this._mapper = mapper;
             this._userManager = userManager;
         }
 

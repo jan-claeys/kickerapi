@@ -26,11 +26,11 @@ namespace Tests.Controllers
         private readonly SecurityService _service;
         private readonly UserManager<Player> _userManager;
 
-        public SecurityControllerTest(KickerContext context,SecurityService service, IMapper mapper, UserManager<Player> userManager)
+        public SecurityControllerTest(KickerContext context,SecurityService service, UserManager<Player> userManager)
         {
             _context = context;
             _service = service;
-            _controller = new SecurityController(_context, _service, mapper, userManager);
+            _controller = new SecurityController(_context, _service, userManager);
             _userManager = userManager;
         }
 
@@ -75,7 +75,7 @@ namespace Tests.Controllers
         }
 
         [Fact]
-        public async void ItDoNotRegisterPlayerWeakPassword()
+        public async void ItNotRegisterPlayerWeakPassword()
         {
             await _context.Database.OpenConnectionAsync();
             await _context.Database.EnsureCreatedAsync();
