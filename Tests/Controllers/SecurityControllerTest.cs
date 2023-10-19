@@ -19,23 +19,23 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Tests.Controllers
 {
-    public class PlayerControllerTest: IDisposable
+    public class SecurityControllerTest: IDisposable
     {
-        private readonly PlayersController _controller;
+        private readonly SecurityController _controller;
         private readonly KickerContext _context;
-        private readonly SecurityService _securityService;
+        private readonly SecurityService _service;
         private readonly UserManager<Player> _userManager;
 
-        public PlayerControllerTest(KickerContext context,SecurityService securityService, IMapper mapper, UserManager<Player> userManager)
+        public SecurityControllerTest(KickerContext context,SecurityService service, IMapper mapper, UserManager<Player> userManager)
         {
             _context = context;
-            _securityService = securityService;
-            _controller = new PlayersController(_context, _securityService, mapper, userManager);
+            _service = service;
+            _controller = new SecurityController(_context, _service, mapper, userManager);
             _userManager = userManager;
         }
 
         [Fact]
-        public async void ItRegistersAPlayer()
+        public async void ItRegisterPlayer()
         {
             await _context.Database.OpenConnectionAsync();
             await _context.Database.EnsureCreatedAsync();
@@ -110,7 +110,7 @@ namespace Tests.Controllers
         }
 
         [Fact]
-        public async void ItDoNotLoginPlayerWrongPassword()
+        public async void ItNotLoginPlayerWrongPassword()
         {
             await _context.Database.OpenConnectionAsync();
             await _context.Database.EnsureCreatedAsync();
@@ -129,7 +129,7 @@ namespace Tests.Controllers
         }
 
         [Fact]
-        public async void ItDoNotLoginPlayerWithoutAccount()
+        public async void ItNotLoginPlayerWithoutAccount()
         {
 
             await _context.Database.OpenConnectionAsync();
