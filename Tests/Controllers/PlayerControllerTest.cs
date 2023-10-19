@@ -110,6 +110,23 @@ namespace Tests.Controllers
             Assert.Equal(401, response.StatusCode);
         }
 
+        [Fact]
+        public async void ItDoNotLoginPlayerWhoWithoutAccount()
+        {
+
+            await _context.Database.OpenConnectionAsync();
+            await _context.Database.EnsureCreatedAsync();
+
+            var payload = new LoginDto
+            {
+                Name = "test",
+                Password = "test"
+            };
+
+            var response = await _controller.Login(payload);
+            Assert.Equal(401, response.StatusCode);
+        }
+
         public void Dispose()
         {
             _context.Database.CloseConnectionAsync();
