@@ -1,20 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc.Testing;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using kickerapi;
-using System.Text;
-using System.Threading.Tasks;
-using System.Net.Http.Json;
+﻿using kickerapi;
 using kickerapi.Controllers;
 using kickerapi.Dtos.Player;
 using Microsoft.EntityFrameworkCore;
 using kickerapi.Services;
-using Moq;
 using ClassLibrary.Models;
-using Microsoft.AspNetCore.Mvc;
-using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 
 namespace Tests.Controllers
@@ -30,7 +19,7 @@ namespace Tests.Controllers
         {
             _context = context;
             _service = service;
-            _controller = new SecurityController(_context, _service, userManager);
+            _controller = new SecurityController(_service, userManager);
             _userManager = userManager;
         }
 

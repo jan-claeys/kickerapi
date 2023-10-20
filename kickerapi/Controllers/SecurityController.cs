@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using ClassLibrary.Models;
+﻿using ClassLibrary.Models;
 using kickerapi.Dtos.Player;
 using kickerapi.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -14,13 +13,11 @@ namespace kickerapi.Controllers
     [ApiController]
     public class SecurityController : Controller
     {
-        private readonly KickerContext _context;
         private readonly SecurityService _service;
         private readonly UserManager<Player> _userManager;
 
-        public SecurityController(KickerContext context, SecurityService service, UserManager<Player> userManager)
+        public SecurityController(SecurityService service, UserManager<Player> userManager)
         {
-            this._context = context;
             this._service = service;
             this._userManager = userManager;
         }
