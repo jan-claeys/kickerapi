@@ -26,7 +26,7 @@ var githubPipeline = new GithubPipeline
     {
         Build = new BuildJob
         {
-            RunsOn = BuildMachines.WindowsLatest,
+            RunsOn = BuildMachines.UbuntuLatest,
 
             Steps = new List<GithubTask>
             {
