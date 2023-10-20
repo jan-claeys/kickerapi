@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using kickerapi.Dtos.Player;
+using kickerapi.Utilities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
@@ -22,9 +23,15 @@ namespace kickerapi.Controllers
         }
 
         [HttpGet]
-        public async Task<IStatusCodeActionResult> Get()
+        [Produces("application/json")]
+        [ProducesResponseType(typeof(List<PlayerDto>),StatusCodes.Status200OK)]
+        public async Task<IStatusCodeActionResult> Get([FromQuery]PagingParameters parameters)
         {
-            var players = await _mapper.ProjectTo<PlayerDto>(_context.Players).ToListAsync();
+            var players = await _mapper.ProjectTo<PlayerDto>(_context.Players)
+                .Skip((parameters.PageNumber - 1) * parameters.PageSize)
+                .Take(parameters.PageSize)
+                .ToListAsync();
+
             return Ok(players);
         }
 
