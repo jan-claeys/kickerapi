@@ -9,8 +9,8 @@ namespace ClassLibrary.Models
         [Key]
         public int Id { get; set; }
         public int Rating { get; private set; }
-        public int AttackRating { get; private set; }
-        public int DeffendRating { get; private set; }
+        public int AttackRating { get; private set; } = 1500;
+        public int DeffendRating { get; private set; } = 1500;
 
         [ExcludeFromCodeCoverage]
         //ef

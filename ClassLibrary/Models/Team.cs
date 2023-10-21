@@ -7,7 +7,7 @@ namespace ClassLibrary.Models
     {
         [ExcludeFromCodeCoverage]
         [Key]
-        public int Id { get;  private set; }
+        public int Id { get; private set; }
         public Player Attacker { get; private set; }
         public Player Deffender { get; private set; }
         public int Score { get; set; }
@@ -26,5 +26,17 @@ namespace ClassLibrary.Models
             this.Score = score;
         }
 
+        internal void CalculateRating(double actualOutcome, double expectedOutcome)
+        {
+            const int k = 32;
+
+            Attacker.SetAttackRating((int)Math.Ceiling(Attacker.AttackRating + k * (actualOutcome - expectedOutcome)));
+            Deffender.SetDeffendRating((int)Math.Ceiling(Deffender.DeffendRating + k * (actualOutcome - expectedOutcome)));
+        }
+
+        public int Rating()
+        {
+            return (Attacker.AttackRating + Deffender.DeffendRating) / 2;
+        }
     }
 }

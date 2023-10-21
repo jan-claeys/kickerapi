@@ -6,7 +6,6 @@ using kickerapi.Dtos.Requests.Match;
 using kickerapi.Dtos.Responses.Match;
 using kickerapi.QueryParameters;
 using kickerapi.Services;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Moq;

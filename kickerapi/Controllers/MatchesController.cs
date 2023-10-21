@@ -5,12 +5,9 @@ using kickerapi.Dtos.Responses.Match;
 using kickerapi.QueryParameters;
 using kickerapi.Services;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.EntityFrameworkCore;
-using System.Net.WebSockets;
-using System.Security.Claims;
 
 namespace kickerapi.Controllers
 {

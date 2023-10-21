@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics.CodeAnalysis;
 
 namespace ClassLibrary.Models
@@ -27,6 +26,8 @@ namespace ClassLibrary.Models
 
             ArePlayersUnique();
 
+            CalculateRatings();
+
             this.Date = DateTime.Now;
         }
 
@@ -39,6 +40,20 @@ namespace ClassLibrary.Models
             {
                 throw new Exception("Players must be unique in match");
             }
+        }
+
+        private void CalculateRatings()
+        {
+            const int c = 400;
+
+            var acutualOutcomeTeam1 = Team1.Score + Team2.Score != 0 ?Team1.Score / (Team1.Score + Team2.Score) : 0.5;
+            var acutualOutcomeTeam2 = Team1.Score + Team2.Score != 0 ?Team2.Score / (Team1.Score + Team2.Score) : 0.5;
+
+            var expectedOutcomeTeam1 = Math.Pow(10, Team1.Rating() / c) / (Math.Pow(10, Team1.Rating() / c) + Math.Pow(10, Team2.Rating() / c));
+            var expectedOutcomeTeam2 = Math.Pow(10, Team2.Rating() / c) / (Math.Pow(10, Team1.Rating() / c) + Math.Pow(10, Team2.Rating() / c));
+
+            Team1.CalculateRating(expectedOutcomeTeam1, acutualOutcomeTeam1);
+            Team2.CalculateRating(expectedOutcomeTeam2, acutualOutcomeTeam2);
         }
 
         public IEnumerable<Player> GetPlayers()

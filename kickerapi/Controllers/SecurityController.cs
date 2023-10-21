@@ -2,7 +2,6 @@
 using kickerapi.Dtos.Requests.Security;
 using kickerapi.Services;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using System.IdentityModel.Tokens.Jwt;

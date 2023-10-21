@@ -1,8 +1,7 @@
 ﻿using ClassLibrary.Models;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -34,7 +33,8 @@ namespace kickerapi.Services
         {
             return await _userManager.FindByNameAsync(name);
         }
-        
+
+        [ExcludeFromCodeCoverage]
         public async Task<Player> GetUserAsync(ClaimsPrincipal user)
         {
             return await _userManager.GetUserAsync(user);
