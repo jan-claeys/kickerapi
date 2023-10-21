@@ -1,4 +1,4 @@
-﻿namespace kickerapi.Utilities
+﻿namespace kickerapi.QueryParameters
 {
     public class PagingParameters
     {
@@ -13,7 +13,7 @@
             }
             set
             {
-                _pageSize = (value > maxPageSize) ? maxPageSize : value;
+                _pageSize = value > maxPageSize ? maxPageSize : value;
             }
         }
     }

@@ -7,8 +7,9 @@ namespace ClassLibrary.Models
     {
         [Key]
         public int Id { get; private set; }
-        public int AttackRating { get; set; }
-        public int DeffendRating { get; set; }
+        public int Rating { get; private set; }
+        public int AttackRating { get; private set; }
+        public int DeffendRating { get; private set; }
         
         //ef
         private Player()
@@ -21,9 +22,21 @@ namespace ClassLibrary.Models
             this.UserName = name;
         }
 
-        public int Rating()
+        public void SetAttackRating(int attackRating)
         {
-            return (this.AttackRating + this.DeffendRating) / 2;
+            this.AttackRating = attackRating;
+            SetRating();
+        }
+
+        public void SetDeffendRating(int deffendRating)
+        {
+            this.DeffendRating = deffendRating;
+            SetRating();
+        }
+
+        private void SetRating()
+        {
+            this.Rating = (this.AttackRating + this.DeffendRating) / 2;
         }
     }
 }
