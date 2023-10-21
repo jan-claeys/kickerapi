@@ -54,24 +54,36 @@ namespace kickerapi.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IStatusCodeActionResult> Post([FromBody] CreateMatchDto req)
         {
-            var attackerTeam1 = await _context.Players.FindAsync(req.Team1.AttackerId);
-            var defenderTeam1 = await _context.Players.FindAsync(req.Team1.DefenderId);
+            try
+            {
+                var player = await _securityService.GetUserAsync(User);
 
-            var attackerTeam2 = await _context.Players.FindAsync(req.Team2.AttackerId);
-            var defenderTeam2 = await _context.Players.FindAsync(req.Team2.DefenderId);
+                var attackerTeam1 = await _context.Players.FindAsync(req.Team1.AttackerId);
+                var defenderTeam1 = await _context.Players.FindAsync(req.Team1.DefenderId);
 
-            if (attackerTeam1 == null || defenderTeam1 == null || attackerTeam2 == null || defenderTeam2 == null)
-                return BadRequest("Player not found");
+                var attackerTeam2 = await _context.Players.FindAsync(req.Team2.AttackerId);
+                var defenderTeam2 = await _context.Players.FindAsync(req.Team2.DefenderId);
 
-            var team = new Team(attackerTeam1, defenderTeam1, req.Team1.Score);
-            var team2 = new Team(attackerTeam2, defenderTeam2, req.Team2.Score);
+                if (attackerTeam1 == null || defenderTeam1 == null || attackerTeam2 == null || defenderTeam2 == null)
+                    throw new Exception("One or more players are not existing");
 
-            var match = new Match(team, team2);
+                if (attackerTeam1.Id != player.Id && defenderTeam1.Id != player.Id)
+                    throw new Exception("You are not allowed to create a match with this players");
 
-            await _context.Matches.AddAsync(match);
-            await _context.SaveChangesAsync();
+                var team = new Team(attackerTeam1, defenderTeam1, req.Team1.Score);
+                var team2 = new Team(attackerTeam2, defenderTeam2, req.Team2.Score);
 
-            return CreatedAtAction(nameof(Get), match);
+                var match = new Match(team, team2);
+
+                await _context.Matches.AddAsync(match);
+                await _context.SaveChangesAsync();
+
+                return CreatedAtAction(nameof(Get), match);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }

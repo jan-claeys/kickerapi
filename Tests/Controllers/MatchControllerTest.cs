@@ -27,7 +27,7 @@ namespace Tests.Controllers
             _currentPlayer = new Player("test");
             _context = context;
             var securityServiceMock = new Mock<ISecurityService>();
-            securityServiceMock.Setup(x=> x.GetUserAsync(It.IsAny<ClaimsPrincipal>()).Result).Returns(_currentPlayer);
+            securityServiceMock.Setup(x => x.GetUserAsync(It.IsAny<ClaimsPrincipal>()).Result).Returns(_currentPlayer);
 
             _controller = new MatchesController(_context, _mapper, securityServiceMock.Object);
         }
@@ -38,10 +38,12 @@ namespace Tests.Controllers
             await _context.Database.OpenConnectionAsync();
             await _context.Database.EnsureCreatedAsync();
 
-            var player1 = new Player("test1");
-            var player2 = new Player("test2");
-            var player3 = new Player("test3");
-            var player4 = new Player("test4");
+            _currentPlayer.Id = 1;
+
+            var player1 = new Player("test1") { Id = 2 };
+            var player2 = new Player("test2") { Id = 3 };
+            var player3 = new Player("test3") { Id = 4 };
+            var player4 = new Player("test4") { Id = 5 };
 
             var team1 = new Team(_currentPlayer, player2, 0);
             var team2 = new Team(player3, player4, 0);
@@ -74,25 +76,26 @@ namespace Tests.Controllers
             var player1 = new Player("test1");
             var player2 = new Player("test2");
             var player3 = new Player("test3");
-            var player4 = new Player("test4");
 
+            _context.Players.Add(_currentPlayer);
             _context.Players.Add(player1);
             _context.Players.Add(player2);
             _context.Players.Add(player3);
-            _context.Players.Add(player4);
+
             await _context.SaveChangesAsync();
 
-            var createMatchDto = new CreateMatchDto() { 
+            var createMatchDto = new CreateMatchDto()
+            {
                 Team1 = new CreateTeamDto()
                 {
-                    AttackerId = player1.Id,
-                    DefenderId = player2.Id
+                    AttackerId = _currentPlayer.Id,
+                    DefenderId = player1.Id
                 },
 
                 Team2 = new CreateTeamDto()
                 {
-                    AttackerId = player3.Id,
-                    DefenderId = player4.Id
+                    AttackerId = player2.Id,
+                    DefenderId = player3.Id
                 }
             };
 
@@ -104,7 +107,7 @@ namespace Tests.Controllers
         }
 
         [Fact]
-        public async void ItReturnErrorIfPlayerNotExist()
+        public async void ItReturnErrorIfPlayerNotExistCreateMatch()
         {
             await _context.Database.OpenConnectionAsync();
             await _context.Database.EnsureCreatedAsync();
@@ -139,9 +142,46 @@ namespace Tests.Controllers
             Assert.Equal(400, response.StatusCode);
         }
 
+        [Fact]
+        public async void ItReturnErrorIfCurrentPlayerNotInTeam1()
+        {
+            await _context.Database.OpenConnectionAsync();
+            await _context.Database.EnsureCreatedAsync();
+
+            var player1 = new Player("test1");
+            var player2 = new Player("test2");
+            var player3 = new Player("test3");
+            var player4 = new Player("test4");
+
+            _context.Players.Add(player1);
+            _context.Players.Add(player2);
+            _context.Players.Add(player3);
+            _context.Players.Add(player4);
+
+            await _context.SaveChangesAsync();
+
+            var createMatchDto = new CreateMatchDto()
+            {
+                Team1 = new CreateTeamDto()
+                {
+                    AttackerId = player1.Id,
+                    DefenderId = player2.Id
+                },
+
+                Team2 = new CreateTeamDto()
+                {
+                    AttackerId = player3.Id,
+                    DefenderId = player4.Id
+                }
+            };
+
+            var response = await _controller.Post(createMatchDto);
+            Assert.Equal(400, response.StatusCode);
+        }
+
         public void Dispose()
         {
-             _context.Database.EnsureDeleted();
+            _context.Database.EnsureDeleted();
             _context.Dispose();
         }
     }

@@ -15,7 +15,6 @@ namespace kickerapi.Dtos.Responses.Match
             public PlayerDto? Player1 { get; set; }
             public PlayerDto? Player2 { get; set; }
             public int Score { get; set; }
-            public string? Color { get; set; }
         }
     }
 }
