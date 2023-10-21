@@ -64,7 +64,11 @@ namespace Tests.Controllers
             var okResult = response as OkObjectResult;
             var result = okResult?.Value;
 
-            Assert.Equal(2, Assert.IsType<List<MatchDto>>(result).Count);
+            var matchDto = Assert.IsType<List<MatchDto>>(result);
+            Assert.Equal(2, matchDto.Count);
+
+            var team = Assert.IsType<MatchDto.TeamDto>(matchDto[1].Team1);
+            Assert.Equal(_currentPlayer.Id, team.Attacker.Id);
         }
 
         [Fact]
