@@ -33,7 +33,7 @@ namespace ClassLibrary.Models
 
         public void SetAttackRating(double actualOutcome, double expectedOutcome, bool isWin)
         {
-            this.AttackRating = CalcualteRating(actualOutcome, expectedOutcome, isWin);
+            this.AttackRating = CalcualteRating(this.AttackRating, actualOutcome, expectedOutcome, isWin);
             SetRating();
         }
 
@@ -45,14 +45,14 @@ namespace ClassLibrary.Models
 
         public void SetDefendRating(double actualOutcome, double expectedOutcome, bool isWin)
         {
-            this.DefendRating = CalcualteRating(actualOutcome, expectedOutcome, isWin);
+            this.DefendRating = CalcualteRating(this.DefendRating,actualOutcome, expectedOutcome, isWin);
             SetRating();
         }
 
-        private int CalcualteRating(double actualOutcome, double expectedOutcome, bool isWin)
+        public static int CalcualteRating(int rating, double actualOutcome, double expectedOutcome, bool isWin)
         {
             const int k = 15;
-            return (int)Math.Ceiling(this.Rating + k * (actualOutcome - expectedOutcome) + (isWin ? k : -k));
+            return (int)Math.Ceiling(rating + k * (actualOutcome - expectedOutcome) + (isWin ? k : -k));
         }
 
         private void SetRating()

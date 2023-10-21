@@ -27,7 +27,7 @@ namespace ClassLibrary.Models
 
             ArePlayersUnique();
 
-            UpdateRating();
+            UpdateRatings();
 
             this.Date = DateTime.Now;
         }
@@ -43,7 +43,7 @@ namespace ClassLibrary.Models
             }
         }
 
-        private void UpdateRating()
+        private void UpdateRatings()
         {
             var acutualOutcomeTeam1 = CalculateActualOutcome(Team1.Score, Team2.Score);
             var acutualOutcomeTeam2 = CalculateActualOutcome(Team2.Score, Team1.Score);
