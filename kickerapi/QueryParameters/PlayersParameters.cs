@@ -2,6 +2,6 @@
 {
     public class PlayersParameters: PagingParameters
     {
-        public string OrderBy { get; set; } = "Rating";
+        public string? OrderBy { get; set; }
     }
 }

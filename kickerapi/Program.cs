@@ -77,7 +77,7 @@ builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddAuthorization();
 
 //services
-builder.Services.AddScoped<SecurityService>();
+builder.Services.AddScoped<ISecurityService, SecurityService>();
 
 var app = builder.Build();
 

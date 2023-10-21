@@ -8,7 +8,8 @@ namespace ClassLibrary.Models
         public int Id { get; private set; }
         public Team Team1 { get; private set; }
         public Team Team2 { get; private set; }
-
+        public DateTime Date { get; private set; }
+        
         //ef
         private Match()
         {
@@ -22,6 +23,8 @@ namespace ClassLibrary.Models
 
             this.Team1.Color = Color.Black;
             this.Team2.Color = Color.Green;
+
+            this.Date = DateTime.Now;
         }
     }
 }

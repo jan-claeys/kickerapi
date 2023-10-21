@@ -43,8 +43,4 @@
 		<InternalsVisibleTo Include="Tests" />
 	</ItemGroup>
 
-	<ItemGroup>
-	  <Folder Include="Dtos\Match\" />
-	</ItemGroup>
-
 </Project>

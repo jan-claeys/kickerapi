@@ -1,25 +1,29 @@
 ﻿using kickerapi;
 using kickerapi.Controllers;
-using kickerapi.Dtos.Player;
 using Microsoft.EntityFrameworkCore;
 using kickerapi.Services;
 using ClassLibrary.Models;
 using Microsoft.AspNetCore.Identity;
+using kickerapi.Dtos.Requests.Security;
+using Microsoft.Extensions.Configuration;
 
 namespace Tests.Controllers
 {
-    public class SecurityControllerTest: IDisposable
+    public class SecurityControllerTest : IDisposable
     {
         private readonly SecurityController _controller;
         private readonly KickerContext _context;
-        private readonly SecurityService _service;
         private readonly UserManager<Player> _userManager;
 
-        public SecurityControllerTest(KickerContext context,SecurityService service, UserManager<Player> userManager)
+        public SecurityControllerTest(KickerContext context, UserManager<Player> userManager)
         {
+            var configuration = new ConfigurationBuilder()
+              .SetBasePath(Directory.GetCurrentDirectory())
+              .AddJsonFile("appsettings.development.json")
+              .Build();
+
             _context = context;
-            _service = service;
-            _controller = new SecurityController(_service, userManager);
+            _controller = new SecurityController(new SecurityService(configuration,userManager));
             _userManager = userManager;
         }
 
@@ -52,14 +56,14 @@ namespace Tests.Controllers
                 Name = "test",
                 Password = "Test1*"
             };
-            var response = await _controller.Register(payload);
+            await _controller.Register(payload);
 
-             payload = new RegisterDto
+            payload = new RegisterDto
             {
                 Name = "test",
                 Password = "Test1*"
-             };
-            response = await _controller.Register(payload);
+            };
+            var response = await _controller.Register(payload);
             Assert.Equal(400, response.StatusCode);
         }
 
@@ -85,7 +89,7 @@ namespace Tests.Controllers
             await _context.Database.OpenConnectionAsync();
             await _context.Database.EnsureCreatedAsync();
 
-            Player player = new Player("test");
+            var player = new Player("test");
             await _userManager.CreateAsync(player, "Test1*");
 
             var payload = new LoginDto
@@ -104,7 +108,7 @@ namespace Tests.Controllers
             await _context.Database.OpenConnectionAsync();
             await _context.Database.EnsureCreatedAsync();
 
-            Player player = new Player("test");
+            var player = new Player("test");
             await _userManager.CreateAsync(player, "test");
 
             var payload = new LoginDto

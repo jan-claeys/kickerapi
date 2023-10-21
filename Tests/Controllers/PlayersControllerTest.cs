@@ -2,14 +2,14 @@
 using ClassLibrary.Models;
 using kickerapi;
 using kickerapi.Controllers;
-using kickerapi.Dtos.Player;
+using kickerapi.Dtos.Responses.Player;
 using kickerapi.QueryParameters;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace Tests.Controllers
 {
-    public class PlayersControllerTest
+    public class PlayersControllerTest : IDisposable
     {
         private readonly KickerContext _context;
         private readonly PlayersController _controller;
@@ -43,6 +43,17 @@ namespace Tests.Controllers
 
             var okResult = response as OkObjectResult;
             var result = okResult?.Value;
+
+            Assert.Equal("test1", Assert.IsType<List<PlayerDto>>(result)[0].Name);
+            Assert.Equal("test2", Assert.IsType<List<PlayerDto>>(result)[1].Name);
+
+            response = await _controller.Get(new PlayersParameters(){ 
+                OrderBy = "Rating"
+            });
+            Assert.Equal(200, response.StatusCode);
+
+            okResult = response as OkObjectResult;
+            result = okResult?.Value;
 
             Assert.Equal("test1", Assert.IsType<List<PlayerDto>>(result)[0].Name);
             Assert.Equal("test2", Assert.IsType<List<PlayerDto>>(result)[1].Name);
@@ -108,6 +119,12 @@ namespace Tests.Controllers
 
             Assert.Equal("test1", Assert.IsType<List<PlayerDto>>(result)[0].Name);
             Assert.Equal("test2", Assert.IsType<List<PlayerDto>>(result)[1].Name);
+        }
+
+        public void Dispose()
+        {
+            _context.Database.EnsureDeleted();
+            _context.Dispose();
         }
     }
 }

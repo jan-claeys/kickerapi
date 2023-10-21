@@ -2,7 +2,7 @@
 
 using System.ComponentModel.DataAnnotations;
 
-namespace kickerapi.Dtos.Player
+namespace kickerapi.Dtos.Requests.Security
 {
     public class LoginDto
     {

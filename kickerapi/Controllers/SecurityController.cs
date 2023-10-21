@@ -1,5 +1,5 @@
 ﻿using ClassLibrary.Models;
-using kickerapi.Dtos.Player;
+using kickerapi.Dtos.Requests.Security;
 using kickerapi.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -13,13 +13,11 @@ namespace kickerapi.Controllers
     [ApiController]
     public class SecurityController : Controller
     {
-        private readonly SecurityService _service;
-        private readonly UserManager<Player> _userManager;
+        private readonly ISecurityService _service;
 
-        public SecurityController(SecurityService service, UserManager<Player> userManager)
+        public SecurityController(ISecurityService service)
         {
             this._service = service;
-            this._userManager = userManager;
         }
 
         [AllowAnonymous]
@@ -29,9 +27,9 @@ namespace kickerapi.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IStatusCodeActionResult> Login([FromBody] LoginDto req)
         {
-            var player = await _userManager.FindByNameAsync(req.Name);
+            var player = await _service.FindByNameAsync(req.Name);
 
-            if (player == null || !await _userManager.CheckPasswordAsync(player, req.Password))
+            if (player == null || !await _service.CheckPasswordAsync(player, req.Password))
             {
                 return Unauthorized("Invalid username or password");
             }
@@ -46,12 +44,11 @@ namespace kickerapi.Controllers
 
         [AllowAnonymous]
         [HttpPost("Register")]
-        [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IStatusCodeActionResult> Register([FromBody] RegisterDto req)
         {
-            var userExists = await _userManager.FindByNameAsync(req.Name);
+            var userExists = await _service.FindByNameAsync(req.Name);
             if (userExists != null)
                 return BadRequest("Player already exists");
 
@@ -60,7 +57,7 @@ namespace kickerapi.Controllers
                 SecurityStamp = Guid.NewGuid().ToString(),
             };
 
-            var response = await _userManager.CreateAsync(player, req.Password);
+            var response = await _service.CreateAsync(player, req.Password);
             if (!response.Succeeded)
             {
                 return BadRequest(response.Errors);

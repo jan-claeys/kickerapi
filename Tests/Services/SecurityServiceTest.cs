@@ -1,5 +1,6 @@
 ﻿using ClassLibrary.Models;
 using kickerapi.Services;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 
 namespace Tests.Services
@@ -8,13 +9,13 @@ namespace Tests.Services
     {
         private readonly SecurityService _service;
 
-        public SecurityServiceTest() {
+        public SecurityServiceTest(UserManager<Player> userManager) {
             var configuration = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.development.json")
                 .Build();
 
-            _service = new SecurityService(configuration);
+            _service = new SecurityService(configuration, userManager);
         }
 
         [Fact]

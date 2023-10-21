@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using ClassLibrary.Models;
-using kickerapi.Dtos.Player;
+using kickerapi.Dtos.Responses.Match;
+using kickerapi.Dtos.Responses.Player;
 
 namespace kickerapi
 {
@@ -9,6 +10,8 @@ namespace kickerapi
         public MappingProfiles()
         {
             CreateProjection<Player, PlayerDto>().ForMember(d => d.Name, o => o.MapFrom(s => s.UserName));
+            CreateProjection<Match, MatchDto>();
+            CreateProjection<Team, MatchDto.TeamDto>();
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace kickerapi.Dtos.Player
+﻿namespace kickerapi.Dtos.Responses.Player
 {
     public class PlayerDto
     {

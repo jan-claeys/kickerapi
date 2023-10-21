@@ -17,8 +17,6 @@ namespace Tests
                .AddJsonFile("appsettings.development.json")
                .Build();
 
-            services.AddTransient<SecurityService>(x=> new SecurityService(configuration));
-
             services.AddScoped<KickerContext>(x => new KickerContext(new DbContextOptionsBuilder<KickerContext>()
                                .UseSqlite("DataSource=:memory:")
                                               .Options));
@@ -27,6 +25,8 @@ namespace Tests
             services.AddIdentity<Player, IdentityRole>()
                 .AddEntityFrameworkStores<KickerContext>()
                 .AddDefaultTokenProviders();
+
+            services.AddTransient<SecurityService>();
 
             services.AddAutoMapper(typeof(MappingProfiles));
         }

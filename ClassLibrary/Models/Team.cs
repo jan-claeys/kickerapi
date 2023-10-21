@@ -17,10 +17,11 @@ namespace ClassLibrary.Models
 
         }
 
-        public Team(Player attacker, Player deffender)
+        public Team(Player attacker, Player deffender, int score)
         {
             this.Attacker = attacker;
             this.Deffender = deffender;
+            this.Score = score;
         }
 
     }

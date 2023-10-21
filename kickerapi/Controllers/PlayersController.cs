@@ -1,12 +1,11 @@
 ﻿using AutoMapper;
 using ClassLibrary.Models;
-using kickerapi.Dtos.Player;
+using kickerapi.Dtos.Responses.Player;
 using kickerapi.QueryParameters;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
 using System.Linq.Expressions;
 
 namespace kickerapi.Controllers
