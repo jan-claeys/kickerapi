@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.EntityFrameworkCore;
+using System.Net.WebSockets;
 using System.Security.Claims;
 
 namespace kickerapi.Controllers
@@ -20,13 +21,13 @@ namespace kickerapi.Controllers
     {
         private readonly KickerContext _context;
         private readonly IMapper _mapper;
-        private readonly UserManager<Player> _userManager;
+        private readonly ISecurityService _securityService;
 
-        public MatchesController(KickerContext context, IMapper mapper, UserManager<Player> userManager)
+        public MatchesController(KickerContext context, IMapper mapper, ISecurityService securityService)
         {
             this._context = context;
             this._mapper = mapper;
-            this._userManager = userManager;
+            this._securityService = securityService;
         }
 
         [HttpGet]
@@ -34,7 +35,9 @@ namespace kickerapi.Controllers
         [ProducesResponseType(typeof(List<MatchDto>), StatusCodes.Status200OK)]
         public async Task<IStatusCodeActionResult> Get([FromQuery] PagingParameters parameters)
         {
-            var player = await _userManager.GetUserAsync(User);
+            var player = await _securityService.GetUserAsync(User);
+
+            var allMatches = await _context.Matches.ToListAsync();
 
             var matches = await _mapper.ProjectTo<MatchDto>(_context.Matches
                 .Where(x => x.Team1.Attacker.Id == player.Id || x.Team1.Deffender.Id == player.Id || x.Team2.Attacker.Id == player.Id || x.Team2.Deffender.Id == player.Id)

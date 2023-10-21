@@ -5,10 +5,14 @@ using kickerapi.Controllers;
 using kickerapi.Dtos.Requests.Match;
 using kickerapi.Dtos.Responses.Match;
 using kickerapi.QueryParameters;
+using kickerapi.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Moq;
+using System.Security.Claims;
 using static kickerapi.Dtos.Requests.Match.CreateMatchDto;
+using Match = ClassLibrary.Models.Match;
 
 namespace Tests.Controllers
 {
@@ -16,15 +20,20 @@ namespace Tests.Controllers
     {
         private readonly KickerContext _context;
         private readonly MatchesController _controller;
+        private readonly Player _currentPlayer;
 
-        public MatchControllerTest(KickerContext context, IMapper _mapper, UserManager<Player> userManager)
+        public MatchControllerTest(KickerContext context, IMapper _mapper)
         {
+            _currentPlayer = new Player("test");
             _context = context;
-            _controller = new MatchesController(_context, _mapper, userManager);
+            var securityServiceMock = new Mock<ISecurityService>();
+            securityServiceMock.Setup(x=> x.GetUserAsync(It.IsAny<ClaimsPrincipal>()).Result).Returns(_currentPlayer);
+
+            _controller = new MatchesController(_context, _mapper, securityServiceMock.Object);
         }
 
         [Fact]
-        public async void ItGetsMatches()
+        public async void ItGetsMatchesFromPlayer()
         {
             await _context.Database.OpenConnectionAsync();
             await _context.Database.EnsureCreatedAsync();
@@ -34,13 +43,16 @@ namespace Tests.Controllers
             var player3 = new Player("test3");
             var player4 = new Player("test4");
 
-            var team1 = new Team(player1, player2, 0);
+            var team1 = new Team(_currentPlayer, player2, 0);
             var team2 = new Team(player3, player4, 0);
+            var team3 = new Team(player1, player2, 0);
 
             var match1 = new Match(team1, team2);
-            _context.Matches.Add(match1);
             var match2 = new Match(team2, team1);
+            var match3 = new Match(team3, team2);
+            _context.Matches.Add(match1);
             _context.Matches.Add(match2);
+            _context.Matches.Add(match3);
 
             await _context.SaveChangesAsync();
 

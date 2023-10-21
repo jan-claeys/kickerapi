@@ -34,6 +34,11 @@ namespace kickerapi.Services
         {
             return await _userManager.FindByNameAsync(name);
         }
+        
+        public async Task<Player> GetUserAsync(ClaimsPrincipal user)
+        {
+            return await _userManager.GetUserAsync(user);
+        }
 
         public JwtSecurityToken GenerateJwtToken(Player player)
         {
