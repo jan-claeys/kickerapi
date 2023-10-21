@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
 
 namespace ClassLibrary.Models
 {
@@ -26,7 +27,7 @@ namespace ClassLibrary.Models
 
             ArePlayersUnique();
 
-            RecalculateRating();
+            UpdateRating();
 
             this.Date = DateTime.Now;
         }
@@ -42,23 +43,32 @@ namespace ClassLibrary.Models
             }
         }
 
-        private void RecalculateRating()
+        private void UpdateRating()
+        {
+            var acutualOutcomeTeam1 = CalculateActualOutcome(Team1.Score, Team2.Score);
+            var acutualOutcomeTeam2 = CalculateActualOutcome(Team2.Score, Team1.Score);
+
+            var expectedOutcomeTeam1 = CalculateExpectedOutcome(Team1.Rating(), Team2.Rating());
+            var expectedOutcomeTeam2 = CalculateExpectedOutcome(Team2.Rating(), Team1.Rating());
+
+            Team1.SetRating(acutualOutcomeTeam1, expectedOutcomeTeam1, Team1.Score > Team2.Score);
+            Team2.SetRating(acutualOutcomeTeam2, expectedOutcomeTeam2, Team2.Score > Team1.Score);
+        }
+
+        private static double CalculateActualOutcome(int score1, int score2)
+        {
+            return score1 + score2 != 0 ? (double)score1 / (double)(score1 + score2) : 0.5;
+        }
+        
+        private static double CalculateExpectedOutcome(int rating1, int rating2)
         {
             const int c = 400;
-
-            var acutualOutcomeTeam1 = Team1.Score + Team2.Score != 0 ?Team1.Score / (Team1.Score + Team2.Score) : 0.5;
-            var acutualOutcomeTeam2 = Team1.Score + Team2.Score != 0 ?Team2.Score / (Team1.Score + Team2.Score) : 0.5;
-
-            var expectedOutcomeTeam1 = Math.Pow(10, Team1.Rating() / c) / (Math.Pow(10, Team1.Rating() / c) + Math.Pow(10, Team2.Rating() / c));
-            var expectedOutcomeTeam2 = Math.Pow(10, Team2.Rating() / c) / (Math.Pow(10, Team1.Rating() / c) + Math.Pow(10, Team2.Rating() / c));
-
-            Team1.RecalculateRating(expectedOutcomeTeam1, acutualOutcomeTeam1);
-            Team2.RecalculateRating(expectedOutcomeTeam2, acutualOutcomeTeam2);
+            return Math.Pow(10, (double)rating1 / (double)c) / (Math.Pow(10, (double)rating1 / (double)c) + Math.Pow(10, (double)rating2 / (double)c));
         }
 
         public IEnumerable<Player> GetPlayers()
         {
-            return new List<Player> { Team1.Attacker, Team1.Deffender, Team2.Attacker, Team2.Deffender };
+            return new List<Player> { Team1.Attacker, Team1.Defender, Team2.Attacker, Team2.Defender };
         }
     }
 }

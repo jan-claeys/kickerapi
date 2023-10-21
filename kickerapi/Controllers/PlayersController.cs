@@ -33,7 +33,7 @@ namespace kickerapi.Controllers
             {
                 "Rating" => x => x.Rating,
                 "AttackRating" => x => x.AttackRating,
-                "DeffendRating" => x => x.DeffendRating,
+                "DefendRating" => x => x.DefendRating,
                 _ => x => x.Rating,
             };
 

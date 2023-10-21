@@ -28,12 +28,12 @@ namespace Tests.Controllers
 
             var player1 = new Player("test1");
             player1.SetAttackRating(5);
-            player1.SetDeffendRating(20);
+            player1.SetDefendRating(20);
             _context.Players.Add(player1);
 
             var player2 = new Player("test2");
             player2.SetAttackRating(10);
-            player2.SetDeffendRating(10);
+            player2.SetDefendRating(10);
             _context.Players.Add(player2);
 
             await _context.SaveChangesAsync();
@@ -67,12 +67,12 @@ namespace Tests.Controllers
 
             var player1 = new Player("test1");
             player1.SetAttackRating(5);
-            player1.SetDeffendRating(20);
+            player1.SetDefendRating(20);
             _context.Players.Add(player1);
 
             var player2 = new Player("test2");
             player2.SetAttackRating(10);
-            player2.SetDeffendRating(10);
+            player2.SetDefendRating(10);
             _context.Players.Add(player2);
 
             await _context.SaveChangesAsync();
@@ -91,26 +91,26 @@ namespace Tests.Controllers
         }
 
         [Fact]
-        public async void ItGetsPlayersByDeffendRating()
+        public async void ItGetsPlayersByDefendRating()
         {
             await _context.Database.OpenConnectionAsync();
             await _context.Database.EnsureCreatedAsync();
 
             var player1 = new Player("test1");
             player1.SetAttackRating(5);
-            player1.SetDeffendRating(20);
+            player1.SetDefendRating(20);
             _context.Players.Add(player1);
 
             var player2 = new Player("test2");
             player2.SetAttackRating(10);
-            player2.SetDeffendRating(10);
+            player2.SetDefendRating(10);
             _context.Players.Add(player2);
 
             await _context.SaveChangesAsync();
 
             var response = await _controller.Get(new PlayersParameters()
             {
-                OrderBy = "DeffendRating"
+                OrderBy = "DefendRating"
             });
             Assert.Equal(200, response.StatusCode);
 

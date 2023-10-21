@@ -9,7 +9,7 @@ namespace ClassLibrary.Models
         [Key]
         public int Id { get; private set; }
         public Player Attacker { get; private set; }
-        public Player Deffender { get; private set; }
+        public Player Defender { get; private set; }
         public int Score { get; set; }
 
         [ExcludeFromCodeCoverage]
@@ -19,24 +19,22 @@ namespace ClassLibrary.Models
 
         }
 
-        public Team(Player attacker, Player deffender, int score)
+        public Team(Player attacker, Player defender, int score)
         {
             this.Attacker = attacker;
-            this.Deffender = deffender;
+            this.Defender = defender;
             this.Score = score;
         }
 
-        public void RecalculateRating(double actualOutcome, double expectedOutcome)
+        public void SetRating(double actualOutcome, double expectedOutcome, bool isWin)
         {
-            const int k = 32;
-
-            Attacker.SetAttackRating((int)Math.Ceiling(Attacker.AttackRating + k * (actualOutcome - expectedOutcome)));
-            Deffender.SetDeffendRating((int)Math.Ceiling(Deffender.DeffendRating + k * (actualOutcome - expectedOutcome)));
+            Attacker.SetAttackRating(actualOutcome, expectedOutcome, isWin);
+            Defender.SetDefendRating(actualOutcome, expectedOutcome, isWin);
         }
 
         public int Rating()
         {
-            return (Attacker.AttackRating + Deffender.DeffendRating) / 2;
+            return (Attacker.AttackRating + Defender.DefendRating) / 2;
         }
     }
 }

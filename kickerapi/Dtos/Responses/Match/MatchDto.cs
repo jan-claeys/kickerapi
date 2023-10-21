@@ -13,7 +13,7 @@ namespace kickerapi.Dtos.Responses.Match
         {
             public int Id { get; set; }
             public PlayerDto? Attacker { get; set; }
-            public PlayerDto? Deffender { get; set; }
+            public PlayerDto? Defender { get; set; }
             public int Score { get; set; }
         }
     }

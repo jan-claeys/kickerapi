@@ -12,8 +12,8 @@ using kickerapi;
 namespace kickerapi.Migrations
 {
     [DbContext(typeof(KickerContext))]
-    [Migration("20231021102910_addDateToMatch")]
-    partial class addDateToMatch
+    [Migration("20231021215450_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -68,7 +68,7 @@ namespace kickerapi.Migrations
                     b.Property<string>("ConcurrencyStamp")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("DeffendRating")
+                    b.Property<int>("DefendRating")
                         .HasColumnType("int");
 
                     b.Property<string>("Email")
@@ -126,10 +126,7 @@ namespace kickerapi.Migrations
                     b.Property<int>("AttackerId")
                         .HasColumnType("int");
 
-                    b.Property<int>("Color")
-                        .HasColumnType("int");
-
-                    b.Property<int>("DeffenderId")
+                    b.Property<int>("DefenderId")
                         .HasColumnType("int");
 
                     b.Property<int>("Score")
@@ -139,7 +136,7 @@ namespace kickerapi.Migrations
 
                     b.HasIndex("AttackerId");
 
-                    b.HasIndex("DeffenderId");
+                    b.HasIndex("DefenderId");
 
                     b.ToTable("Teams");
                 });
@@ -171,15 +168,15 @@ namespace kickerapi.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ClassLibrary.Models.Player", "Deffender")
+                    b.HasOne("ClassLibrary.Models.Player", "Defender")
                         .WithMany()
-                        .HasForeignKey("DeffenderId")
+                        .HasForeignKey("DefenderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Attacker");
 
-                    b.Navigation("Deffender");
+                    b.Navigation("Defender");
                 });
 #pragma warning restore 612, 618
         }

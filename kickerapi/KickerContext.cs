@@ -21,7 +21,7 @@ namespace kickerapi
             modelBuilder.Entity<Match>().HasOne(x => x.Team2);
 
             modelBuilder.Entity<Team>().HasOne(x => x.Attacker);
-            modelBuilder.Entity<Team>().HasOne(x => x.Deffender);
+            modelBuilder.Entity<Team>().HasOne(x => x.Defender);
         }
     }
 }
