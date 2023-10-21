@@ -26,7 +26,7 @@ namespace ClassLibrary.Models
 
             ArePlayersUnique();
 
-            CalculateRatings();
+            RecalculateRating();
 
             this.Date = DateTime.Now;
         }
@@ -42,7 +42,7 @@ namespace ClassLibrary.Models
             }
         }
 
-        private void CalculateRatings()
+        private void RecalculateRating()
         {
             const int c = 400;
 
@@ -52,8 +52,8 @@ namespace ClassLibrary.Models
             var expectedOutcomeTeam1 = Math.Pow(10, Team1.Rating() / c) / (Math.Pow(10, Team1.Rating() / c) + Math.Pow(10, Team2.Rating() / c));
             var expectedOutcomeTeam2 = Math.Pow(10, Team2.Rating() / c) / (Math.Pow(10, Team1.Rating() / c) + Math.Pow(10, Team2.Rating() / c));
 
-            Team1.CalculateRating(expectedOutcomeTeam1, acutualOutcomeTeam1);
-            Team2.CalculateRating(expectedOutcomeTeam2, acutualOutcomeTeam2);
+            Team1.RecalculateRating(expectedOutcomeTeam1, acutualOutcomeTeam1);
+            Team2.RecalculateRating(expectedOutcomeTeam2, acutualOutcomeTeam2);
         }
 
         public IEnumerable<Player> GetPlayers()

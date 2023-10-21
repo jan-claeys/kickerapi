@@ -26,7 +26,7 @@ namespace ClassLibrary.Models
             this.Score = score;
         }
 
-        internal void CalculateRating(double actualOutcome, double expectedOutcome)
+        public void RecalculateRating(double actualOutcome, double expectedOutcome)
         {
             const int k = 32;
 
