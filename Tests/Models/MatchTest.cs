@@ -81,5 +81,30 @@ namespace Tests.Models
             Assert.True(oldRatingPlayer2 > player2.DefendRating);
             Assert.True(oldRatingTeam1 > team1.Rating());
         }
+
+        [Fact]
+        public void ItDoesNotUpdateRatingIfMatchIsNotConfirmed()
+        {
+            var team1 = new Team(new Player("test1") { Id = 1 }, new Player("test2") { Id = 2 }, 11);
+            var team2 = new Team(new Player("test3") { Id = 3 }, new Player("test4") { Id = 4 }, 5);
+
+            var match = new Match(team1, team2);
+            Assert.False(match.UpdateRatings());
+        }
+
+        [Fact]
+        public void ItDoesNotUpdateRatingIfRatingAlreadyUpdated()
+        {
+            var team1 = new Team(new Player("test1") { Id = 1 }, new Player("test2") { Id = 2 }, 11);
+            var team2 = new Team(new Player("test3") { Id = 3 }, new Player("test4") { Id = 4 }, 5);
+
+            team1.Confirm();
+            team2.Confirm();
+
+            var match = new Match(team1, team2);
+
+            Assert.True(match.UpdateRatings());
+            Assert.False(match.UpdateRatings());
+        }
     }
 }

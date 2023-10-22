@@ -42,16 +42,17 @@ namespace ClassLibrary.Models
             }
         }
 
-        public void UpdateRatings()
+        //returs if rating was updated
+        public bool UpdateRatings()
         {
             if (this.IsCalculatedInRating)
             {
-                return;
+                return false;
             }
 
             if(!Team1.IsConfirmed || !Team2.IsConfirmed)
             {
-                return;
+                return false;
             }
 
             var acutualOutcomeTeam1 = CalculateActualOutcome(Team1.Score, Team2.Score);
@@ -64,6 +65,8 @@ namespace ClassLibrary.Models
             Team2.SetRating(acutualOutcomeTeam2, expectedOutcomeTeam2, Team2.Score > Team1.Score);
 
             this.IsCalculatedInRating = true;
+
+            return true;
         }
 
         private static double CalculateActualOutcome(int score1, int score2)
