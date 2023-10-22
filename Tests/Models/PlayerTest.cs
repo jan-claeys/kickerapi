@@ -1,5 +1,4 @@
 ﻿using ClassLibrary.Models;
-using Xunit.Abstractions;
 
 namespace Tests.Models
 {

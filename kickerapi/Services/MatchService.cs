@@ -1,8 +1,5 @@
 ﻿
 using ClassLibrary.Models;
-using kickerapi.QueryParameters;
-using Microsoft.EntityFrameworkCore;
-using System.Numerics;
 
 namespace kickerapi.Services
 {

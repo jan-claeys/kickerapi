@@ -148,7 +148,7 @@ namespace Tests.Controllers
             };
 
             var response = await _controller.Post(createMatchDto);
-            Assert.Equal(201, response.StatusCode);
+            Assert.Equal(200, response.StatusCode);
 
             Assert.Equal(1, _context.Matches.Count());
             Assert.Equal(2, _context.Teams.Count());

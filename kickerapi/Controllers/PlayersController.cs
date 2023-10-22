@@ -25,7 +25,6 @@ namespace kickerapi.Controllers
         }
 
         [HttpGet]
-        [Produces("application/json")]
         [ProducesResponseType(typeof(List<PlayerDto>), StatusCodes.Status200OK)]
         public async Task<IStatusCodeActionResult> Get([FromQuery] PlayersParameters parameters)
         {
@@ -40,7 +39,6 @@ namespace kickerapi.Controllers
         }
 
         [HttpGet("ranking")]
-        [Produces("application/json")]
         [ProducesResponseType(typeof(List<PlayerDto>), StatusCodes.Status200OK)]
         public async Task<IStatusCodeActionResult> GetRanking([FromQuery] PlayersRatingParameters parameters)
         {

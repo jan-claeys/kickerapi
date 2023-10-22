@@ -30,7 +30,6 @@ namespace kickerapi.Controllers
         }
 
         [HttpGet]
-        [Produces("application/json")]
         [ProducesResponseType(typeof(List<MatchDto>), StatusCodes.Status200OK)]
         public async Task<IStatusCodeActionResult> Get([FromQuery] MatchParameters parameters)
         {
@@ -46,7 +45,7 @@ namespace kickerapi.Controllers
         }
 
         [HttpPost]
-        [ProducesResponseType(typeof(MatchDto), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(MatchDto), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IStatusCodeActionResult> Post([FromBody] CreateMatchDto req)
         {
@@ -71,7 +70,7 @@ namespace kickerapi.Controllers
                 await _context.Matches.AddAsync(match);
                 await _context.SaveChangesAsync();
 
-                return CreatedAtAction(nameof(Get), match);
+                return Ok();
             }
             catch (Exception ex)
             {

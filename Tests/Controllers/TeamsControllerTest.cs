@@ -4,12 +4,7 @@ using kickerapi.Controllers;
 using kickerapi.Services;
 using Microsoft.EntityFrameworkCore;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
 using Match = ClassLibrary.Models.Match;
 
 namespace Tests.Controllers
@@ -48,14 +43,14 @@ namespace Tests.Controllers
         }
 
         [Fact]
-        public async void ItThrowsErrorIfTeamNotExist()
+        public async void ItThrowsErrorIfTeamNotExistConfirme()
         {
             var result = await _controller.Confirm(1);
             Assert.Equal(400, result.StatusCode);
         }
 
         [Fact]
-        public async void ItThrowsErrorIfPlayerNotInTeam()
+        public async void ItThrowsErrorIfPlayerNotInTeamConfirme()
         {
             var player1 = new Player("test1") { Id = 1 };
             var player2 = new Player("test2") { Id = 2 };
@@ -138,6 +133,60 @@ namespace Tests.Controllers
             Assert.True(match1.IsCalculatedInRating);
             Assert.True(match2.IsCalculatedInRating);
             Assert.False(match3.IsCalculatedInRating);
+        }
+
+        [Fact]
+        public async void ItDeleteTeamsAndMatchIfDeny()
+        {
+            _currentPlayer.Id = 1;
+            var player1 = new Player("test1") { Id = 2 };
+            var player2 = new Player("test2") { Id = 3 };
+            var player3 = new Player("test3") { Id = 4 };
+
+            var team1 = new Team(_currentPlayer, player1, 0);
+            var team2 = new Team(player2, player3, 0);
+            var team3 = new Team(_currentPlayer, player1, 0);
+            var team4 = new Team(player2, player3, 0);
+
+            var match1 = new Match(team1, team2);
+            var match2 = new Match(team3, team4);
+
+            _context.Add(match1);
+            _context.Add(match2);
+            _context.SaveChanges();
+
+            Assert.Equal(4, await _context.Players.CountAsync());
+            Assert.Equal(4, await _context.Teams.CountAsync());
+            Assert.Equal(2, await _context.Matches.CountAsync());
+
+            var result = await _controller.Deny(team1.Id);
+            Assert.Equal(200, result.StatusCode);
+
+            Assert.Equal(4, await _context.Players.CountAsync());
+            Assert.Equal(2, await _context.Teams.CountAsync());
+            Assert.Equal(1, await _context.Matches.CountAsync());
+        }
+
+        [Fact]
+        public async void ItThrowsErrorIfTeamNotExistDeny()
+        {
+            var result = await _controller.Deny(1);
+            Assert.Equal(400, result.StatusCode);
+        }
+
+        [Fact]
+        public async void ItThrowsErrorIfPlayerNotInTeamDeny()
+        {
+            var player1 = new Player("test1") { Id = 1 };
+            var player2 = new Player("test2") { Id = 2 };
+
+            var team1 = new Team(player1, player2, 0);
+
+            _context.Teams.Add(team1);
+            _context.SaveChanges();
+
+            var result = await _controller.Deny(team1.Id);
+            Assert.Equal(400, result.StatusCode);
         }
     }
 }

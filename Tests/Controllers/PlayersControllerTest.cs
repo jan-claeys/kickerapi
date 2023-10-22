@@ -5,7 +5,6 @@ using kickerapi.Controllers;
 using kickerapi.Dtos.Responses.Player;
 using kickerapi.QueryParameters;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace Tests.Controllers
 {

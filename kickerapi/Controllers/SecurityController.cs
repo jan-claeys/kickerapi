@@ -21,7 +21,6 @@ namespace kickerapi.Controllers
 
         [AllowAnonymous]
         [HttpPost("Login")]
-        [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IStatusCodeActionResult> Login([FromBody] LoginDto req)
