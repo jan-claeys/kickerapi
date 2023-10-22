@@ -12,6 +12,7 @@ namespace ClassLibrary.Models
         public Team Team1 { get; private set; }
         public Team Team2 { get; private set; }
         public DateTime Date { get; private set; }
+        public bool IsCalculatedInRating { get; private set; } = false;
 
         [ExcludeFromCodeCoverage]
         //ef
@@ -43,6 +44,16 @@ namespace ClassLibrary.Models
 
         public void UpdateRatings()
         {
+            if (this.IsCalculatedInRating)
+            {
+                return;
+            }
+
+            if(!Team1.IsConfirmed || !Team2.IsConfirmed)
+            {
+                return;
+            }
+
             var acutualOutcomeTeam1 = CalculateActualOutcome(Team1.Score, Team2.Score);
             var acutualOutcomeTeam2 = CalculateActualOutcome(Team2.Score, Team1.Score);
 
@@ -51,6 +62,8 @@ namespace ClassLibrary.Models
 
             Team1.SetRating(acutualOutcomeTeam1, expectedOutcomeTeam1, Team1.Score > Team2.Score);
             Team2.SetRating(acutualOutcomeTeam2, expectedOutcomeTeam2, Team2.Score > Team1.Score);
+
+            this.IsCalculatedInRating = true;
         }
 
         private static double CalculateActualOutcome(int score1, int score2)

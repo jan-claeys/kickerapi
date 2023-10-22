@@ -31,8 +31,73 @@ namespace Tests.Controllers
             _controller = new MatchesController(_context, _mapper, securityServiceMock.Object);
         }
 
+        //[Fact]
+        //public async void ItGetsMatchesFromPlayer()
+        //{
+        //    await _context.Database.OpenConnectionAsync();
+        //    await _context.Database.EnsureCreatedAsync();
+
+        //    _currentPlayer.Id = 1;
+
+        //    var player1 = new Player("test1") { Id = 2 };
+        //    var player2 = new Player("test2") { Id = 3 };
+        //    var player3 = new Player("test3") { Id = 4 };
+        //    var player4 = new Player("test4") { Id = 5 };
+
+        //    var team1 = new Team(_currentPlayer, player2, 0);
+        //    var team2 = new Team(player3, player4, 0);
+        //    var team3 = new Team(player1, player2, 0);
+        //    var team4 = new Team(player3, _currentPlayer, 0);
+        //    var team5 = new Team(player1, player4, 0);
+        //    var team6 = new Team(player2, _currentPlayer, 0);
+        //    var team7 = new Team(player3, player4, 0);
+        //    var team8 = new Team(player1, _currentPlayer, 0);
+
+        //    team1.Confirm();
+        //    team2.Confirm();
+        //    team3.Confirm();
+        //    team4.Confirm();
+        //    team6.Confirm();
+
+        //    var match1 = new Match(team1, team2);
+        //    var match2 = new Match(team3, team4);
+        //    var match3 = new Match(team5, team6);
+        //    var match4 = new Match(team7, team8);
+
+        //    match1.UpdateRatings();
+        //    match2.UpdateRatings();
+
+        //    _context.Matches.Add(match1);
+        //    _context.Matches.Add(match2);
+        //    _context.Matches.Add(match3);
+        //    _context.Matches.Add(match4);
+
+        //    await _context.SaveChangesAsync();
+
+        //    var response = await _controller.Get(new MatchParameters() { IsConfirmed = true});
+        //    Assert.Equal(200, response.StatusCode);
+
+        //    var okResult = response as OkObjectResult;
+        //    var result = okResult?.Value;
+
+        //    var matchDtos = Assert.IsType<List<MatchDto>>(result);
+        //    Assert.Equal(2, matchDtos.Count);
+
+        //    var team = Assert.IsType<MatchDto.TeamDto>(matchDtos[1].Team1);
+        //    Assert.Equal(_currentPlayer.Id, team.Attacker.Id);
+
+        //    response = await _controller.Get(new MatchParameters() { IsConfirmed = false });
+        //    Assert.Equal(200, response.StatusCode);
+
+        //    okResult = response as OkObjectResult;
+        //    result = okResult?.Value;
+
+        //    matchDtos = Assert.IsType<List<MatchDto>>(result);
+        //    Assert.Equal(1, matchDtos?.Count);
+        //}
+
         [Fact]
-        public async void ItGetsMatchesFromPlayer()
+        public async void ItGetConfirmedMatchesFromCurrrentPlayer()
         {
             await _context.Database.OpenConnectionAsync();
             await _context.Database.EnsureCreatedAsync();
@@ -44,53 +109,86 @@ namespace Tests.Controllers
             var player3 = new Player("test3") { Id = 4 };
             var player4 = new Player("test4") { Id = 5 };
 
-            var team1 = new Team(_currentPlayer, player2, 0);
-            var team2 = new Team(player3, player4, 0);
+            var team1 = new Team(_currentPlayer, player1, 0);
+            var team2 = new Team(player2, player3, 0);
+
             var team3 = new Team(player1, player2, 0);
-            var team4 = new Team(player3, _currentPlayer, 0);
-            var team5 = new Team(player1, player4, 0);
-            var team6 = new Team(player2, _currentPlayer, 0);
-            var team7 = new Team(player3, player4, 0);
-            var team8 = new Team(player1, player2, 0);
+            var team4 = new Team(player3, player4, 0);
 
             team1.Confirm();
             team2.Confirm();
             team3.Confirm();
             team4.Confirm();
-            team6.Confirm();
 
             var match1 = new Match(team1, team2);
             var match2 = new Match(team3, team4);
-            var match3 = new Match(team5, team6);
-            var match4 = new Match(team7, team8);
+
+            match1.UpdateRatings();
+            match2.UpdateRatings();
 
             _context.Matches.Add(match1);
             _context.Matches.Add(match2);
-            _context.Matches.Add(match3);
-            _context.Matches.Add(match4);
-
             await _context.SaveChangesAsync();
 
-            var response = await _controller.Get(new MatchParameters() { IsConfirmed = true});
+
+            var response = await _controller.Get(new MatchParameters() { IsConfirmed = true });
+            Assert.Equal(200, response.StatusCode);
+
+            var okResult = response as OkObjectResult;
+            var result = okResult?.Value;
+            
+            var matchDtos = Assert.IsType<List<MatchDto>>(result);
+            Assert.Equal(1, matchDtos?.Count);
+
+            var team = Assert.IsType<MatchDto.TeamDto>(matchDtos?[0].Team1);
+            Assert.Equal(_currentPlayer.Id, team?.Attacker?.Id);
+        }
+
+        [Fact]
+        public async void ItGetNotConfirmedMatchesFromCurrrentPlayer()
+        {
+            await _context.Database.OpenConnectionAsync();
+            await _context.Database.EnsureCreatedAsync();
+
+            _currentPlayer.Id = 1;
+
+            var player1 = new Player("test1") { Id = 2 };
+            var player2 = new Player("test2") { Id = 3 };
+            var player3 = new Player("test3") { Id = 4 };
+
+            var team1 = new Team(_currentPlayer, player1, 0);
+            var team2 = new Team(player2, player3, 0);
+
+            var team3 = new Team(_currentPlayer, player1, 0);
+            var team4 = new Team(player2, player3, 0);
+
+            team1.Confirm();
+            team2.Confirm();
+            team3.Confirm();
+
+            var match1 = new Match(team1, team2);
+            var match2 = new Match(team3, team4);
+
+            match1.UpdateRatings();
+            match2.UpdateRatings();
+
+            _context.Matches.Add(match1);
+            _context.Matches.Add(match2);
+            await _context.SaveChangesAsync();
+
+            var response = await _controller.Get(new MatchParameters() { IsConfirmed = false });
             Assert.Equal(200, response.StatusCode);
 
             var okResult = response as OkObjectResult;
             var result = okResult?.Value;
 
+            var test = await _context.Matches.ToListAsync();
+
             var matchDtos = Assert.IsType<List<MatchDto>>(result);
-            Assert.Equal(2, matchDtos.Count);
-
-            var team = Assert.IsType<MatchDto.TeamDto>(matchDtos[1].Team1);
-            Assert.Equal(_currentPlayer.Id, team.Attacker.Id);
-
-            response = await _controller.Get(new MatchParameters() { IsConfirmed = false });
-            Assert.Equal(200, response.StatusCode);
-
-            okResult = response as OkObjectResult;
-            result = okResult?.Value;
-
-            matchDtos = Assert.IsType<List<MatchDto>>(result);
             Assert.Equal(1, matchDtos?.Count);
+
+            var team = Assert.IsType<MatchDto.TeamDto>(matchDtos?[0].Team1);
+            Assert.Equal(_currentPlayer.Id, team?.Attacker?.Id);
         }
 
         [Fact]

@@ -42,6 +42,9 @@ namespace Tests.Models
             var team1 = new Team(player1, player2, 11);
             var team2 = new Team(new Player("test3") { Id = 3 }, new Player("test4") { Id = 4 }, 5);
 
+            team1.Confirm();
+            team2.Confirm();
+
             var oldRatingTeam1 = team1.Rating();
 
             var match = new Match(team1, team2);
@@ -66,6 +69,8 @@ namespace Tests.Models
 
             var team1 = new Team(player1, player2, 5);
             var team2 = new Team(new Player("test3") { Id = 3 }, new Player("test4") { Id = 4 }, 11);
+            team1.Confirm();
+            team2.Confirm();
 
             var oldRatingTeam1 = team1.Rating();
 

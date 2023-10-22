@@ -17,6 +17,7 @@ namespace kickerapi.Dtos.Responses.Match
             public int AttackerRatingChange { get; set; }
             public int DefenderRatingChange { get; set; }
             public int Score { get; set; }
+            public bool IsConfirmed { get; set; }
         }
     }
 }

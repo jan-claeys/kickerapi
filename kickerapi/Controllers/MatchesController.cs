@@ -38,8 +38,8 @@ namespace kickerapi.Controllers
 
             var matches = await _mapper.ProjectTo<MatchDto>(_context.Matches
                 .Where(x => x.Team1.Attacker.Id == player.Id || x.Team1.Defender.Id == player.Id || x.Team2.Attacker.Id == player.Id || x.Team2.Defender.Id == player.Id)
-                .WhereIf(x=> x.Team1.IsConfirmed && x.Team2.IsConfirmed,parameters.IsConfirmed)
-                .WhereIf(x => !x.Team1.IsConfirmed || !x.Team2.IsConfirmed, !parameters.IsConfirmed)
+                .WhereIf(x => x.Team1.IsConfirmed && x.Team2.IsConfirmed && x.IsCalculatedInRating, parameters.IsConfirmed)
+                .WhereIf(x => !x.Team1.IsConfirmed || !x.Team2.IsConfirmed || !x.IsCalculatedInRating, !parameters.IsConfirmed)
                 .OrderByDescending(x => x.Date)
                 .Skip((parameters.PageNumber - 1) * parameters.PageSize)
                 .Take(parameters.PageSize))
