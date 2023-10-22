@@ -23,12 +23,12 @@ namespace ClassLibrary.Models
 
         public Match(Team team1, Team team2)
         {
-            this.Team1 = team1;
-            this.Team2 = team2;
+            Team1 = team1;
+            Team2 = team2;
 
             ArePlayersUnique();
 
-            this.Date = DateTime.Now;
+            Date = DateTime.Now;
         }
 
         private void ArePlayersUnique()
@@ -45,7 +45,7 @@ namespace ClassLibrary.Models
         //returs if rating was updated
         public bool UpdateRatings()
         {
-            if (this.IsCalculatedInRating)
+            if (IsCalculatedInRating)
             {
                 return false;
             }
@@ -64,7 +64,7 @@ namespace ClassLibrary.Models
             Team1.SetRating(acutualOutcomeTeam1, expectedOutcomeTeam1, Team1.Score > Team2.Score);
             Team2.SetRating(acutualOutcomeTeam2, expectedOutcomeTeam2, Team2.Score > Team1.Score);
 
-            this.IsCalculatedInRating = true;
+            IsCalculatedInRating = true;
 
             return true;
         }

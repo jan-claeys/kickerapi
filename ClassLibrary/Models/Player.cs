@@ -21,13 +21,13 @@ namespace ClassLibrary.Models
 
         public Player(string name)
         {
-            this.UserName = name;
+            UserName = name;
         }
 
 
         public void SetAttackRating(int rating)
         {
-            this.AttackRating = rating;
+            AttackRating = rating;
             SetRating();
         }
 
@@ -35,7 +35,7 @@ namespace ClassLibrary.Models
         public int UpdateAttackRating(double actualOutcome, double expectedOutcome, bool isWin)
         {
             var ratingChange = CalcualteRatingChange(actualOutcome, expectedOutcome, isWin);
-            this.AttackRating +=  ratingChange;
+            AttackRating +=  ratingChange;
 
             SetRating();
 
@@ -44,7 +44,7 @@ namespace ClassLibrary.Models
 
         public void SetDefendRating(int rating)
         {
-            this.DefendRating = rating;
+            DefendRating = rating;
             SetRating();
         }
 
@@ -52,7 +52,7 @@ namespace ClassLibrary.Models
         public int UpdateDefendRating(double actualOutcome, double expectedOutcome, bool isWin)
         {
             var ratingChange = CalcualteRatingChange(actualOutcome, expectedOutcome, isWin);
-            this.DefendRating += ratingChange;
+            DefendRating += ratingChange;
             
             SetRating();
 
@@ -67,7 +67,7 @@ namespace ClassLibrary.Models
 
         private void SetRating()
         {
-            this.Rating = (this.AttackRating + this.DefendRating) / 2;
+            Rating = (AttackRating + DefendRating) / 2;
         }
     }
 }

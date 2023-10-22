@@ -24,15 +24,15 @@ namespace ClassLibrary.Models
 
         public Team(Player attacker, Player defender, int score)
         {
-            this.Attacker = attacker;
-            this.Defender = defender;
-            this.Score = score;
+            Attacker = attacker;
+            Defender = defender;
+            Score = score;
         }
 
         public void SetRating(double actualOutcome, double expectedOutcome, bool isWin)
         {
-            this.AttackerRatingChange = Attacker.UpdateAttackRating(actualOutcome, expectedOutcome, isWin);
-            this.DefenderRatingChange = Defender.UpdateDefendRating(actualOutcome, expectedOutcome, isWin);
+            AttackerRatingChange = Attacker.UpdateAttackRating(actualOutcome, expectedOutcome, isWin);
+            DefenderRatingChange = Defender.UpdateDefendRating(actualOutcome, expectedOutcome, isWin);
         }
 
         public int Rating()
@@ -42,7 +42,7 @@ namespace ClassLibrary.Models
 
         public void Confirm()
         {
-            this.IsConfirmed = true;
+            IsConfirmed = true;
         }
     }
 }

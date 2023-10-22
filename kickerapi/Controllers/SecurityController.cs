@@ -16,7 +16,7 @@ namespace kickerapi.Controllers
 
         public SecurityController(ISecurityService service)
         {
-            this._service = service;
+            _service = service;
         }
 
         [AllowAnonymous]

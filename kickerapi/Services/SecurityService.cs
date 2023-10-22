@@ -15,8 +15,8 @@ namespace kickerapi.Services
 
         public SecurityService(IConfiguration configuration, UserManager<Player> userManager)
         {
-            this._configuration = configuration;
-            this._userManager = userManager;
+            _configuration = configuration;
+            _userManager = userManager;
         }
 
         public async Task<bool> CheckPasswordAsync(Player player, string password)
