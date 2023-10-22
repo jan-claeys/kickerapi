@@ -34,7 +34,6 @@ namespace Tests.Models
             foreach(int i in Enumerable.Range(0, 1000)) {
                 var ratingChange = Player.CalcualteRatingChange(random.NextDouble(), random.NextDouble(), false);
                 Assert.True(ratingChange <= 0 && ratingChange >= -32);
-                Console.WriteLine(ratingChange);
             }
         }
 
