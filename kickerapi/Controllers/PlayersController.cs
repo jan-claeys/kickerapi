@@ -29,6 +29,21 @@ namespace kickerapi.Controllers
         [ProducesResponseType(typeof(List<PlayerDto>), StatusCodes.Status200OK)]
         public async Task<IStatusCodeActionResult> Get([FromQuery] PlayersParameters parameters)
         {
+            var players = await _mapper.ProjectTo<PlayerDto>(_context.Players
+                .WhereIf(x => x.UserName.Contains(parameters.Search), parameters.Search)
+                .OrderBy(x => x.UserName)
+                .Skip((parameters.PageNumber - 1) * parameters.PageSize)
+                .Take(parameters.PageSize))
+                .ToListAsync();
+
+            return Ok(players);
+        }
+
+        [HttpGet("ranking")]
+        [Produces("application/json")]
+        [ProducesResponseType(typeof(List<PlayerDto>), StatusCodes.Status200OK)]
+        public async Task<IStatusCodeActionResult> GetRanking([FromQuery] PlayersRatingParameters parameters)
+        {
             Expression<Func<Player, int>> order = parameters.OrderBy switch
             {
                 "Rating" => x => x.Rating,

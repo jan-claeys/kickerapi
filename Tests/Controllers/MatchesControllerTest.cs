@@ -15,13 +15,13 @@ using Match = ClassLibrary.Models.Match;
 
 namespace Tests.Controllers
 {
-    public class MatchControllerTest : IDisposable
+    public class MatchesControllerTest : IDisposable
     {
         private readonly KickerContext _context;
         private readonly MatchesController _controller;
         private readonly Player _currentPlayer;
 
-        public MatchControllerTest(KickerContext context, IMapper _mapper)
+        public MatchesControllerTest(KickerContext context, IMapper _mapper)
         {
             _currentPlayer = new Player("test");
             _context = context;

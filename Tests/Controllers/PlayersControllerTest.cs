@@ -38,7 +38,7 @@ namespace Tests.Controllers
 
             await _context.SaveChangesAsync();
 
-            var response = await _controller.Get(new PlayersParameters());
+            var response = await _controller.GetRanking(new PlayersRatingParameters());
             Assert.Equal(200, response.StatusCode);
 
             var okResult = response as OkObjectResult;
@@ -47,7 +47,7 @@ namespace Tests.Controllers
             Assert.Equal("test1", Assert.IsType<List<PlayerDto>>(result)[0].Name);
             Assert.Equal("test2", Assert.IsType<List<PlayerDto>>(result)[1].Name);
 
-            response = await _controller.Get(new PlayersParameters(){ 
+            response = await _controller.GetRanking(new PlayersRatingParameters(){ 
                 OrderBy = "Rating"
             });
             Assert.Equal(200, response.StatusCode);
@@ -77,7 +77,7 @@ namespace Tests.Controllers
 
             await _context.SaveChangesAsync();
 
-            var response = await _controller.Get(new PlayersParameters()
+            var response = await _controller.GetRanking(new PlayersRatingParameters()
             {
                 OrderBy= "AttackRating"
             });
@@ -108,7 +108,7 @@ namespace Tests.Controllers
 
             await _context.SaveChangesAsync();
 
-            var response = await _controller.Get(new PlayersParameters()
+            var response = await _controller.GetRanking(new PlayersRatingParameters()
             {
                 OrderBy = "DefendRating"
             });
@@ -119,6 +119,50 @@ namespace Tests.Controllers
 
             Assert.Equal("test1", Assert.IsType<List<PlayerDto>>(result)[0].Name);
             Assert.Equal("test2", Assert.IsType<List<PlayerDto>>(result)[1].Name);
+        }
+
+        [Fact]
+        public async void ItGetsPlayersByName()
+        {
+            await _context.Database.OpenConnectionAsync();
+            await _context.Database.EnsureCreatedAsync();
+
+            var player3 = new Player("cindy");
+            _context.Players.Add(player3);
+
+            var player2 = new Player("brian");
+            _context.Players.Add(player2);
+
+            var player1 = new Player("aaron");
+            _context.Players.Add(player1);
+
+            await _context.SaveChangesAsync();
+
+            var response = await _controller.Get(new PlayersParameters());
+
+            Assert.Equal(200, response.StatusCode);
+            var okResult = response as OkObjectResult;
+
+            var result = okResult?.Value;
+            var players = Assert.IsType<List<PlayerDto>>(result);
+
+            Assert.Equal("aaron", players[0].Name);
+            Assert.Equal("brian", players[1].Name);
+            Assert.Equal("cindy", players[2].Name);
+
+            response = await _controller.Get(new PlayersParameters()
+            {
+                Search = "ria"
+            });
+
+            Assert.Equal(200, response.StatusCode);
+            okResult = response as OkObjectResult;
+
+            result = okResult?.Value;
+            players = Assert.IsType<List<PlayerDto>>(result);
+
+            Assert.Equal(1, players?.Count);
+            Assert.Equal("brian", players?[0].Name);
         }
 
         public void Dispose()
