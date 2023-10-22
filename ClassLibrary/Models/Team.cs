@@ -13,6 +13,7 @@ namespace ClassLibrary.Models
         public int AttackerRatingChange { get; set; }
         public int DefenderRatingChange { get; set; }
         public int Score { get; set; }
+        public bool IsConfirmed { get; private set; } = false;
 
         [ExcludeFromCodeCoverage]
         //ef
@@ -37,6 +38,11 @@ namespace ClassLibrary.Models
         public int Rating()
         {
             return (Attacker.AttackRating + Defender.DefendRating) / 2;
+        }
+
+        public void Confirm()
+        {
+            this.IsConfirmed = true;
         }
     }
 }

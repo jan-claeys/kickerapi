@@ -47,27 +47,50 @@ namespace Tests.Controllers
             var team1 = new Team(_currentPlayer, player2, 0);
             var team2 = new Team(player3, player4, 0);
             var team3 = new Team(player1, player2, 0);
+            var team4 = new Team(player3, _currentPlayer, 0);
+            var team5 = new Team(player1, player4, 0);
+            var team6 = new Team(player2, _currentPlayer, 0);
+            var team7 = new Team(player3, player4, 0);
+            var team8 = new Team(player1, player2, 0);
+
+            team1.Confirm();
+            team2.Confirm();
+            team3.Confirm();
+            team4.Confirm();
+            team6.Confirm();
 
             var match1 = new Match(team1, team2);
-            var match2 = new Match(team2, team1);
-            var match3 = new Match(team3, team2);
+            var match2 = new Match(team3, team4);
+            var match3 = new Match(team5, team6);
+            var match4 = new Match(team7, team8);
+
             _context.Matches.Add(match1);
             _context.Matches.Add(match2);
             _context.Matches.Add(match3);
+            _context.Matches.Add(match4);
 
             await _context.SaveChangesAsync();
 
-            var response = await _controller.Get(new PagingParameters());
+            var response = await _controller.Get(new MatchParameters() { IsConfirmed = true});
             Assert.Equal(200, response.StatusCode);
 
             var okResult = response as OkObjectResult;
             var result = okResult?.Value;
 
-            var matchDto = Assert.IsType<List<MatchDto>>(result);
-            Assert.Equal(2, matchDto.Count);
+            var matchDtos = Assert.IsType<List<MatchDto>>(result);
+            Assert.Equal(2, matchDtos.Count);
 
-            var team = Assert.IsType<MatchDto.TeamDto>(matchDto[1].Team1);
+            var team = Assert.IsType<MatchDto.TeamDto>(matchDtos[1].Team1);
             Assert.Equal(_currentPlayer.Id, team.Attacker.Id);
+
+            response = await _controller.Get(new MatchParameters() { IsConfirmed = false });
+            Assert.Equal(200, response.StatusCode);
+
+            okResult = response as OkObjectResult;
+            result = okResult?.Value;
+
+            matchDtos = Assert.IsType<List<MatchDto>>(result);
+            Assert.Equal(1, matchDtos?.Count);
         }
 
         [Fact]

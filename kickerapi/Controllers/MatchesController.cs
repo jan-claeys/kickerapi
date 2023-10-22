@@ -30,7 +30,7 @@ namespace kickerapi.Controllers
         [HttpGet]
         [Produces("application/json")]
         [ProducesResponseType(typeof(List<MatchDto>), StatusCodes.Status200OK)]
-        public async Task<IStatusCodeActionResult> Get([FromQuery] PagingParameters parameters)
+        public async Task<IStatusCodeActionResult> Get([FromQuery] MatchParameters parameters)
         {
             var player = await _securityService.GetUserAsync(User);
 
@@ -38,6 +38,8 @@ namespace kickerapi.Controllers
 
             var matches = await _mapper.ProjectTo<MatchDto>(_context.Matches
                 .Where(x => x.Team1.Attacker.Id == player.Id || x.Team1.Defender.Id == player.Id || x.Team2.Attacker.Id == player.Id || x.Team2.Defender.Id == player.Id)
+                .WhereIf(x=> x.Team1.IsConfirmed && x.Team2.IsConfirmed,parameters.IsConfirmed)
+                .WhereIf(x => !x.Team1.IsConfirmed || !x.Team2.IsConfirmed, !parameters.IsConfirmed)
                 .OrderByDescending(x => x.Date)
                 .Skip((parameters.PageNumber - 1) * parameters.PageSize)
                 .Take(parameters.PageSize))
@@ -67,10 +69,10 @@ namespace kickerapi.Controllers
                 if (attackerTeam1.Id != player.Id && defenderTeam1.Id != player.Id)
                     throw new Exception("You are not allowed to create a match with this players");
 
-                var team = new Team(attackerTeam1, defenderTeam1, req.Team1.Score);
+                var team1 = new Team(attackerTeam1, defenderTeam1, req.Team1.Score);
                 var team2 = new Team(attackerTeam2, defenderTeam2, req.Team2.Score);
 
-                var match = new Match(team, team2);
+                var match = new Match(team1, team2);
 
                 await _context.Matches.AddAsync(match);
                 await _context.SaveChangesAsync();

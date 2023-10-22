@@ -45,6 +45,7 @@ namespace Tests.Models
             var oldRatingTeam1 = team1.Rating();
 
             var match = new Match(team1, team2);
+            match.UpdateRatings();
 
             Assert.True(oldRatingPlayer1 < player1.AttackRating);
             Assert.True(oldRatingPlayer2 < player2.DefendRating);
@@ -69,6 +70,7 @@ namespace Tests.Models
             var oldRatingTeam1 = team1.Rating();
 
             var match = new Match(team1, team2);
+            match.UpdateRatings();
 
             Assert.True(oldRatingPlayer1 > player1.AttackRating);
             Assert.True(oldRatingPlayer2 > player2.DefendRating);
