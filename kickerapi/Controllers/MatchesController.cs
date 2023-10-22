@@ -19,12 +19,14 @@ namespace kickerapi.Controllers
         private readonly KickerContext _context;
         private readonly IMapper _mapper;
         private readonly ISecurityService _securityService;
+        private readonly IMatchService _matchService;
 
-        public MatchesController(KickerContext context, IMapper mapper, ISecurityService securityService)
+        public MatchesController(KickerContext context, IMapper mapper, ISecurityService securityService, IMatchService matchService)
         {
             this._context = context;
             this._mapper = mapper;
             this._securityService = securityService;
+            this._matchService = matchService;
         }
 
         [HttpGet]
@@ -34,13 +36,7 @@ namespace kickerapi.Controllers
         {
             var player = await _securityService.GetUserAsync(User);
 
-            var allMatches = await _context.Matches.ToListAsync();
-
-            var matches = await _mapper.ProjectTo<MatchDto>(_context.Matches
-                .Where(x => x.Team1.Attacker.Id == player.Id || x.Team1.Defender.Id == player.Id || x.Team2.Attacker.Id == player.Id || x.Team2.Defender.Id == player.Id)
-                .WhereIf(x => x.Team1.IsConfirmed && x.Team2.IsConfirmed && x.IsCalculatedInRating, parameters.IsConfirmed)
-                .WhereIf(x => !x.Team1.IsConfirmed || !x.Team2.IsConfirmed || !x.IsCalculatedInRating, !parameters.IsConfirmed)
-                .OrderByDescending(x => x.Date)
+            var matches = await _mapper.ProjectTo<MatchDto>(_matchService.GetMatches(player, parameters.IsConfirmed)
                 .Skip((parameters.PageNumber - 1) * parameters.PageSize)
                 .Take(parameters.PageSize))
                 .ToListAsync();
