@@ -48,6 +48,8 @@ namespace kickerapi.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     AttackerId = table.Column<int>(type: "int", nullable: false),
                     DefenderId = table.Column<int>(type: "int", nullable: false),
+                    AttackerRatingChange = table.Column<int>(type: "int", nullable: false),
+                    DefenderRatingChange = table.Column<int>(type: "int", nullable: false),
                     Score = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -84,7 +86,7 @@ namespace kickerapi.Migrations
                         name: "FK_Matches_Teams_Team1Id",
                         column: x => x.Team1Id,
                         principalTable: "Teams",
-                        principalColumn: "Id",
+                        principalColumn: "Id",  
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Matches_Teams_Team2Id",

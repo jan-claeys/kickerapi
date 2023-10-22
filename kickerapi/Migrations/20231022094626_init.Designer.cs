@@ -12,7 +12,7 @@ using kickerapi;
 namespace kickerapi.Migrations
 {
     [DbContext(typeof(KickerContext))]
-    [Migration("20231021215450_init")]
+    [Migration("20231022094626_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -126,7 +126,13 @@ namespace kickerapi.Migrations
                     b.Property<int>("AttackerId")
                         .HasColumnType("int");
 
+                    b.Property<int>("AttackerRatingChange")
+                        .HasColumnType("int");
+
                     b.Property<int>("DefenderId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("DefenderRatingChange")
                         .HasColumnType("int");
 
                     b.Property<int>("Score")

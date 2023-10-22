@@ -123,7 +123,13 @@ namespace kickerapi.Migrations
                     b.Property<int>("AttackerId")
                         .HasColumnType("int");
 
+                    b.Property<int>("AttackerRatingChange")
+                        .HasColumnType("int");
+
                     b.Property<int>("DefenderId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("DefenderRatingChange")
                         .HasColumnType("int");
 
                     b.Property<int>("Score")
