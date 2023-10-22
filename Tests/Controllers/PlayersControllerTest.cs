@@ -9,23 +9,18 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Tests.Controllers
 {
-    public class PlayersControllerTest : IDisposable
+    public class PlayersControllerTest : DbTest
     {
-        private readonly KickerContext _context;
         private readonly PlayersController _controller;
 
-        public PlayersControllerTest(KickerContext context, IMapper _mapper)
+        public PlayersControllerTest(KickerContext context, IMapper _mapper) : base(context)
         {
-            _context = context;
             _controller = new PlayersController(_context, _mapper);
         }
 
         [Fact]
         public async void ItGetsPlayersByRating()
         {
-            await _context.Database.OpenConnectionAsync();
-            await _context.Database.EnsureCreatedAsync();
-
             var player1 = new Player("test1");
             player1.SetAttackRating(5);
             player1.SetDefendRating(20);
@@ -47,7 +42,8 @@ namespace Tests.Controllers
             Assert.Equal("test1", Assert.IsType<List<PlayerDto>>(result)[0].Name);
             Assert.Equal("test2", Assert.IsType<List<PlayerDto>>(result)[1].Name);
 
-            response = await _controller.GetRanking(new PlayersRatingParameters(){ 
+            response = await _controller.GetRanking(new PlayersRatingParameters()
+            {
                 OrderBy = "Rating"
             });
             Assert.Equal(200, response.StatusCode);
@@ -62,9 +58,6 @@ namespace Tests.Controllers
         [Fact]
         public async void ItGetsPlayersByAttackRating()
         {
-            await _context.Database.OpenConnectionAsync();
-            await _context.Database.EnsureCreatedAsync();
-
             var player1 = new Player("test1");
             player1.SetAttackRating(5);
             player1.SetDefendRating(20);
@@ -79,7 +72,7 @@ namespace Tests.Controllers
 
             var response = await _controller.GetRanking(new PlayersRatingParameters()
             {
-                OrderBy= "AttackRating"
+                OrderBy = "AttackRating"
             });
             Assert.Equal(200, response.StatusCode);
 
@@ -93,9 +86,6 @@ namespace Tests.Controllers
         [Fact]
         public async void ItGetsPlayersByDefendRating()
         {
-            await _context.Database.OpenConnectionAsync();
-            await _context.Database.EnsureCreatedAsync();
-
             var player1 = new Player("test1");
             player1.SetAttackRating(5);
             player1.SetDefendRating(20);
@@ -124,9 +114,6 @@ namespace Tests.Controllers
         [Fact]
         public async void ItGetsPlayersByName()
         {
-            await _context.Database.OpenConnectionAsync();
-            await _context.Database.EnsureCreatedAsync();
-
             var player3 = new Player("cindy");
             _context.Players.Add(player3);
 
@@ -163,12 +150,6 @@ namespace Tests.Controllers
 
             Assert.Equal(1, players?.Count);
             Assert.Equal("brian", players?[0].Name);
-        }
-
-        public void Dispose()
-        {
-            _context.Database.EnsureDeleted();
-            _context.Dispose();
         }
     }
 }

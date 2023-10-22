@@ -15,28 +15,23 @@ using Match = ClassLibrary.Models.Match;
 
 namespace Tests.Controllers
 {
-    public class MatchesControllerTest : IDisposable
+    public class MatchesControllerTest : DbTest
     {
-        private readonly KickerContext _context;
         private readonly MatchesController _controller;
         private readonly Player _currentPlayer;
 
-        public MatchesControllerTest(KickerContext context, IMapper _mapper)
+        public MatchesControllerTest(KickerContext context, IMapper _mapper): base(context)
         {
             _currentPlayer = new Player("test");
-            _context = context;
             var securityServiceMock = new Mock<ISecurityService>();
             securityServiceMock.Setup(x => x.GetUserAsync(It.IsAny<ClaimsPrincipal>()).Result).Returns(_currentPlayer);
 
-            _controller = new MatchesController(_context, _mapper, securityServiceMock.Object, new MatchService(context));
+            _controller = new MatchesController(context, _mapper, securityServiceMock.Object, new MatchService(context));
         }
 
         [Fact]
         public async void ItGetConfirmedMatchesFromCurrrentPlayer()
         {
-            await _context.Database.OpenConnectionAsync();
-            await _context.Database.EnsureCreatedAsync();
-
             _currentPlayer.Id = 1;
 
             var player1 = new Player("test1") { Id = 2 };
@@ -82,9 +77,6 @@ namespace Tests.Controllers
         [Fact]
         public async void ItGetNotConfirmedMatchesFromCurrrentPlayer()
         {
-            await _context.Database.OpenConnectionAsync();
-            await _context.Database.EnsureCreatedAsync();
-
             _currentPlayer.Id = 1;
 
             var player1 = new Player("test1") { Id = 2 };
@@ -129,9 +121,6 @@ namespace Tests.Controllers
         [Fact]
         public async void ItCreateMatch()
         {
-            await _context.Database.OpenConnectionAsync();
-            await _context.Database.EnsureCreatedAsync();
-
             var player1 = new Player("test1");
             var player2 = new Player("test2");
             var player3 = new Player("test3");
@@ -168,9 +157,6 @@ namespace Tests.Controllers
         [Fact]
         public async void ItReturnErrorIfPlayerNotExistCreateMatch()
         {
-            await _context.Database.OpenConnectionAsync();
-            await _context.Database.EnsureCreatedAsync();
-
             var player1 = new Player("test1");
             var player2 = new Player("test2");
             var player3 = new Player("test3");
@@ -204,9 +190,6 @@ namespace Tests.Controllers
         [Fact]
         public async void ItReturnErrorIfCurrentPlayerNotInTeam1()
         {
-            await _context.Database.OpenConnectionAsync();
-            await _context.Database.EnsureCreatedAsync();
-
             var player1 = new Player("test1");
             var player2 = new Player("test2");
             var player3 = new Player("test3");
@@ -236,12 +219,6 @@ namespace Tests.Controllers
 
             var response = await _controller.Post(createMatchDto);
             Assert.Equal(400, response.StatusCode);
-        }
-
-        public void Dispose()
-        {
-            _context.Database.EnsureDeleted();
-            _context.Dispose();
         }
     }
 }

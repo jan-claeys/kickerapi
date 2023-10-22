@@ -9,20 +9,18 @@ using Microsoft.Extensions.Configuration;
 
 namespace Tests.Controllers
 {
-    public class SecurityControllerTest : IDisposable
+    public class SecurityControllerTest : DbTest
     {
         private readonly SecurityController _controller;
-        private readonly KickerContext _context;
         private readonly UserManager<Player> _userManager;
 
-        public SecurityControllerTest(KickerContext context, UserManager<Player> userManager)
+        public SecurityControllerTest(KickerContext context, UserManager<Player> userManager): base(context)
         {
             var configuration = new ConfigurationBuilder()
               .SetBasePath(Directory.GetCurrentDirectory())
               .AddJsonFile("appsettings.development.json")
               .Build();
 
-            _context = context;
             _controller = new SecurityController(new SecurityService(configuration,userManager));
             _userManager = userManager;
         }
@@ -30,9 +28,6 @@ namespace Tests.Controllers
         [Fact]
         public async void ItRegisterPlayer()
         {
-            await _context.Database.OpenConnectionAsync();
-            await _context.Database.EnsureCreatedAsync();
-
             var payload = new RegisterDto
             {
                 Name = "test",
@@ -48,9 +43,6 @@ namespace Tests.Controllers
         [Fact]
         public async void ItDoNotRegisterPlayerWithSameName()
         {
-            await _context.Database.OpenConnectionAsync();
-            await _context.Database.EnsureCreatedAsync();
-
             var payload = new RegisterDto
             {
                 Name = "test",
@@ -70,9 +62,6 @@ namespace Tests.Controllers
         [Fact]
         public async void ItNotRegisterPlayerWeakPassword()
         {
-            await _context.Database.OpenConnectionAsync();
-            await _context.Database.EnsureCreatedAsync();
-
             var payload = new RegisterDto
             {
                 Name = "test",
@@ -86,9 +75,6 @@ namespace Tests.Controllers
         [Fact]
         public async void ItLoginPlayer()
         {
-            await _context.Database.OpenConnectionAsync();
-            await _context.Database.EnsureCreatedAsync();
-
             var player = new Player("test");
             await _userManager.CreateAsync(player, "Test1*");
 
@@ -105,9 +91,6 @@ namespace Tests.Controllers
         [Fact]
         public async void ItNotLoginPlayerWrongPassword()
         {
-            await _context.Database.OpenConnectionAsync();
-            await _context.Database.EnsureCreatedAsync();
-
             var player = new Player("test");
             await _userManager.CreateAsync(player, "test");
 
@@ -124,10 +107,6 @@ namespace Tests.Controllers
         [Fact]
         public async void ItNotLoginPlayerWithoutAccount()
         {
-
-            await _context.Database.OpenConnectionAsync();
-            await _context.Database.EnsureCreatedAsync();
-
             var payload = new LoginDto
             {
                 Name = "test",
@@ -136,12 +115,6 @@ namespace Tests.Controllers
 
             var response = await _controller.Login(payload);
             Assert.Equal(401, response.StatusCode);
-        }
-
-        public void Dispose()
-        {
-            _context.Database.CloseConnectionAsync();
-            _context.Dispose();
         }
     }
 }
