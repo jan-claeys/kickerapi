@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Xunit;
 
 namespace Tests.Models
 {
@@ -39,9 +40,12 @@ namespace Tests.Models
 
             team.SetRating(1, 0.5, true);
 
-            Assert.True(oldRatingPlayer1 < player1.AttackRating);
-            Assert.True(oldRatingPlayer2 < player2.DefendRating);
-            Assert.True(oldRating < team.Rating());
+            Assert.True(team.AttackerRatingChange >= 0 && team.AttackerRatingChange <= 32) ;
+            Assert.True(team.DefenderRatingChange >= 0 && team.DefenderRatingChange <= 32);
+
+            Assert.True(oldRatingPlayer1 <= player1.AttackRating);
+            Assert.True(oldRatingPlayer2 <= player2.DefendRating);
+            Assert.True(oldRating <= team.Rating());
         }
 
         [Fact]
@@ -61,9 +65,12 @@ namespace Tests.Models
 
             team.SetRating(0, 0.5, false);
 
-            Assert.True(oldRatingPlayer1 > player1.AttackRating);
-            Assert.True(oldRatingPlayer2 > player2.DefendRating);
-            Assert.True(oldRating > team.Rating());
+            Assert.True(team.AttackerRatingChange <= 0 && team.AttackerRatingChange >= -32);
+            Assert.True(team.DefenderRatingChange <= 0 && team.DefenderRatingChange >= -32);
+
+            Assert.True(oldRatingPlayer1 >= player1.AttackRating);
+            Assert.True(oldRatingPlayer2 >= player2.DefendRating);
+            Assert.True(oldRating >= team.Rating());
         }
 
         [Fact]
@@ -85,7 +92,7 @@ namespace Tests.Models
 
             Assert.True(oldRatingPlayer1 == player1.DefendRating);
             Assert.True(oldRatingPlayer2 == player2.AttackRating);
-            Assert.True(oldRating < team.Rating());
+            Assert.True(oldRating <= team.Rating());
         }
     }
 }

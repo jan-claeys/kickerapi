@@ -10,6 +10,8 @@ namespace ClassLibrary.Models
         public int Id { get; private set; }
         public Player Attacker { get; private set; }
         public Player Defender { get; private set; }
+        public int AttackerRatingChange { get; set; }
+        public int DefenderRatingChange { get; set; }
         public int Score { get; set; }
 
         [ExcludeFromCodeCoverage]
@@ -28,8 +30,8 @@ namespace ClassLibrary.Models
 
         public void SetRating(double actualOutcome, double expectedOutcome, bool isWin)
         {
-            Attacker.SetAttackRating(actualOutcome, expectedOutcome, isWin);
-            Defender.SetDefendRating(actualOutcome, expectedOutcome, isWin);
+            this.AttackerRatingChange = Attacker.UpdateAttackRating(actualOutcome, expectedOutcome, isWin);
+            this.DefenderRatingChange = Defender.UpdateDefendRating(actualOutcome, expectedOutcome, isWin);
         }
 
         public int Rating()

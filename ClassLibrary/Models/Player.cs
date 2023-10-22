@@ -31,10 +31,15 @@ namespace ClassLibrary.Models
             SetRating();
         }
 
-        public void SetAttackRating(double actualOutcome, double expectedOutcome, bool isWin)
+        //returns gained rating
+        public int UpdateAttackRating(double actualOutcome, double expectedOutcome, bool isWin)
         {
-            this.AttackRating = CalcualteRating(this.AttackRating, actualOutcome, expectedOutcome, isWin);
+            var ratingChange = CalcualteRatingChange(actualOutcome, expectedOutcome, isWin);
+            this.AttackRating +=  ratingChange;
+
             SetRating();
+
+            return ratingChange;
         }
 
         public void SetDefendRating(int rating)
@@ -43,16 +48,21 @@ namespace ClassLibrary.Models
             SetRating();
         }
 
-        public void SetDefendRating(double actualOutcome, double expectedOutcome, bool isWin)
+        //returns lost rating
+        public int UpdateDefendRating(double actualOutcome, double expectedOutcome, bool isWin)
         {
-            this.DefendRating = CalcualteRating(this.DefendRating,actualOutcome, expectedOutcome, isWin);
+            var ratingChange = CalcualteRatingChange(actualOutcome, expectedOutcome, isWin);
+            this.DefendRating += ratingChange;
+            
             SetRating();
+
+            return ratingChange;
         }
 
-        public static int CalcualteRating(int rating, double actualOutcome, double expectedOutcome, bool isWin)
+        public static int CalcualteRatingChange(double actualOutcome, double expectedOutcome, bool isWin)
         {
-            const int k = 15;
-            return (int)Math.Ceiling(rating + k * (actualOutcome - expectedOutcome) + (isWin ? k : -k));
+            const int k = 16;
+            return (int)Math.Ceiling(k * (actualOutcome - expectedOutcome) + (isWin ? k : -k));
         }
 
         private void SetRating()
