@@ -10,8 +10,8 @@ namespace ClassLibrary.Models
         public int Id { get; private set; }
         public Player Attacker { get; private set; }
         public Player Defender { get; private set; }
-        public int AttackerRatingChange { get; set; }
-        public int DefenderRatingChange { get; set; }
+        public int? AttackerRatingChange { get; private set; }
+        public int? DefenderRatingChange { get; private set; }
         public int Score { get; set; }
         public bool IsConfirmed { get; private set; } = false;
 
