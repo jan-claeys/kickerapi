@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 
 namespace Tests
 {
@@ -17,7 +18,8 @@ namespace Tests
                .AddJsonFile("appsettings.development.json")
                .Build();
 
-            services.AddScoped<KickerContext>(x => new KickerContext(new DbContextOptionsBuilder<KickerContext>()
+            services.AddScoped(x => new KickerContext(new DbContextOptionsBuilder<KickerContext>()
+                                .EnableSensitiveDataLogging()
                                .UseSqlite("DataSource=:memory:")
                                               .Options));
 

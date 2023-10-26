@@ -6,8 +6,7 @@ namespace ClassLibrary.Models
 {
     public class Player: IdentityUser
     {
-        [Key]
-        public int Id { get; set; }
+        const int START_RATING = 1500;
         public int Rating { get; private set; }
         public int AttackRating { get; private set; } = 1500;
         public int DefendRating { get; private set; } = 1500;
@@ -22,6 +21,11 @@ namespace ClassLibrary.Models
         public Player(string name)
         {
             UserName = name;
+
+            AttackRating = START_RATING;
+            DefendRating = START_RATING;
+
+            SetRating();
         }
 
 

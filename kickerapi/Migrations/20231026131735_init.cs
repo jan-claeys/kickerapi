@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -14,8 +15,7 @@ namespace kickerapi.Migrations
                 name: "Players",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Rating = table.Column<int>(type: "int", nullable: false),
                     AttackRating = table.Column<int>(type: "int", nullable: false),
                     DefendRating = table.Column<int>(type: "int", nullable: false),
@@ -45,11 +45,12 @@ namespace kickerapi.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    AttackerId = table.Column<int>(type: "int", nullable: false),
-                    DefenderId = table.Column<int>(type: "int", nullable: false),
-                    AttackerRatingChange = table.Column<int>(type: "int", nullable: false),
-                    DefenderRatingChange = table.Column<int>(type: "int", nullable: false),
-                    Score = table.Column<int>(type: "int", nullable: false)
+                    AttackerId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    DefenderId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    AttackerRatingChange = table.Column<int>(type: "int", nullable: true),
+                    DefenderRatingChange = table.Column<int>(type: "int", nullable: true),
+                    Score = table.Column<int>(type: "int", nullable: false),
+                    IsConfirmed = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -76,7 +77,8 @@ namespace kickerapi.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Team1Id = table.Column<int>(type: "int", nullable: false),
                     Team2Id = table.Column<int>(type: "int", nullable: false),
-                    Date = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    IsCalculatedInRating = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -85,7 +87,7 @@ namespace kickerapi.Migrations
                         name: "FK_Matches_Teams_Team1Id",
                         column: x => x.Team1Id,
                         principalTable: "Teams",
-                        principalColumn: "Id",  
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Matches_Teams_Team2Id",

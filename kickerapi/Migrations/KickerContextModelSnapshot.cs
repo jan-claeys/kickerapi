@@ -53,11 +53,8 @@ namespace kickerapi.Migrations
 
             modelBuilder.Entity("ClassLibrary.Models.Player", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
@@ -123,16 +120,18 @@ namespace kickerapi.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("AttackerId")
+                    b.Property<string>("AttackerId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int?>("AttackerRatingChange")
                         .HasColumnType("int");
 
-                    b.Property<int>("AttackerRatingChange")
-                        .HasColumnType("int");
+                    b.Property<string>("DefenderId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("DefenderId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("DefenderRatingChange")
+                    b.Property<int?>("DefenderRatingChange")
                         .HasColumnType("int");
 
                     b.Property<bool>("IsConfirmed")

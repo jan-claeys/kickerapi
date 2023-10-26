@@ -2,7 +2,7 @@
 {
     public class PlayerDto
     {
-        public int Id { get; set; }
+        public string? Id { get; set; }
         public string? Name { get; set; }
         public int AttackRating { get; set; }
         public int DefendRating { get; set; }

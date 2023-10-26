@@ -7,8 +7,8 @@ namespace Tests.Models
         [Fact]
         public void ItCalculatesRating()
         {
-            var player1 = new Player("test1") { Id = 1 };
-            var player2 = new Player("test2") { Id = 2 };
+            var player1 = new Player("test1");
+            var player2 = new Player("test2");
             player1.SetAttackRating(1500);
             player2.SetDefendRating(2001);
 
@@ -20,8 +20,8 @@ namespace Tests.Models
         [Fact]
         public void ItRisesRatingByWin()
         {
-            var player1 = new Player("test1") { Id = 1 };
-            var player2 = new Player("test2") { Id = 2 };
+            var player1 = new Player("test1");
+            var player2 = new Player("test2");
 
             var oldRatingPlayer1 = 1500;
             var oldRatingPlayer2 = 2001;
@@ -45,8 +45,8 @@ namespace Tests.Models
         [Fact]
         public void ItDropsRatingByLose()
         {
-            var player1 = new Player("test1") { Id = 1 };
-            var player2 = new Player("test2") { Id = 2 };
+            var player1 = new Player("test1");
+            var player2 = new Player("test2");
 
             var oldRatingPlayer1 = 1500;
             var oldRatingPlayer2 = 2001;
@@ -70,8 +70,8 @@ namespace Tests.Models
         [Fact]
         public void ItDoesNotChangeOtherRating()
         {
-            var player1 = new Player("test1") { Id = 1 };
-            var player2 = new Player("test2") { Id = 2 };
+            var player1 = new Player("test1");
+            var player2 = new Player("test2");
 
             var oldRatingPlayer1 = 1500;
             var oldRatingPlayer2 = 2001;

@@ -32,12 +32,10 @@ namespace Tests.Controllers
         [Fact]
         public async void ItGetConfirmedMatchesFromCurrrentPlayer()
         {
-            _currentPlayer.Id = 1;
-
-            var player1 = new Player("test1") { Id = 2 };
-            var player2 = new Player("test2") { Id = 3 };
-            var player3 = new Player("test3") { Id = 4 };
-            var player4 = new Player("test4") { Id = 5 };
+            var player1 = new Player("test1");
+            var player2 = new Player("test2");
+            var player3 = new Player("test3");
+            var player4 = new Player("test4");
 
             var team1 = new Team(_currentPlayer, player1, 0);
             var team2 = new Team(player2, player3, 0);
@@ -77,11 +75,9 @@ namespace Tests.Controllers
         [Fact]
         public async void ItGetNotConfirmedMatchesFromCurrrentPlayer()
         {
-            _currentPlayer.Id = 1;
-
-            var player1 = new Player("test1") { Id = 2 };
-            var player2 = new Player("test2") { Id = 3 };
-            var player3 = new Player("test3") { Id = 4 };
+            var player1 = new Player("test1");
+            var player2 = new Player("test2");
+            var player3 = new Player("test3");
 
             var team1 = new Team(_currentPlayer, player1, 0);
             var team2 = new Team(player2, player3, 0);
@@ -172,7 +168,7 @@ namespace Tests.Controllers
             {
                 Team1 = new CreateTeamDto()
                 {
-                    AttackerId = 100,
+                    AttackerId = "100",
                     DefenderId = player2.Id
                 },
 

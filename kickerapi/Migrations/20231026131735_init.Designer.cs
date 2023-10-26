@@ -12,7 +12,7 @@ using kickerapi;
 namespace kickerapi.Migrations
 {
     [DbContext(typeof(KickerContext))]
-    [Migration("20231022094626_init")]
+    [Migration("20231026131735_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -36,6 +36,9 @@ namespace kickerapi.Migrations
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
+                    b.Property<bool>("IsCalculatedInRating")
+                        .HasColumnType("bit");
+
                     b.Property<int>("Team1Id")
                         .HasColumnType("int");
 
@@ -53,11 +56,8 @@ namespace kickerapi.Migrations
 
             modelBuilder.Entity("ClassLibrary.Models.Player", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
@@ -123,17 +123,22 @@ namespace kickerapi.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("AttackerId")
+                    b.Property<string>("AttackerId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int?>("AttackerRatingChange")
                         .HasColumnType("int");
 
-                    b.Property<int>("AttackerRatingChange")
+                    b.Property<string>("DefenderId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int?>("DefenderRatingChange")
                         .HasColumnType("int");
 
-                    b.Property<int>("DefenderId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("DefenderRatingChange")
-                        .HasColumnType("int");
+                    b.Property<bool>("IsConfirmed")
+                        .HasColumnType("bit");
 
                     b.Property<int>("Score")
                         .HasColumnType("int");

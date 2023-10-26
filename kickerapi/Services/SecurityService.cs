@@ -37,15 +37,15 @@ namespace kickerapi.Services
         [ExcludeFromCodeCoverage]
         public async Task<Player> GetUserAsync(ClaimsPrincipal user)
         {
-            return await _userManager.GetUserAsync(user);
+            var player = await _userManager.GetUserAsync(user);
+            return player;
         }
 
         public JwtSecurityToken GenerateJwtToken(Player player)
         {
             var authClaims = new List<Claim>
                 {
-                    new Claim(ClaimTypes.Name, player.UserName),
-                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                    new Claim(ClaimTypes.NameIdentifier, player.Id),
                 };
 
             var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Secret"]));
@@ -53,7 +53,7 @@ namespace kickerapi.Services
             var token = new JwtSecurityToken(
                 issuer: _configuration["JWT:ValidIssuer"],
                 audience: _configuration["JWT:ValidAudience"],
-                expires: DateTime.Now.AddHours(3),
+                expires: DateTime.Now.AddYears(1),
                 claims: authClaims,
                 signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)
                 );

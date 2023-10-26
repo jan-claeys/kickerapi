@@ -26,8 +26,7 @@ namespace Tests.Controllers
         [Fact]
         public async void ItConfirmsTeam()
         {
-            _currentPlayer.Id = 1;
-            var player1 = new Player("test1") { Id = 2 };
+            var player1 = new Player("test1");
 
             var team1 = new Team(_currentPlayer, player1, 0);
 
@@ -52,8 +51,8 @@ namespace Tests.Controllers
         [Fact]
         public async void ItThrowsErrorIfPlayerNotInTeamConfirme()
         {
-            var player1 = new Player("test1") { Id = 1 };
-            var player2 = new Player("test2") { Id = 2 };
+            var player1 = new Player("test1");
+            var player2 = new Player("test2");
 
             var team1 = new Team(player1, player2, 0);
 
@@ -68,10 +67,9 @@ namespace Tests.Controllers
         [Fact]
         public async void ItUpdateAllRatingsMatchesConfirmed()
         {
-            _currentPlayer.Id = 1;
-            var player1 = new Player("test1") { Id = 2 };
-            var player2 = new Player("test2") { Id = 3 };
-            var player3 = new Player("test3") { Id = 4 };
+            var player1 = new Player("test1");
+            var player2 = new Player("test2");
+            var player3 = new Player("test3");
 
             var team1 = new Team(_currentPlayer, player1, 0);
             var team2 = new Team(player2, player3, 0);
@@ -138,10 +136,9 @@ namespace Tests.Controllers
         [Fact]
         public async void ItDeleteTeamsAndMatchIfDeny()
         {
-            _currentPlayer.Id = 1;
-            var player1 = new Player("test1") { Id = 2 };
-            var player2 = new Player("test2") { Id = 3 };
-            var player3 = new Player("test3") { Id = 4 };
+            var player1 = new Player("test1");
+            var player2 = new Player("test2");
+            var player3 = new Player("test3");
 
             var team1 = new Team(_currentPlayer, player1, 0);
             var team2 = new Team(player2, player3, 0);
@@ -177,8 +174,8 @@ namespace Tests.Controllers
         [Fact]
         public async void ItThrowsErrorIfPlayerNotInTeamDeny()
         {
-            var player1 = new Player("test1") { Id = 1 };
-            var player2 = new Player("test2") { Id = 2 };
+            var player1 = new Player("test1");   
+            var player2 = new Player("test2");
 
             var team1 = new Team(player1, player2, 0);
 
