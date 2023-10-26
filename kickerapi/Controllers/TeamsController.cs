@@ -27,19 +27,24 @@ namespace kickerapi.Controllers
         [HttpPut("confirm/{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IStatusCodeActionResult> Confirm(int id)
+        public async Task<IStatusCodeActionResult> Confirm([FromRoute]int id)
         {
             try
             {
                 var player = await _securityService.GetUserAsync(User);
-                var team = await _context.Teams.FindAsync(id) ?? throw new Exception("Team not found");
+                var team = await _context.Teams
+                    .Include(x=>x.Attacker)
+                    .Include(x=>x.Defender)
+                    .FirstOrDefaultAsync(x=>x.Id == id) ?? throw new Exception("Team not found");
 
                 if (team.Attacker.Id != player.Id && team.Defender.Id != player.Id)
                     throw new Exception("You are not allowed to confirm this team");
 
                 team.Confirm();
 
-                var matchesToUpdate = await _matchService.GetMatches(player, false).ToListAsync();
+                var matchesToUpdate = await _matchService.GetMatchesWithPlayers(player, false)
+                    .ToListAsync();
+
                 foreach (var match in matchesToUpdate)
                 {
                     var isUpdated = match.UpdateRatings();
