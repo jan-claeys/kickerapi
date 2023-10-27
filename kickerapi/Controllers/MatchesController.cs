@@ -16,17 +16,17 @@ namespace kickerapi.Controllers
     [Authorize]
     public class MatchesController : ControllerBase
     {
-        private readonly KickerContext _context;
         private readonly IMapper _mapper;
         private readonly ISecurityService _securityService;
         private readonly IMatchesService _matchService;
+        private readonly IPlayersService _playerService;
 
-        public MatchesController(KickerContext context, IMapper mapper, ISecurityService securityService, IMatchesService matchService)
+        public MatchesController(IMapper mapper, ISecurityService securityService, IMatchesService matchService, IPlayersService playerService)
         {
-            _context = context;
             _mapper = mapper;
             _securityService = securityService;
             _matchService = matchService;
+            _playerService = playerService;
         }
 
         [HttpGet]
@@ -53,11 +53,11 @@ namespace kickerapi.Controllers
             {
                 var player = await _securityService.GetUserAsync(User);
 
-                var attackerTeam1 = await _context.Players.FindAsync(req.Team1.AttackerId) ?? throw new Exception("One or more players are not existing");
-                var defenderTeam1 = await _context.Players.FindAsync(req.Team1.DefenderId) ?? throw new Exception("One or more players are not existing");
+                var attackerTeam1 = await _playerService.GetPlayer(req.Team1.AttackerId).FirstOrDefaultAsync() ?? throw new Exception("One or more players are not existing");
+                var defenderTeam1 = await _playerService.GetPlayer(req.Team1.DefenderId).FirstOrDefaultAsync() ?? throw new Exception("One or more players are not existing");
 
-                var attackerTeam2 = await _context.Players.FindAsync(req.Team2.AttackerId) ?? throw new Exception("One or more players are not existing");
-                var defenderTeam2 = await _context.Players.FindAsync(req.Team2.DefenderId) ?? throw new Exception("One or more players are not existing");
+                var attackerTeam2 = await _playerService.GetPlayer(req.Team2.AttackerId).FirstOrDefaultAsync() ?? throw new Exception("One or more players are not existing");
+                var defenderTeam2 = await _playerService.GetPlayer(req.Team2.DefenderId).FirstOrDefaultAsync() ?? throw new Exception("One or more players are not existing");
 
                 if (attackerTeam1.Id != player.Id && defenderTeam1.Id != player.Id)
                     throw new Exception("You are not allowed to create a match with this players");
@@ -67,8 +67,8 @@ namespace kickerapi.Controllers
 
                 var match = new Match(team1, team2);
 
-                await _context.Matches.AddAsync(match);
-                await _context.SaveChangesAsync();
+                _matchService.AddMatch(match);
+                await _matchService.SaveChangesAsync();
 
                 return Ok();
             }

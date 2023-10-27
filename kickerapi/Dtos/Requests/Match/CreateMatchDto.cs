@@ -14,9 +14,9 @@ namespace kickerapi.Dtos.Requests.Match
             [Required]
             public int Score { get; set; }
             [Required]
-            public string? AttackerId { get; set; }
+            public string AttackerId { get; set; }
             [Required]
-            public string? DefenderId { get; set; }
+            public string DefenderId { get; set; }
         }
     }
 }

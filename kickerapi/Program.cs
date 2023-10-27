@@ -80,6 +80,7 @@ builder.Services.AddAuthorization();
 builder.Services.AddScoped<ISecurityService, SecurityService>();
 builder.Services.AddScoped<IMatchesService, MatchesService>();
 builder.Services.AddScoped<ITeamsService, TeamsService>();
+builder.Services.AddScoped<IPlayersService, PlayersService>();
 
 var app = builder.Build();
 

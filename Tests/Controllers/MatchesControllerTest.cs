@@ -26,7 +26,7 @@ namespace Tests.Controllers
             var securityServiceMock = new Mock<ISecurityService>();
             securityServiceMock.Setup(x => x.GetUserAsync(It.IsAny<ClaimsPrincipal>()).Result).Returns(_currentPlayer);
 
-            _controller = new MatchesController(context, _mapper, securityServiceMock.Object, new MatchesService(context));
+            _controller = new MatchesController(_mapper, securityServiceMock.Object, new MatchesService(context), new PlayersService(context));
         }
 
         [Fact]

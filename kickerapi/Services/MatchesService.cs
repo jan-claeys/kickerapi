@@ -37,6 +37,11 @@ namespace kickerapi.Services
                 .Include(x=>x.Team2);
         }
 
+        public async void AddMatch(Match match)
+        {
+            await _context.AddAsync(match);
+        }
+
         public void RemoveMatch(Match match)
         {
             _context.Remove(match);
