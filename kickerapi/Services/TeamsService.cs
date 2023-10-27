@@ -19,5 +19,10 @@ namespace kickerapi.Services
             return GetTeam(teamId).Include(x => x.Attacker)
                 .Include(x => x.Defender);
         }
+
+        public void RemoveTeam(Team team)
+        {
+            _context.Remove(team);
+        }
     }
 }

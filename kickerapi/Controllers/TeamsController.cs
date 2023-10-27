@@ -13,14 +13,12 @@ namespace kickerapi.Controllers
     [Authorize]
     public class TeamsController : ControllerBase
     {
-        private readonly KickerContext _context;
         private readonly ISecurityService _securityService;
         private readonly IMatchesService _matchService;
         private readonly ITeamsService _teamsService;
 
-        public TeamsController(KickerContext context, ISecurityService securityService, IMatchesService matchService, ITeamsService teamsService)
+        public TeamsController(ISecurityService securityService, IMatchesService matchService, ITeamsService teamsService)
         {
-            _context = context;
             _securityService = securityService;
             _matchService = matchService;
             _teamsService = teamsService;
@@ -74,16 +72,16 @@ namespace kickerapi.Controllers
                 if (team.Attacker.Id != player.Id && team.Defender.Id != player.Id)
                     throw new Exception("You are not allowed to deny this team");
 
-                var match = await _context.Matches.FirstOrDefaultAsync(x=>x.Team1.Id == team.Id || x.Team2.Id == team.Id) ?? throw new Exception("Match not found");
+                var match = await _matchService.GetMatchWithTeams(team).FirstOrDefaultAsync() ?? throw new Exception("Match not found");
 
                 var team1 = match.Team1;
                 var team2 = match.Team2;
 
-                _context.Teams.Remove(team1);
-                _context.Teams.Remove(team2);
-                _context.Matches.Remove(match);
+                _teamsService.RemoveTeam(team1);
+                _teamsService.RemoveTeam(team2);
+                _matchService.RemoveMatch(match);
 
-                await _context.SaveChangesAsync();
+                await _teamsService.SaveChangesAsync();
 
                 return Ok();
             }

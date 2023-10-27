@@ -20,7 +20,7 @@ namespace Tests.Controllers
             var securityServiceMock = new Mock<ISecurityService>();
             securityServiceMock.Setup(x => x.GetUserAsync(It.IsAny<ClaimsPrincipal>()).Result).Returns(_currentPlayer);
 
-            _controller = new TeamsController(context, securityServiceMock.Object, new MatchesService(context), new TeamsService(context));
+            _controller = new TeamsController(securityServiceMock.Object, new MatchesService(context), new TeamsService(context));
         }
 
         [Fact]

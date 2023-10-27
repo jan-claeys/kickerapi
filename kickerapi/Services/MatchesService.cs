@@ -29,5 +29,17 @@ namespace kickerapi.Services
                 .Include(x => x.Team2.Attacker)
                 .Include(x => x.Team2.Defender);
         }
+
+        public IQueryable<Match> GetMatchWithTeams(Team team)
+        {
+            return _context.Matches.Where(x => x.Team1.Id == team.Id || x.Team2.Id == team.Id)
+                .Include(x=>x.Team1)
+                .Include(x=>x.Team2);
+        }
+
+        public void RemoveMatch(Match match)
+        {
+            _context.Remove(match);
+        }
     }
 }
