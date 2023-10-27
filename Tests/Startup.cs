@@ -18,10 +18,11 @@ namespace Tests
                .AddJsonFile("appsettings.development.json")
                .Build();
 
-            services.AddScoped(x => new KickerContext(new DbContextOptionsBuilder<KickerContext>()
-                                .EnableSensitiveDataLogging()
-                               .UseSqlite("DataSource=:memory:")
-                                              .Options));
+            services.AddDbContext<KickerContext>(options =>
+            {
+                options.UseSqlite("DataSource=:memory:");
+                options.EnableSensitiveDataLogging();
+            }); 
 
             //Identity
             services.AddIdentity<Player, IdentityRole>()
