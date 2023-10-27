@@ -4,6 +4,7 @@ using kickerapi;
 using kickerapi.Controllers;
 using kickerapi.Dtos.Responses.Player;
 using kickerapi.QueryParameters;
+using kickerapi.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Tests.Controllers
@@ -14,7 +15,7 @@ namespace Tests.Controllers
 
         public PlayersControllerTest(KickerContext context, IMapper _mapper) : base(context)
         {
-            _controller = new PlayersController(_context, _mapper);
+            _controller = new PlayersController(_mapper, new PlayersService(context));
         }
 
         [Fact]

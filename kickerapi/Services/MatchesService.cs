@@ -11,7 +11,7 @@ namespace kickerapi.Services
            
         }
 
-        //returns all matches for a player (confirmed or unconfirmed) ordered by date ascending
+        // Returns all matches for a player (confirmed or unconfirmed) ordered by date ascending
         public IQueryable<Match> GetMatches(Player player, bool isConfirmed)
         {
             return _context.Matches
@@ -21,6 +21,7 @@ namespace kickerapi.Services
                 .OrderBy(x => x.Date);
         }
 
+        //  Returns all matches for a player (confirmed or unconfirmed) ordered by date ascending with the 2 teams and their players
         public IQueryable<Match> GetMatchesWithPlayers(Player player, bool isConfirmed)
         {
             return GetMatches(player, isConfirmed)

@@ -2,6 +2,7 @@
 using ClassLibrary.Models;
 using kickerapi.Dtos.Responses.Player;
 using kickerapi.QueryParameters;
+using kickerapi.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
@@ -15,22 +16,21 @@ namespace kickerapi.Controllers
     [Authorize]
     public class PlayersController : Controller
     {
-        private readonly KickerContext _context;
         private readonly IMapper _mapper;
+        private readonly IPlayersService _service;
 
-        public PlayersController(KickerContext context, IMapper mapper)
+        public PlayersController(IMapper mapper, IPlayersService playersService)
         {
-            _context = context;
             _mapper = mapper;
+            _service = playersService;
         }
 
         [HttpGet]
         [ProducesResponseType(typeof(List<PlayerDto>), StatusCodes.Status200OK)]
         public async Task<IStatusCodeActionResult> Get([FromQuery] PlayersParameters parameters)
         {
-            var players = await _mapper.ProjectTo<PlayerDto>(_context.Players
-                .WhereIf(x => x.UserName.Contains(parameters.Search), parameters.Search)
-                .OrderBy(x => x.UserName)
+            var players = await _mapper.ProjectTo<PlayerDto>(
+                _service.GetPlayers(parameters.Search)
                 .Skip((parameters.PageNumber - 1) * parameters.PageSize)
                 .Take(parameters.PageSize))
                 .ToListAsync();
@@ -42,19 +42,10 @@ namespace kickerapi.Controllers
         [ProducesResponseType(typeof(List<PlayerDto>), StatusCodes.Status200OK)]
         public async Task<IStatusCodeActionResult> GetRanking([FromQuery] PlayersRatingParameters parameters)
         {
-            Expression<Func<Player, int>> order = parameters.OrderBy switch
-            {
-                "Rating" => x => x.Rating,
-                "AttackRating" => x => x.AttackRating,
-                "DefendRating" => x => x.DefendRating,
-                _ => x => x.Rating,
-            };
-
-            var players = await _mapper.ProjectTo<PlayerDto>(_context.Players
-                .OrderByDescending(order)
+            var players = await _mapper.ProjectTo<PlayerDto>(
+                _service.GetPlayersRanking(parameters.OrderBy)
                 .Skip((parameters.PageNumber - 1) * parameters.PageSize)
-                .Take(parameters.PageSize))
-                .ToListAsync();
+                .Take(parameters.PageSize)).ToListAsync();
 
             return Ok(players);
         }

@@ -35,7 +35,7 @@ namespace ClassLibrary.Models
             SetRating();
         }
 
-        //returns gained rating
+        //returns ratingChange
         public int UpdateAttackRating(double actualOutcome, double expectedOutcome, bool isWin)
         {
             var ratingChange = CalcualteRatingChange(actualOutcome, expectedOutcome, isWin);
@@ -52,7 +52,7 @@ namespace ClassLibrary.Models
             SetRating();
         }
 
-        //returns lost rating
+        //returns ratingChange
         public int UpdateDefendRating(double actualOutcome, double expectedOutcome, bool isWin)
         {
             var ratingChange = CalcualteRatingChange(actualOutcome, expectedOutcome, isWin);
