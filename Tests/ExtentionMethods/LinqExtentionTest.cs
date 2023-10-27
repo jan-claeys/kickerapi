@@ -1,6 +1,6 @@
 ﻿namespace Tests.ExtentionMethods
 {
-    public class LinqExpretionTest
+    public class LinqExtentionTest
     {
         [Theory]
         [InlineData("test")]

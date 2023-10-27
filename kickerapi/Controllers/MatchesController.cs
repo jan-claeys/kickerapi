@@ -19,9 +19,9 @@ namespace kickerapi.Controllers
         private readonly KickerContext _context;
         private readonly IMapper _mapper;
         private readonly ISecurityService _securityService;
-        private readonly IMatchService _matchService;
+        private readonly IMatchesService _matchService;
 
-        public MatchesController(KickerContext context, IMapper mapper, ISecurityService securityService, IMatchService matchService)
+        public MatchesController(KickerContext context, IMapper mapper, ISecurityService securityService, IMatchesService matchService)
         {
             _context = context;
             _mapper = mapper;

@@ -15,13 +15,15 @@ namespace kickerapi.Controllers
     {
         private readonly KickerContext _context;
         private readonly ISecurityService _securityService;
-        private readonly IMatchService _matchService;
+        private readonly IMatchesService _matchService;
+        private readonly ITeamsService _teamsService;
 
-        public TeamsController(KickerContext context, ISecurityService securityService, IMatchService matchService)
+        public TeamsController(KickerContext context, ISecurityService securityService, IMatchesService matchService, ITeamsService teamsService)
         {
             _context = context;
             _securityService = securityService;
             _matchService = matchService;
+            _teamsService = teamsService;
         }
 
         [HttpPut("confirm/{id}")]
@@ -32,10 +34,7 @@ namespace kickerapi.Controllers
             try
             {
                 var player = await _securityService.GetUserAsync(User);
-                var team = await _context.Teams
-                    .Include(x=>x.Attacker)
-                    .Include(x=>x.Defender)
-                    .FirstOrDefaultAsync(x=>x.Id == id) ?? throw new Exception("Team not found");
+                var team = await _teamsService.GetTeamWithPlayers(id).FirstOrDefaultAsync() ?? throw new Exception("Team not found");
 
                 if (team.Attacker.Id != player.Id && team.Defender.Id != player.Id)
                     throw new Exception("You are not allowed to confirm this team");
@@ -52,7 +51,7 @@ namespace kickerapi.Controllers
                         break;
                 }
 
-                await _context.SaveChangesAsync();
+                await _teamsService.SaveChangesAsync();
 
                 return Ok();
             }
@@ -70,7 +69,7 @@ namespace kickerapi.Controllers
             try
             {
                 var player = await _securityService.GetUserAsync(User);
-                var team = await _context.Teams.FindAsync(id) ?? throw new Exception("Team not found");
+                var team = await _teamsService.GetTeamWithPlayers(id).FirstOrDefaultAsync() ?? throw new Exception("Team not found");
 
                 if (team.Attacker.Id != player.Id && team.Defender.Id != player.Id)
                     throw new Exception("You are not allowed to deny this team");

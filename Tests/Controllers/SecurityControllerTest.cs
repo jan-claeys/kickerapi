@@ -9,7 +9,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace Tests.Controllers
 {
-    public class SecurityControllerTest : DbTest
+    public class SecurityControllerTest : DatabaseTest
     {
         private readonly SecurityController _controller;
         private readonly UserManager<Player> _userManager;

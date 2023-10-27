@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Tests.Controllers
 {
-    public class PlayersControllerTest : DbTest
+    public class PlayersControllerTest : DatabaseTest
     {
         private readonly PlayersController _controller;
 

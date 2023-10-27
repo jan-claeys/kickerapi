@@ -2,7 +2,7 @@
 
 namespace kickerapi.Services
 {
-    public interface IMatchService
+    public interface IMatchesService : IServiceContext
     {
         public IQueryable<Match> GetMatches(Player player, bool isConfirmed);
         public IQueryable<Match> GetMatchesWithPlayers(Player player, bool isConfirmed);

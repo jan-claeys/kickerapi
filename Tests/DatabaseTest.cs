@@ -3,11 +3,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Tests
 {
-    public class DbTest : IDisposable
+    public class DatabaseTest : IDisposable
     {
         protected readonly KickerContext _context;
 
-        public DbTest(KickerContext context)
+        public DatabaseTest(KickerContext context)
         {
             _context = context;
             _context.Database.OpenConnectionAsync();

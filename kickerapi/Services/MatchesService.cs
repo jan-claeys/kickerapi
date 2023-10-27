@@ -4,13 +4,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace kickerapi.Services
 {
-    public class MatchService : IMatchService
+    public class MatchesService : ContextService, IMatchesService
     {
-        private readonly KickerContext _context;
-
-        public MatchService(KickerContext context)
+        public MatchesService(KickerContext context) : base(context)
         {
-            _context = context;
+           
         }
 
         //returns all matches for a player (confirmed or unconfirmed) ordered by date ascending
