@@ -35,6 +35,7 @@ namespace ClassLibrary.Models
             SetRating();
         }
 
+        //add ratingChange to current attackRating
         //returns ratingChange
         public int UpdateAttackRating(double actualOutcome, double expectedOutcome, bool isWin)
         {
@@ -52,6 +53,7 @@ namespace ClassLibrary.Models
             SetRating();
         }
 
+        //add ratingChange to current defendRating
         //returns ratingChange
         public int UpdateDefendRating(double actualOutcome, double expectedOutcome, bool isWin)
         {
@@ -63,6 +65,8 @@ namespace ClassLibrary.Models
             return ratingChange;
         }
 
+        //calculate ratingChange based on actual and expected outcome and if player won or lost
+        //returns ratingchange
         public static int CalcualteRatingChange(double actualOutcome, double expectedOutcome, bool isWin)
         {
             const int k = 16;

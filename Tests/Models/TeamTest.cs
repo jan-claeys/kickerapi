@@ -32,7 +32,7 @@ namespace Tests.Models
             var team = new Team(player1, player2, 0);
             var oldRating = team.Rating();
 
-            team.SetRating(1, 0.5, true);
+            team.UpdateRatings(1, 0.5, true);
 
             Assert.True(team.AttackerRatingChange >= 0 && team.AttackerRatingChange <= 32) ;
             Assert.True(team.DefenderRatingChange >= 0 && team.DefenderRatingChange <= 32);
@@ -57,7 +57,7 @@ namespace Tests.Models
             var team = new Team(player1, player2, 0);
             var oldRating = team.Rating();
 
-            team.SetRating(0, 0.5, false);
+            team.UpdateRatings(0, 0.5, false);
 
             Assert.True(team.AttackerRatingChange <= 0 && team.AttackerRatingChange >= -32);
             Assert.True(team.DefenderRatingChange <= 0 && team.DefenderRatingChange >= -32);
@@ -82,7 +82,7 @@ namespace Tests.Models
             var team = new Team(player1, player2, 0);
             var oldRating = team.Rating();
 
-            team.SetRating(1, 0.5, true);
+            team.UpdateRatings(1, 0.5, true);
 
             Assert.True(oldRatingPlayer1 == player1.DefendRating);
             Assert.True(oldRatingPlayer2 == player2.AttackRating);

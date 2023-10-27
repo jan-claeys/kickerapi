@@ -30,6 +30,7 @@ namespace ClassLibrary.Models
             Date = DateTime.Now;
         }
 
+        //check if players are unique in match otherwise throw exception
         private void ArePlayersUnique()
         {
             var players = GetPlayers();
@@ -41,6 +42,7 @@ namespace ClassLibrary.Models
             }
         }
 
+        //Update ratings of players in teams if both teams are confirmed
         //returs if rating was updated
         public bool UpdateRatings()
         {
@@ -60,19 +62,21 @@ namespace ClassLibrary.Models
             var expectedOutcomeTeam1 = CalculateExpectedOutcome(Team1.Rating(), Team2.Rating());
             var expectedOutcomeTeam2 = CalculateExpectedOutcome(Team2.Rating(), Team1.Rating());
 
-            Team1.SetRating(acutualOutcomeTeam1, expectedOutcomeTeam1, Team1.Score > Team2.Score);
-            Team2.SetRating(acutualOutcomeTeam2, expectedOutcomeTeam2, Team2.Score > Team1.Score);
+            Team1.UpdateRatings(acutualOutcomeTeam1, expectedOutcomeTeam1, Team1.Score > Team2.Score);
+            Team2.UpdateRatings(acutualOutcomeTeam2, expectedOutcomeTeam2, Team2.Score > Team1.Score);
 
             IsCalculatedInRating = true;
 
             return true;
         }
 
+        //Calculate actual outcome of the match based on scores of teams
         private static double CalculateActualOutcome(int score1, int score2)
         {
             return score1 + score2 != 0 ? (double)score1 / (double)(score1 + score2) : 0.5;
         }
         
+        //Calculate expected outcome of the match based on ratings of teams
         private static double CalculateExpectedOutcome(int rating1, int rating2)
         {
             const int c = 400;

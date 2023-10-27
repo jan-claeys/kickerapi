@@ -29,7 +29,8 @@ namespace ClassLibrary.Models
             Score = score;
         }
 
-        public void SetRating(double actualOutcome, double expectedOutcome, bool isWin)
+        //update ratings of players in team and set ratingChange
+        public void UpdateRatings(double actualOutcome, double expectedOutcome, bool isWin)
         {
             AttackerRatingChange = Attacker.UpdateAttackRating(actualOutcome, expectedOutcome, isWin);
             DefenderRatingChange = Defender.UpdateDefendRating(actualOutcome, expectedOutcome, isWin);
