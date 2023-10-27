@@ -54,8 +54,8 @@ namespace Tests.Controllers
             match1.UpdateRatings();
             match2.UpdateRatings();
 
-            _context.Matches.Add(match1);
-            _context.Matches.Add(match2);
+            await _context.Matches.AddAsync(match1);
+            await _context.Matches.AddAsync(match2);
             await _context.SaveChangesAsync();
 
 
@@ -95,8 +95,8 @@ namespace Tests.Controllers
             match1.UpdateRatings();
             match2.UpdateRatings();
 
-            _context.Matches.Add(match1);
-            _context.Matches.Add(match2);
+            await _context.Matches.AddAsync(match1);
+            await _context.Matches.AddAsync(match2);
             await _context.SaveChangesAsync();
 
             var response = await _controller.Get(new MatchParameters() { IsConfirmed = false });
@@ -121,10 +121,10 @@ namespace Tests.Controllers
             var player2 = new Player("test2");
             var player3 = new Player("test3");
 
-            _context.Players.Add(_currentPlayer);
-            _context.Players.Add(player1);
-            _context.Players.Add(player2);
-            _context.Players.Add(player3);
+            await _context.Players.AddAsync(_currentPlayer);
+            await _context.Players.AddAsync(player1);
+            await _context.Players.AddAsync(player2);
+            await _context.Players.AddAsync(player3);
 
             await _context.SaveChangesAsync();
 
@@ -158,10 +158,10 @@ namespace Tests.Controllers
             var player3 = new Player("test3");
             var player4 = new Player("test4");
 
-            _context.Players.Add(player1);
-            _context.Players.Add(player2);
-            _context.Players.Add(player3);
-            _context.Players.Add(player4);
+            await _context.Players.AddAsync(player1);
+            await _context.Players.AddAsync(player2);
+            await _context.Players.AddAsync(player3);
+            await _context.Players.AddAsync(player4);
             await _context.SaveChangesAsync();
 
             var createMatchDto = new CreateMatchDto()
@@ -191,10 +191,10 @@ namespace Tests.Controllers
             var player3 = new Player("test3");
             var player4 = new Player("test4");
 
-            _context.Players.Add(player1);
-            _context.Players.Add(player2);
-            _context.Players.Add(player3);
-            _context.Players.Add(player4);
+            await _context.Players.AddAsync(player1);
+            await _context.Players.AddAsync(player2);
+            await _context.Players.AddAsync(player3);
+            await _context.Players.AddAsync(player4);
 
             await _context.SaveChangesAsync();
 

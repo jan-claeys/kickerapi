@@ -30,8 +30,8 @@ namespace Tests.Controllers
 
             var team1 = new Team(_currentPlayer, player1, 0);
 
-            _context.Teams.Add(team1);
-            _context.SaveChanges();
+            await _context.Teams.AddAsync(team1);
+            await _context.SaveChangesAsync();
 
             Assert.False(team1.IsConfirmed);
 
@@ -56,8 +56,8 @@ namespace Tests.Controllers
 
             var team1 = new Team(player1, player2, 0);
 
-            _context.Teams.Add(team1);
-            _context.SaveChanges();
+            await _context.Teams.AddAsync(team1);
+            await _context.SaveChangesAsync();
 
             var result = await _controller.Confirm(team1.Id);
             Assert.Equal(400, result.StatusCode);
@@ -82,9 +82,9 @@ namespace Tests.Controllers
             var match2 = new Match(team3, team4);
             var match3 = new Match(team5, team6);
 
-            _context.Matches.Add(match1);
-            _context.Matches.Add(match2);
-            _context.Matches.Add(match3);
+            await _context.Matches.AddAsync(match1);
+            await _context.Matches.AddAsync(match2);
+            await _context.Matches.AddAsync(match3);
 
             team1.Confirm();
             team2.Confirm();
@@ -92,7 +92,7 @@ namespace Tests.Controllers
             team4.Confirm();
             team5.Confirm();
 
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
 
             Assert.Null(team1.AttackerRatingChange);
             Assert.Null(team1.DefenderRatingChange);
@@ -148,9 +148,9 @@ namespace Tests.Controllers
             var match1 = new Match(team1, team2);
             var match2 = new Match(team3, team4);
 
-            _context.Add(match1);
-            _context.Add(match2);
-            _context.SaveChanges();
+            await _context.AddAsync(match1);
+            await _context.AddAsync(match2);
+            await _context.SaveChangesAsync();
 
             Assert.Equal(4, await _context.Players.CountAsync());
             Assert.Equal(4, await _context.Teams.CountAsync());
@@ -179,8 +179,8 @@ namespace Tests.Controllers
 
             var team1 = new Team(player1, player2, 0);
 
-            _context.Teams.Add(team1);
-            _context.SaveChanges();
+            await _context.Teams.AddAsync(team1);
+            await _context.SaveChangesAsync();
 
             var result = await _controller.Deny(team1.Id);
             Assert.Equal(400, result.StatusCode);

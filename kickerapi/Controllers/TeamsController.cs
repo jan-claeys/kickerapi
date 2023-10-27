@@ -84,7 +84,7 @@ namespace kickerapi.Controllers
                 _context.Teams.Remove(team2);
                 _context.Matches.Remove(match);
 
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
 
                 return Ok();
             }

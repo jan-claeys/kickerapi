@@ -23,12 +23,12 @@ namespace Tests.Controllers
             var player1 = new Player("test1");
             player1.SetAttackRating(5);
             player1.SetDefendRating(20);
-            _context.Players.Add(player1);
+            await _context.Players.AddAsync(player1);
 
             var player2 = new Player("test2");
             player2.SetAttackRating(10);
             player2.SetDefendRating(10);
-            _context.Players.Add(player2);
+            await _context.Players.AddAsync(player2);
 
             await _context.SaveChangesAsync();
 
@@ -60,12 +60,12 @@ namespace Tests.Controllers
             var player1 = new Player("test1");
             player1.SetAttackRating(5);
             player1.SetDefendRating(20);
-            _context.Players.Add(player1);
+            await _context.Players.AddAsync(player1);
 
             var player2 = new Player("test2");
             player2.SetAttackRating(10);
             player2.SetDefendRating(10);
-            _context.Players.Add(player2);
+            await _context.Players.AddAsync(player2);
 
             await _context.SaveChangesAsync();
 
@@ -88,12 +88,12 @@ namespace Tests.Controllers
             var player1 = new Player("test1");
             player1.SetAttackRating(5);
             player1.SetDefendRating(20);
-            _context.Players.Add(player1);
+            await _context.Players.AddAsync(player1);
 
             var player2 = new Player("test2");
             player2.SetAttackRating(10);
             player2.SetDefendRating(10);
-            _context.Players.Add(player2);
+            await _context.Players.AddAsync(player2);
 
             await _context.SaveChangesAsync();
 
@@ -114,13 +114,13 @@ namespace Tests.Controllers
         public async void ItGetsPlayersByName()
         {
             var player3 = new Player("cindy");
-            _context.Players.Add(player3);
+            await _context.Players.AddAsync(player3);
 
             var player2 = new Player("brian");
-            _context.Players.Add(player2);
+            await _context.Players.AddAsync(player2);
 
             var player1 = new Player("aaron");
-            _context.Players.Add(player1);
+            await _context.Players.AddAsync(player1);
 
             await _context.SaveChangesAsync();
 
