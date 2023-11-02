@@ -4,7 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace ClassLibrary.Models
 {
-    public class Player: IdentityUser
+    public class Player : IdentityUser
     {
         const int START_RATING = 1500;
         public int Rating { get; private set; }
@@ -37,10 +37,10 @@ namespace ClassLibrary.Models
 
         //add ratingChange to current attackRating
         //returns ratingChange
-        public int UpdateAttackRating(double actualOutcome, double expectedOutcome, bool isWin)
+        public int UpdateAttackRating(double actualOutcome, double expectedOutcome, bool? isWin)
         {
             var ratingChange = CalcualteRatingChange(actualOutcome, expectedOutcome, isWin);
-            AttackRating +=  ratingChange;
+            AttackRating += ratingChange;
 
             SetRating();
 
@@ -55,22 +55,23 @@ namespace ClassLibrary.Models
 
         //add ratingChange to current defendRating
         //returns ratingChange
-        public int UpdateDefendRating(double actualOutcome, double expectedOutcome, bool isWin)
+        public int UpdateDefendRating(double actualOutcome, double expectedOutcome, bool? isWin)
         {
             var ratingChange = CalcualteRatingChange(actualOutcome, expectedOutcome, isWin);
             DefendRating += ratingChange;
-            
+
             SetRating();
 
             return ratingChange;
         }
 
         //calculate ratingChange based on actual and expected outcome and if player won or lost
+        //if draw isWin is null and ratingChange is 0
         //returns ratingchange
-        public static int CalcualteRatingChange(double actualOutcome, double expectedOutcome, bool isWin)
+        public static int CalcualteRatingChange(double actualOutcome, double expectedOutcome, bool? isWin)
         {
             const int k = 16;
-            return (int)Math.Ceiling(k * (actualOutcome - expectedOutcome) + (isWin ? k : -k));
+            return isWin == null ? 0 : (int)Math.Ceiling(k * (actualOutcome - expectedOutcome) + (isWin.Value ? k : -k));
         }
 
         private void SetRating()

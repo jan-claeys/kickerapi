@@ -12,8 +12,8 @@ namespace kickerapi.Dtos.Responses.Match
         public class TeamDto
         {
             public int Id { get; set; }
-            public PlayerDto? Attacker { get; set; }
-            public PlayerDto? Defender { get; set; }
+            public PlayerDtoSmall? Attacker { get; set; }
+            public PlayerDtoSmall? Defender { get; set; }
             public int AttackerRatingChange { get; set; }
             public int DefenderRatingChange { get; set; }
             public int Score { get; set; }

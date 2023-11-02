@@ -36,7 +36,7 @@ namespace ClassLibrary.Models
             var players = GetPlayers();
             var arePlayersUnique = players.Select(x => x.Id).Distinct().Count() == players.Count();
 
-            if(!arePlayersUnique)
+            if (!arePlayersUnique)
             {
                 throw new Exception("Players must be unique in match");
             }
@@ -51,7 +51,7 @@ namespace ClassLibrary.Models
                 return false;
             }
 
-            if(!Team1.IsConfirmed || !Team2.IsConfirmed)
+            if (!Team1.IsConfirmed || !Team2.IsConfirmed)
             {
                 return false;
             }
@@ -62,8 +62,8 @@ namespace ClassLibrary.Models
             var expectedOutcomeTeam1 = CalculateExpectedOutcome(Team1.Rating(), Team2.Rating());
             var expectedOutcomeTeam2 = CalculateExpectedOutcome(Team2.Rating(), Team1.Rating());
 
-            Team1.UpdateRatings(acutualOutcomeTeam1, expectedOutcomeTeam1, Team1.Score > Team2.Score);
-            Team2.UpdateRatings(acutualOutcomeTeam2, expectedOutcomeTeam2, Team2.Score > Team1.Score);
+            Team1.UpdateRatings(acutualOutcomeTeam1, expectedOutcomeTeam1, Team1.Score == Team2.Score ? null : Team1.Score > Team2.Score);
+            Team2.UpdateRatings(acutualOutcomeTeam2, expectedOutcomeTeam2, Team1.Score == Team2.Score ? null :Team2.Score > Team1.Score);
 
             IsCalculatedInRating = true;
 
@@ -75,7 +75,7 @@ namespace ClassLibrary.Models
         {
             return score1 + score2 != 0 ? (double)score1 / (double)(score1 + score2) : 0.5;
         }
-        
+
         //Calculate expected outcome of the match based on ratings of teams
         private static double CalculateExpectedOutcome(int rating1, int rating2)
         {

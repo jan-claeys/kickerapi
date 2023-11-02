@@ -30,7 +30,7 @@ namespace ClassLibrary.Models
         }
 
         //update ratings of players in team and set ratingChange
-        public void UpdateRatings(double actualOutcome, double expectedOutcome, bool isWin)
+        public void UpdateRatings(double actualOutcome, double expectedOutcome, bool? isWin)
         {
             AttackerRatingChange = Attacker.UpdateAttackRating(actualOutcome, expectedOutcome, isWin);
             DefenderRatingChange = Defender.UpdateDefendRating(actualOutcome, expectedOutcome, isWin);

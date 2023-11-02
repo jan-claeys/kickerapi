@@ -84,8 +84,8 @@ namespace Tests.Models
 
             team.UpdateRatings(1, 0.5, true);
 
-            Assert.True(oldRatingPlayer1 == player1.DefendRating);
-            Assert.True(oldRatingPlayer2 == player2.AttackRating);
+            Assert.Equal(oldRatingPlayer1, player1.DefendRating);
+            Assert.Equal(oldRatingPlayer2, player2.AttackRating);
             Assert.True(oldRating <= team.Rating());
         }
     }
