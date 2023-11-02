@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using ClassLibrary.Models;
 using kickerapi.Dtos.Requests.Match;
+using kickerapi.Dtos.Responses;
 using kickerapi.Dtos.Responses.Match;
 using kickerapi.QueryParameters;
 using kickerapi.Services;
@@ -40,7 +41,9 @@ namespace kickerapi.Controllers
                 .Paging(parameters.PageNumber, parameters.PageSize))
                 .ToListAsync();
 
-            return Ok(matches);
+            var response = new PagedResponse<MatchDto>(matches, parameters.PageSize, _matchService.GetMatchesCount(player, parameters.IsConfirmed));
+
+            return Ok(response);
         }
 
         [HttpPost]

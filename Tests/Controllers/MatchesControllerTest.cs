@@ -3,6 +3,7 @@ using ClassLibrary.Models;
 using kickerapi;
 using kickerapi.Controllers;
 using kickerapi.Dtos.Requests.Match;
+using kickerapi.Dtos.Responses;
 using kickerapi.Dtos.Responses.Match;
 using kickerapi.QueryParameters;
 using kickerapi.Services;
@@ -64,8 +65,8 @@ namespace Tests.Controllers
 
             var okResult = response as OkObjectResult;
             var result = okResult?.Value;
-            
-            var matchDtos = Assert.IsType<List<MatchDto>>(result);
+
+            var matchDtos = Assert.IsType<PagedResponse<MatchDto>>(result).Data;
             Assert.Equal(1, matchDtos?.Count);
 
             var team = Assert.IsType<MatchDto.TeamDto>(matchDtos?[0].Team1);
@@ -107,7 +108,7 @@ namespace Tests.Controllers
 
             var test = await _context.Matches.ToListAsync();
 
-            var matchDtos = Assert.IsType<List<MatchDto>>(result);
+            var matchDtos = Assert.IsType<PagedResponse<MatchDto>>(result).Data;
             Assert.Equal(1, matchDtos?.Count);
 
             var team = Assert.IsType<MatchDto.TeamDto>(matchDtos?[0].Team1);

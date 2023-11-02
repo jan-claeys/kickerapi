@@ -2,6 +2,7 @@
 using ClassLibrary.Models;
 using kickerapi;
 using kickerapi.Controllers;
+using kickerapi.Dtos.Responses;
 using kickerapi.Dtos.Responses.Player;
 using kickerapi.QueryParameters;
 using kickerapi.Services;
@@ -39,8 +40,8 @@ namespace Tests.Controllers
             var okResult = response as OkObjectResult;
             var result = okResult?.Value;
 
-            Assert.Equal("test1", Assert.IsType<List<PlayerDto>>(result)[0].Name);
-            Assert.Equal("test2", Assert.IsType<List<PlayerDto>>(result)[1].Name);
+            Assert.Equal("test1", Assert.IsType<PagedResponse<PlayerDto>>(result).Data?[0].Name);
+            Assert.Equal("test2", Assert.IsType<PagedResponse<PlayerDto>>(result).Data?[1].Name);
 
             response = await _controller.GetRanking(new PlayersRatingParameters()
             {
@@ -51,8 +52,8 @@ namespace Tests.Controllers
             okResult = response as OkObjectResult;
             result = okResult?.Value;
 
-            Assert.Equal("test1", Assert.IsType<List<PlayerDto>>(result)[0].Name);
-            Assert.Equal("test2", Assert.IsType<List<PlayerDto>>(result)[1].Name);
+            Assert.Equal("test1", Assert.IsType<PagedResponse<PlayerDto>>(result).Data?[0].Name);
+            Assert.Equal("test2", Assert.IsType<PagedResponse<PlayerDto>>(result).Data?[1].Name);
         }
 
         [Fact]
@@ -79,8 +80,8 @@ namespace Tests.Controllers
             var okResult = response as OkObjectResult;
             var result = okResult?.Value;
 
-            Assert.Equal("test2", Assert.IsType<List<PlayerDto>>(result)[0].Name);
-            Assert.Equal("test1", Assert.IsType<List<PlayerDto>>(result)[1].Name);
+            Assert.Equal("test2", Assert.IsType<PagedResponse<PlayerDto>>(result).Data?[0].Name);
+            Assert.Equal("test1", Assert.IsType<PagedResponse<PlayerDto>>(result).Data?[1].Name);
         }
 
         [Fact]
@@ -107,8 +108,8 @@ namespace Tests.Controllers
             var okResult = response as OkObjectResult;
             var result = okResult?.Value;
 
-            Assert.Equal("test1", Assert.IsType<List<PlayerDto>>(result)[0].Name);
-            Assert.Equal("test2", Assert.IsType<List<PlayerDto>>(result)[1].Name);
+            Assert.Equal("test1", Assert.IsType<PagedResponse<PlayerDto>>(result).Data?[0].Name);
+            Assert.Equal("test2", Assert.IsType<PagedResponse<PlayerDto>>(result).Data?[1].Name);
         }
 
         [Fact]
@@ -131,7 +132,7 @@ namespace Tests.Controllers
             var okResult = response as OkObjectResult;
 
             var result = okResult?.Value;
-            var players = Assert.IsType<List<PlayerDto>>(result);
+            var players = Assert.IsType<PagedResponse<PlayerDto>>(result).Data;
 
             Assert.Equal("aaron", players[0].Name);
             Assert.Equal("brian", players[1].Name);
@@ -146,7 +147,7 @@ namespace Tests.Controllers
             okResult = response as OkObjectResult;
 
             result = okResult?.Value;
-            players = Assert.IsType<List<PlayerDto>>(result);
+            players = Assert.IsType<PagedResponse<PlayerDto>>(result).Data;
 
             Assert.Equal(1, players?.Count);
             Assert.Equal("brian", players?[0].Name);

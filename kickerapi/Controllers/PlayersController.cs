@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using ClassLibrary.Models;
+using kickerapi.Dtos.Responses;
 using kickerapi.Dtos.Responses.Player;
 using kickerapi.QueryParameters;
 using kickerapi.Services;
@@ -34,7 +35,9 @@ namespace kickerapi.Controllers
                 .Paging(parameters.PageNumber, parameters.PageSize))
                 .ToListAsync();
 
-            return Ok(players);
+            var response = new PagedResponse<PlayerDto>(players, parameters.PageSize, _service.GetPlayersCount());
+
+            return Ok(response);
         }
 
         [HttpGet("ranking")]
@@ -46,7 +49,9 @@ namespace kickerapi.Controllers
                 .Paging(parameters.PageNumber, parameters.PageSize))
                 .ToListAsync();
 
-            return Ok(players);
+            var response = new PagedResponse<PlayerDto>(players, parameters.PageSize, _service.GetPlayersCount());
+
+            return Ok(response);
         }
 
     }
