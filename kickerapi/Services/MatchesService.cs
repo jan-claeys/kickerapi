@@ -47,10 +47,5 @@ namespace kickerapi.Services
         {
             _context.Remove(match);
         }
-
-        public int GetMatchesCount(Player player, bool isConfirmed)
-        {
-            return GetMatches(player, isConfirmed).Count();
-        }
     }
 }

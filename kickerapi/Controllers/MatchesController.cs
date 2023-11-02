@@ -41,9 +41,7 @@ namespace kickerapi.Controllers
                 .Paging(parameters.PageNumber, parameters.PageSize))
                 .ToListAsync();
 
-            var response = new PagedResponse<MatchDto>(matches, parameters.PageSize, _matchService.GetMatchesCount(player, parameters.IsConfirmed));
-
-            return Ok(response);
+            return Ok(matches);
         }
 
         [HttpPost]

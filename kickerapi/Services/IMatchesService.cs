@@ -9,6 +9,5 @@ namespace kickerapi.Services
         public IQueryable<Match> GetMatchWithTeams(Team team);
         public void AddMatch(Match match);
         public void RemoveMatch(Match match);
-        public int GetMatchesCount(Player player, bool isConfirmed);
     }
 }

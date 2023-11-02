@@ -35,9 +35,7 @@ namespace kickerapi.Controllers
                 .Paging(parameters.PageNumber, parameters.PageSize))
                 .ToListAsync();
 
-            var response = new PagedResponse<PlayerDto>(players, parameters.PageSize, _service.GetPlayersCount());
-
-            return Ok(response);
+            return Ok(players);
         }
 
         [HttpGet("ranking")]
@@ -49,9 +47,7 @@ namespace kickerapi.Controllers
                 .Paging(parameters.PageNumber, parameters.PageSize))
                 .ToListAsync();
 
-            var response = new PagedResponse<PlayerDto>(players, parameters.PageSize, _service.GetPlayersCount());
-
-            return Ok(response);
+            return Ok(players);
         }
 
     }

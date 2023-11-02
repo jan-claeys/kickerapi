@@ -66,7 +66,7 @@ namespace Tests.Controllers
             var okResult = response as OkObjectResult;
             var result = okResult?.Value;
 
-            var matchDtos = Assert.IsType<PagedResponse<MatchDto>>(result).Data;
+            var matchDtos = Assert.IsType<List<MatchDto>>(result);
             Assert.Equal(1, matchDtos?.Count);
 
             var team = Assert.IsType<MatchDto.TeamDto>(matchDtos?[0].Team1);
@@ -108,7 +108,7 @@ namespace Tests.Controllers
 
             var test = await _context.Matches.ToListAsync();
 
-            var matchDtos = Assert.IsType<PagedResponse<MatchDto>>(result).Data;
+            var matchDtos = Assert.IsType<List<MatchDto>>(result);
             Assert.Equal(1, matchDtos?.Count);
 
             var team = Assert.IsType<MatchDto.TeamDto>(matchDtos?[0].Team1);

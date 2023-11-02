@@ -35,10 +35,5 @@ namespace kickerapi.Services
 
             return _context.Players.OrderByDescending(order);
         }
-
-        public int GetPlayersCount()
-        {
-            return _context.Players.Count();
-        }
     }
 }
