@@ -37,8 +37,7 @@ namespace kickerapi.Controllers
 
             var matches = await _mapper.ProjectTo<MatchDto>(_matchService.GetMatches(player, parameters.IsConfirmed)
                 .OrderByDescending(x => x.Date)
-                .Skip((parameters.PageNumber - 1) * parameters.PageSize)
-                .Take(parameters.PageSize))
+                .Paging(parameters.PageNumber, parameters.PageSize))
                 .ToListAsync();
 
             return Ok(matches);

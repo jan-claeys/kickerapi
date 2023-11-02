@@ -15,5 +15,11 @@ namespace System.Linq
         {
             return value ? query.Where(expresssion) : query;
         }
+
+        //paging for IQueryable objects
+        public static IQueryable<T>Paging<T>(this IQueryable<T> query, int pageNumber, int pageSize)
+        {
+            return query.Skip((pageNumber - 1) * pageSize).Take(pageSize);
+        }
     }
 }

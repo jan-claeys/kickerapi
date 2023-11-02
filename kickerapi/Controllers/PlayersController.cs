@@ -31,8 +31,7 @@ namespace kickerapi.Controllers
         {
             var players = await _mapper.ProjectTo<PlayerDto>(
                 _service.GetPlayers(parameters.Search)
-                .Skip((parameters.PageNumber - 1) * parameters.PageSize)
-                .Take(parameters.PageSize))
+                .Paging(parameters.PageNumber, parameters.PageSize))
                 .ToListAsync();
 
             return Ok(players);
@@ -44,8 +43,8 @@ namespace kickerapi.Controllers
         {
             var players = await _mapper.ProjectTo<PlayerDto>(
                 _service.GetPlayersRanking(parameters.OrderBy)
-                .Skip((parameters.PageNumber - 1) * parameters.PageSize)
-                .Take(parameters.PageSize)).ToListAsync();
+                .Paging(parameters.PageNumber, parameters.PageSize))
+                .ToListAsync();
 
             return Ok(players);
         }
