@@ -35,7 +35,8 @@ namespace kickerapi.Controllers
             var token = _service.GenerateJwtToken(player);
 
             return Ok(new
-            {
+            {   
+                id = player.Id,
                 token = new JwtSecurityTokenHandler().WriteToken(token)
             });
         }

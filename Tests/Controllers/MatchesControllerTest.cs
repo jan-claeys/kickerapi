@@ -69,7 +69,7 @@ namespace Tests.Controllers
             var matchDtos = Assert.IsType<List<MatchDto>>(result);
             Assert.Equal(1, matchDtos?.Count);
 
-            var team = Assert.IsType<MatchDto.TeamDto>(matchDtos?[0].Team1);
+            var team = Assert.IsType<MatchDto.TeamDto>(matchDtos?[0].PlayerTeam);
             Assert.Equal(_currentPlayer.Id, team?.Attacker?.Id);
         }
 
@@ -111,7 +111,7 @@ namespace Tests.Controllers
             var matchDtos = Assert.IsType<List<MatchDto>>(result);
             Assert.Equal(1, matchDtos?.Count);
 
-            var team = Assert.IsType<MatchDto.TeamDto>(matchDtos?[0].Team1);
+            var team = Assert.IsType<MatchDto.TeamDto>(matchDtos?[0].PlayerTeam);
             Assert.Equal(_currentPlayer.Id, team?.Attacker?.Id);
         }
 
@@ -216,6 +216,63 @@ namespace Tests.Controllers
 
             var response = await _controller.Post(createMatchDto);
             Assert.Equal(400, response.StatusCode);
+        }
+
+        [Fact]
+        public async void ItReturnplayerTeamIsTeamCurrentPlayer()
+        {
+            var player1 = new Player("test1");
+            var player2 = new Player("test2");
+            var player3 = new Player("test3");
+
+            var team1 = new Team(player2, player1, 0);
+            var team2 = new Team(_currentPlayer, player3, 0);
+
+            var match1 = new Match(team1, team2);
+
+            team1.Confirm();
+            team2.Confirm();
+            match1.UpdateRatings();
+
+            await _context.Matches.AddAsync(match1);
+            await _context.SaveChangesAsync();
+
+
+            var response = await _controller.Get(new MatchParameters() { IsConfirmed = true });
+            Assert.Equal(200, response.StatusCode);
+
+            var okResult = response as OkObjectResult;
+            var result = okResult?.Value;
+            var matchDtos = Assert.IsType<List<MatchDto>>(result);
+            Assert.Equal(_currentPlayer.Id, matchDtos[0].PlayerTeam?.Attacker?.Id);
+        }
+
+        [Fact]
+        public async void ItReturnOpponentTeamIsTeamOpponentPlayers()
+        {
+            var player1 = new Player("test1");
+            var player2 = new Player("test2");
+            var player3 = new Player("test3");
+
+            var team1 = new Team(_currentPlayer, player1, 0);
+            var team2 = new Team(player2, player3, 0);
+
+            var match1 = new Match(team1, team2);
+
+            team1.Confirm();
+            team2.Confirm();
+            match1.UpdateRatings();
+
+            await _context.Matches.AddAsync(match1);
+            await _context.SaveChangesAsync();
+
+            var response = await _controller.Get(new MatchParameters() { IsConfirmed = true });
+            Assert.Equal(200, response.StatusCode);
+
+            var okResult = response as OkObjectResult;
+            var result = okResult?.Value;
+            var matchDtos = Assert.IsType<List<MatchDto>>(result);
+            Assert.Equal(player2.Id, matchDtos[0].OpponentTeam?.Attacker?.Id);
         }
     }
 }

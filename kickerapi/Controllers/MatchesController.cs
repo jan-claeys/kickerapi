@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.EntityFrameworkCore;
+using static kickerapi.Dtos.Responses.Match.MatchDto;
 
 namespace kickerapi.Controllers
 {
@@ -36,12 +37,30 @@ namespace kickerapi.Controllers
         {
             var player = await _securityService.GetUserAsync(User);
 
-            var matches = await _mapper.ProjectTo<MatchDto>(_matchService.GetMatches(player, parameters.IsConfirmed)
+            var matches = await _matchService.GetMatches(player, parameters.IsConfirmed)
                 .OrderByDescending(x => x.Date)
-                .Paging(parameters.PageNumber, parameters.PageSize))
-                .ToListAsync();
+                .Paging(parameters.PageNumber, parameters.PageSize).ToListAsync();
 
-            return Ok(matches);
+            var res = new List<MatchDto>();
+
+            foreach (var match in matches)
+            {
+                var playerTeam = match.Team1.Attacker.Id == player.Id || match.Team1.Defender.Id == player.Id ? match.Team1 : match.Team2;
+                var opponentTeam = match.Team1.Attacker.Id == player.Id || match.Team1.Defender.Id == player.Id ? match.Team2 : match.Team1;
+
+                var matchDto = new MatchDto
+                {
+                    Id = match.Id,
+                    Date = match.Date,
+                    IsCalculatedInRating = match.IsCalculatedInRating,
+                    PlayerTeam = _mapper.Map<TeamDto>(playerTeam),
+                    OpponentTeam = _mapper.Map<TeamDto>(opponentTeam)
+                };
+
+                res.Add(matchDto);
+            }
+
+            return Ok(res);
         }
 
         [HttpPost]
