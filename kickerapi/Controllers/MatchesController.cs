@@ -37,7 +37,7 @@ namespace kickerapi.Controllers
         {
             var player = await _securityService.GetUserAsync(User);
 
-            var matches = await _matchService.GetMatches(player, parameters.IsConfirmed)
+            var matches = await _matchService.GetMatchesWithPlayers(player, parameters.IsConfirmed)
                 .OrderByDescending(x => x.Date)
                 .Paging(parameters.PageNumber, parameters.PageSize).ToListAsync();
 
