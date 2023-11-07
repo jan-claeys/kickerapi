@@ -77,16 +77,16 @@ namespace kickerapi.Controllers
                 if (req.PlayerPosition == CreateMatchDto.Position.Attacker)
                 {
                     attackerTeam1 = player;
-                    defenderTeam1 = await _playerService.GetPlayer(req.AllyId).FirstOrDefaultAsync() ?? throw new Exception("One or more players are not existing");
+                    defenderTeam1 = await _playerService.GetPlayer(req.AllyId);
                 }
                 else
                 {
                     defenderTeam1 = player;
-                    attackerTeam1 = await _playerService.GetPlayer(req.AllyId).FirstOrDefaultAsync() ?? throw new Exception("One or more players are not existing");
+                    attackerTeam1 = await _playerService.GetPlayer(req.AllyId);
                 }
-                
-                Player attackerTeam2 = await _playerService.GetPlayer(req.OpponentAttackerId).FirstOrDefaultAsync() ?? throw new Exception("One or more players are not existing");
-                Player defenderTeam2 = await _playerService.GetPlayer(req.OpponentDefenderId).FirstOrDefaultAsync() ?? throw new Exception("One or more players are not existing");
+
+                Player attackerTeam2 = await _playerService.GetPlayer(req.OpponentAttackerId);
+                Player defenderTeam2 = await _playerService.GetPlayer(req.OpponentDefenderId);
 
 
                 var team1 = new Team(attackerTeam1, defenderTeam1, req.PlayerScore);

@@ -1,4 +1,5 @@
 ﻿using ClassLibrary.Models;
+using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
 namespace kickerapi.Services
@@ -9,9 +10,9 @@ namespace kickerapi.Services
         {
         }
 
-        public IQueryable<Player> GetPlayer(string playerId)
+        public async Task<Player> GetPlayer(string playerId)
         {
-            return _context.Players.Where(x => x.Id == playerId);
+            return await _context.Players.FirstOrDefaultAsync(x => x.Id == playerId)?? throw new Exception("Player does noet exist");
         }
 
         // Returns all players ordered by username ascending searched by username
