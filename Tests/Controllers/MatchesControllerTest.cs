@@ -116,7 +116,7 @@ namespace Tests.Controllers
         }
 
         [Fact]
-        public async void ItCreateMatch()
+        public async void ItCreateMatchWithPlayerAttacker()
         {
             var player1 = new Player("test1");
             var player2 = new Player("test2");
@@ -131,17 +131,11 @@ namespace Tests.Controllers
 
             var createMatchDto = new CreateMatchDto()
             {
-                Team1 = new CreateTeamDto()
-                {
-                    AttackerId = _currentPlayer.Id,
-                    DefenderId = player1.Id
-                },
+                PlayerPosition = Position.Attacker,
+                AllyId = player1.Id,
 
-                Team2 = new CreateTeamDto()
-                {
-                    AttackerId = player2.Id,
-                    DefenderId = player3.Id
-                }
+                OpponentAttackerId = player2.Id,
+                OpponentDefenderId = player3.Id
             };
 
             var response = await _controller.Post(createMatchDto);
@@ -149,73 +143,71 @@ namespace Tests.Controllers
 
             Assert.Equal(1, _context.Matches.Count());
             Assert.Equal(2, _context.Teams.Count());
+          
+            Assert.Equal(_currentPlayer.Id, _context.Teams.First().Attacker.Id);
         }
 
+
         [Fact]
-        public async void ItReturnErrorIfPlayerNotExistCreateMatch()
+        public async void ItCreateMatchWithPlayerDefender()
         {
             var player1 = new Player("test1");
             var player2 = new Player("test2");
             var player3 = new Player("test3");
-            var player4 = new Player("test4");
 
+            await _context.Players.AddAsync(_currentPlayer);
             await _context.Players.AddAsync(player1);
             await _context.Players.AddAsync(player2);
             await _context.Players.AddAsync(player3);
-            await _context.Players.AddAsync(player4);
-            await _context.SaveChangesAsync();
-
-            var createMatchDto = new CreateMatchDto()
-            {
-                Team1 = new CreateTeamDto()
-                {
-                    AttackerId = "100",
-                    DefenderId = player2.Id
-                },
-
-                Team2 = new CreateTeamDto()
-                {
-                    AttackerId = player3.Id,
-                    DefenderId = player4.Id
-                }
-            };
-
-            var response = await _controller.Post(createMatchDto);
-            Assert.Equal(400, response.StatusCode);
-        }
-
-        [Fact]
-        public async void ItReturnErrorIfCurrentPlayerNotInTeam1()
-        {
-            var player1 = new Player("test1");
-            var player2 = new Player("test2");
-            var player3 = new Player("test3");
-            var player4 = new Player("test4");
-
-            await _context.Players.AddAsync(player1);
-            await _context.Players.AddAsync(player2);
-            await _context.Players.AddAsync(player3);
-            await _context.Players.AddAsync(player4);
 
             await _context.SaveChangesAsync();
 
             var createMatchDto = new CreateMatchDto()
             {
-                Team1 = new CreateTeamDto()
-                {
-                    AttackerId = player1.Id,
-                    DefenderId = player2.Id
-                },
+                PlayerPosition = Position.Defender,
+                AllyId = player1.Id,
 
-                Team2 = new CreateTeamDto()
-                {
-                    AttackerId = player3.Id,
-                    DefenderId = player4.Id
-                }
+                OpponentAttackerId = player2.Id,
+                OpponentDefenderId = player3.Id
+            };
+
+            var response = await _controller.Post(createMatchDto);
+            Assert.Equal(200, response.StatusCode);
+
+            Assert.Equal(1, _context.Matches.Count());
+            Assert.Equal(2, _context.Teams.Count());
+
+            Assert.Equal(_currentPlayer.Id, _context.Teams.First().Defender.Id);
+        }
+
+        [Fact]
+        public async void ItReturnsErrorIfPlayerDoesNotExist()
+        {
+            var player1 = new Player("test1");
+            var player2 = new Player("test2");
+            var player3 = new Player("test3");
+
+            await _context.Players.AddAsync(_currentPlayer);
+            await _context.Players.AddAsync(player1);
+            await _context.Players.AddAsync(player2);
+            await _context.Players.AddAsync(player3);
+
+            await _context.SaveChangesAsync();
+
+            var createMatchDto = new CreateMatchDto()
+            {
+                PlayerPosition = Position.Defender,
+                AllyId = "fakeid",
+
+                OpponentAttackerId = player2.Id,
+                OpponentDefenderId = player3.Id
             };
 
             var response = await _controller.Post(createMatchDto);
             Assert.Equal(400, response.StatusCode);
+
+            Assert.Equal(0, _context.Matches.Count());
+            Assert.Equal(0, _context.Teams.Count());
         }
 
         [Fact]
@@ -236,7 +228,6 @@ namespace Tests.Controllers
 
             await _context.Matches.AddAsync(match1);
             await _context.SaveChangesAsync();
-
 
             var response = await _controller.Get(new MatchParameters() { IsConfirmed = true });
             Assert.Equal(200, response.StatusCode);

@@ -5,18 +5,22 @@ namespace kickerapi.Dtos.Requests.Match
     public class CreateMatchDto
     {
         [Required]
-        public CreateTeamDto Team1 { get; set; }
+        public Position PlayerPosition { get; set; }
         [Required]
-        public CreateTeamDto Team2 { get; set; }
+        public string AllyId { get; set; }
+        [Required]
+        public int PlayerScore { get; set;}
+        [Required]
+        public string OpponentAttackerId { get; set; }
+        [Required]
+        public string OpponentDefenderId { get; set; }
+        [Required]
+        public int OpponentScore { get; set; }
 
-        public class CreateTeamDto
+        public enum Position
         {
-            [Required]
-            public int Score { get; set; }
-            [Required]
-            public string AttackerId { get; set; }
-            [Required]
-            public string DefenderId { get; set; }
+            Attacker,
+            Defender
         }
     }
 }

@@ -35,7 +35,7 @@ namespace kickerapi.Controllers
         [ProducesResponseType(typeof(List<MatchDto>), StatusCodes.Status200OK)]
         public async Task<IStatusCodeActionResult> Get([FromQuery] MatchParameters parameters)
         {
-            var player = await _securityService.GetUserAsync(User);
+            Player player = await _securityService.GetUserAsync(User);
 
             var matches = await _matchService.GetMatchesWithPlayers(player, parameters.IsConfirmed)
                 .OrderByDescending(x => x.Date)
@@ -70,19 +70,27 @@ namespace kickerapi.Controllers
         {
             try
             {
-                var player = await _securityService.GetUserAsync(User);
+                Player player = await _securityService.GetUserAsync(User);
+                Player attackerTeam1;
+                Player defenderTeam1;
 
-                var attackerTeam1 = await _playerService.GetPlayer(req.Team1.AttackerId).FirstOrDefaultAsync() ?? throw new Exception("One or more players are not existing");
-                var defenderTeam1 = await _playerService.GetPlayer(req.Team1.DefenderId).FirstOrDefaultAsync() ?? throw new Exception("One or more players are not existing");
+                if (req.PlayerPosition == CreateMatchDto.Position.Attacker)
+                {
+                    attackerTeam1 = player;
+                    defenderTeam1 = await _playerService.GetPlayer(req.AllyId).FirstOrDefaultAsync() ?? throw new Exception("One or more players are not existing");
+                }
+                else
+                {
+                    defenderTeam1 = player;
+                    attackerTeam1 = await _playerService.GetPlayer(req.AllyId).FirstOrDefaultAsync() ?? throw new Exception("One or more players are not existing");
+                }
+                
+                Player attackerTeam2 = await _playerService.GetPlayer(req.OpponentAttackerId).FirstOrDefaultAsync() ?? throw new Exception("One or more players are not existing");
+                Player defenderTeam2 = await _playerService.GetPlayer(req.OpponentDefenderId).FirstOrDefaultAsync() ?? throw new Exception("One or more players are not existing");
 
-                var attackerTeam2 = await _playerService.GetPlayer(req.Team2.AttackerId).FirstOrDefaultAsync() ?? throw new Exception("One or more players are not existing");
-                var defenderTeam2 = await _playerService.GetPlayer(req.Team2.DefenderId).FirstOrDefaultAsync() ?? throw new Exception("One or more players are not existing");
 
-                if (attackerTeam1.Id != player.Id && defenderTeam1.Id != player.Id)
-                    throw new Exception("You are not allowed to create a match with this players");
-
-                var team1 = new Team(attackerTeam1, defenderTeam1, req.Team1.Score);
-                var team2 = new Team(attackerTeam2, defenderTeam2, req.Team2.Score);
+                var team1 = new Team(attackerTeam1, defenderTeam1, req.PlayerScore);
+                var team2 = new Team(attackerTeam2, defenderTeam2, req.OpponentScore);
 
                 var match = new Match(team1, team2);
 
