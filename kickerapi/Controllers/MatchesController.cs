@@ -88,7 +88,6 @@ namespace kickerapi.Controllers
                 Player attackerTeam2 = await _playerService.GetPlayer(req.OpponentAttackerId);
                 Player defenderTeam2 = await _playerService.GetPlayer(req.OpponentDefenderId);
 
-
                 var team1 = new Team(attackerTeam1, defenderTeam1, req.PlayerScore);
                 var team2 = new Team(attackerTeam2, defenderTeam2, req.OpponentScore);
 
