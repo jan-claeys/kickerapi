@@ -32,7 +32,7 @@ namespace kickerapi.Controllers
             try
             {
                 var player = await _securityService.GetUserAsync(User);
-                var team = await _teamsService.GetTeamWithPlayers(id).FirstOrDefaultAsync() ?? throw new Exception("Team not found");
+                var team = await _teamsService.GetTeamWithPlayers(id);
 
                 if (team.Attacker.Id != player.Id && team.Defender.Id != player.Id)
                     throw new Exception("You are not allowed to confirm this team");
@@ -67,12 +67,12 @@ namespace kickerapi.Controllers
             try
             {
                 var player = await _securityService.GetUserAsync(User);
-                var team = await _teamsService.GetTeamWithPlayers(id).FirstOrDefaultAsync() ?? throw new Exception("Team not found");
+                var team = await _teamsService.GetTeamWithPlayers(id);
 
                 if (team.Attacker.Id != player.Id && team.Defender.Id != player.Id)
                     throw new Exception("You are not allowed to deny this team");
 
-                var match = await _matchService.GetMatchWithTeams(team).FirstOrDefaultAsync() ?? throw new Exception("Match not found");
+                var match = await _matchService.GetMatchWithTeams(team);
 
                 var team1 = match.Team1;
                 var team2 = match.Team2;

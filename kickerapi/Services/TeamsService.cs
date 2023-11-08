@@ -9,15 +9,10 @@ namespace kickerapi.Services
         {
         }
 
-        public IQueryable<Team> GetTeam(int teamId)
+        public async Task<Team> GetTeamWithPlayers(int teamId)
         {
-            return _context.Teams.Where(x => x.Id == teamId);
-        }
-
-        public IQueryable<Team> GetTeamWithPlayers(int teamId)
-        {
-            return GetTeam(teamId).Include(x => x.Attacker)
-                .Include(x => x.Defender);
+            return await _context.Teams.Where(x => x.Id == teamId).Include(x => x.Attacker)
+                .Include(x => x.Defender).FirstOrDefaultAsync() ?? throw new Exception("Team not found");
         }
 
         public void RemoveTeam(Team team)

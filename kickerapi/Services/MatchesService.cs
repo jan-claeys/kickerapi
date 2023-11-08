@@ -31,11 +31,12 @@ namespace kickerapi.Services
                 .Include(x => x.Team2.Defender);
         }
 
-        public IQueryable<Match> GetMatchWithTeams(Team team)
+        public async Task<Match> GetMatchWithTeams(Team team)
         {
-            return _context.Matches.Where(x => x.Team1.Id == team.Id || x.Team2.Id == team.Id)
+            return await _context.Matches.Where(x => x.Team1.Id == team.Id || x.Team2.Id == team.Id)
                 .Include(x=>x.Team1)
-                .Include(x=>x.Team2);
+                .Include(x=>x.Team2)
+                .FirstOrDefaultAsync() ?? throw new Exception("Match not found");
         }
 
         public async void AddMatch(Match match)

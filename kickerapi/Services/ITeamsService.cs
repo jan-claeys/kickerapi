@@ -5,8 +5,7 @@ namespace kickerapi.Services
 {
     public interface ITeamsService : IServiceContext
     {
-        public IQueryable<Team> GetTeam(int teamId);
-        public IQueryable<Team> GetTeamWithPlayers(int teamId);
+        public Task<Team> GetTeamWithPlayers(int teamId);
         public void RemoveTeam(Team team);
     }
 }

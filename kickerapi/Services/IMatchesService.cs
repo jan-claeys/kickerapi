@@ -6,7 +6,7 @@ namespace kickerapi.Services
     {
         public IQueryable<Match> GetMatches(Player player, bool isConfirmed);
         public IQueryable<Match> GetMatchesWithPlayers(Player player, bool isConfirmed);
-        public IQueryable<Match> GetMatchWithTeams(Team team);
+        public Task<Match> GetMatchWithTeams(Team team);
         public void AddMatch(Match match);
         public void RemoveMatch(Match match);
     }
