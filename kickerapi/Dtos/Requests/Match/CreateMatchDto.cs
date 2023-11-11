@@ -11,18 +11,12 @@ namespace kickerapi.Dtos.Requests.Match
         [Required]
         public string AllyId { get; set; }
         [Required]
-        public int PlayerScore { get; set;}
-        [Required]
         public string OpponentAttackerId { get; set; }
         [Required]
         public string OpponentDefenderId { get; set; }
         [Required]
+        public int PlayerScore { get; set; }
+        [Required]
         public int OpponentScore { get; set; }
-
-        public enum Position
-        {
-            Attacker,
-            Defender
-        }
     }
 }

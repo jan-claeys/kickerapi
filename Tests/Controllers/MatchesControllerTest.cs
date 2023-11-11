@@ -2,6 +2,7 @@
 using ClassLibrary.Models;
 using kickerapi;
 using kickerapi.Controllers;
+using kickerapi.Dtos;
 using kickerapi.Dtos.Requests.Match;
 using kickerapi.Dtos.Responses;
 using kickerapi.Dtos.Responses.Match;

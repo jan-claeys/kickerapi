@@ -9,6 +9,7 @@ namespace kickerapi.Dtos.Responses.Match
         public TeamDto? OpponentTeam { get; set; }
         public DateTime Date { get; set; }
         public bool IsCalculatedInRating { get; set; }
+        public Position PlayerPosition {  get; set; }
 
         public class TeamDto
         {

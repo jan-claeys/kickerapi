@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using ClassLibrary.Models;
+using kickerapi.Dtos;
 using kickerapi.Dtos.Requests.Match;
 using kickerapi.Dtos.Responses;
 using kickerapi.Dtos.Responses.Match;
@@ -37,7 +38,7 @@ namespace kickerapi.Controllers
         {
             Player player = await _securityService.GetUserAsync(User);
 
-            var matches = await _matchService.GetMatchesWithPlayers(player, parameters.IsConfirmed)
+            var matches = await _matchService.GetMatchesWithPlayers(player, parameters.IsConfirmed, parameters.PlayerPosition)
                 .OrderByDescending(x => x.Date)
                 .Paging(parameters.PageNumber, parameters.PageSize).ToListAsync();
 
@@ -54,7 +55,8 @@ namespace kickerapi.Controllers
                     Date = match.Date,
                     IsCalculatedInRating = match.IsCalculatedInRating,
                     PlayerTeam = _mapper.Map<TeamDto>(playerTeam),
-                    OpponentTeam = _mapper.Map<TeamDto>(opponentTeam)
+                    OpponentTeam = _mapper.Map<TeamDto>(opponentTeam),
+                    PlayerPosition = playerTeam.Attacker.Id == player.Id ? Position.Attacker : Position.Defender,
                 };
 
                 res.Add(matchDto);
@@ -74,7 +76,7 @@ namespace kickerapi.Controllers
                 Player attackerTeam1;
                 Player defenderTeam1;
 
-                if (req.PlayerPosition == CreateMatchDto.Position.Attacker)
+                if (req.PlayerPosition == Position.Attacker)
                 {
                     attackerTeam1 = player;
                     defenderTeam1 = await _playerService.GetPlayer(req.AllyId);

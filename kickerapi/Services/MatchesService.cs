@@ -1,5 +1,6 @@
 ﻿
 using ClassLibrary.Models;
+using kickerapi.Dtos;
 using Microsoft.EntityFrameworkCore;
 
 namespace kickerapi.Services
@@ -11,26 +12,29 @@ namespace kickerapi.Services
            
         }
 
-        // Returns all matches for a player (confirmed or unconfirmed) ordered by date ascending
-        public IQueryable<Match> GetMatches(Player player, bool isConfirmed)
+        // Returns all matches for a player (confirmed or unconfirmed) for a optional currentplayer position ordered by date ascending
+        public IQueryable<Match> GetMatches(Player player, bool isConfirmed, Position? playerPosition = null)
         {
             return _context.Matches
-                .Where(x => x.Team1.Attacker.Id == player.Id || x.Team1.Defender.Id == player.Id || x.Team2.Attacker.Id == player.Id || x.Team2.Defender.Id == player.Id)
+                .WhereIf(x => x.Team1.Attacker.Id == player.Id|| x.Team2.Attacker.Id == player.Id, playerPosition == Position.Attacker)
+                .WhereIf(x => x.Team1.Defender.Id == player.Id || x.Team2.Defender.Id == player.Id, playerPosition == Position.Defender)
+                .WhereIf(x => x.Team1.Attacker.Id == player.Id || x.Team1.Defender.Id == player.Id || x.Team2.Attacker.Id == player.Id || x.Team2.Defender.Id == player.Id, playerPosition == null)
                 .WhereIf(x => x.Team1.IsConfirmed && x.Team2.IsConfirmed && x.IsCalculatedInRating, isConfirmed)
                 .WhereIf(x => !x.Team1.IsConfirmed || !x.Team2.IsConfirmed || !x.IsCalculatedInRating, !isConfirmed)
                 .OrderBy(x => x.Date);
         }
 
-        //  Returns all matches for a player (confirmed or unconfirmed) ordered by date ascending with the 2 teams and their players
-        public IQueryable<Match> GetMatchesWithPlayers(Player player, bool isConfirmed)
+        //  Returns all matches for a player (confirmed or unconfirmed) ordered by date ascending with the 2 teams and their players for a playerPosition
+        public IQueryable<Match> GetMatchesWithPlayers(Player player, bool isConfirmed, Position? playerPosition = null)
         {
-            return GetMatches(player, isConfirmed)
+            return GetMatches(player, isConfirmed, playerPosition)
                 .Include(x => x.Team1.Attacker)
                 .Include(x => x.Team1.Defender)
                 .Include(x => x.Team2.Attacker)
                 .Include(x => x.Team2.Defender);
         }
 
+        // Returns the match from a team with the other teams
         public async Task<Match> GetMatchWithTeams(Team team)
         {
             return await _context.Matches.Where(x => x.Team1.Id == team.Id || x.Team2.Id == team.Id)
