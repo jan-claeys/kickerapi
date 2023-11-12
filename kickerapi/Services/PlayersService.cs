@@ -1,10 +1,11 @@
 ﻿using ClassLibrary.Models;
+using kickerapi.Dtos;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
 namespace kickerapi.Services
 {
-    public class PlayersService : ContextService,  IPlayersService
+    public class PlayersService : ContextService, IPlayersService
     {
         public PlayersService(KickerContext context) : base(context)
         {
@@ -12,7 +13,7 @@ namespace kickerapi.Services
 
         public async Task<Player> GetPlayer(string playerId)
         {
-            return await _context.Players.FirstOrDefaultAsync(x => x.Id == playerId)?? throw new Exception("Player not found");
+            return await _context.Players.FirstOrDefaultAsync(x => x.Id == playerId) ?? throw new Exception("Player not found");
         }
 
         // Returns all players ordered by username ascending searched by username
@@ -24,13 +25,13 @@ namespace kickerapi.Services
         }
 
         // Returns all players ordered by rating descending, default by rating or by attackrating or defendrating
-        public IQueryable<Player> GetPlayersRanking(string? orderBy)
+        public IQueryable<Player> GetPlayersRanking(Position? orderBy)
         {
             Expression<Func<Player, int>> order = orderBy switch
             {
-                "Rating" => x => x.Rating,
-                "AttackRating" => x => x.AttackRating,
-                "DefendRating" => x => x.DefendRating,
+                null => x => x.Rating,
+                Position.Attacker => x => x.AttackRating,
+                Position.Defender => x => x.DefendRating,
                 _ => x => x.Rating,
             };
 

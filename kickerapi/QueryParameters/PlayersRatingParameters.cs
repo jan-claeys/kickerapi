@@ -1,7 +1,9 @@
-﻿namespace kickerapi.QueryParameters
+﻿using kickerapi.Dtos;
+
+namespace kickerapi.QueryParameters
 {
     public class PlayersRatingParameters: PagingParameters
     {
-        public string? OrderBy { get; set; }
+        public Position? OrderBy { get; set; }
     }
 }

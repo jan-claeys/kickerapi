@@ -2,6 +2,7 @@
 using ClassLibrary.Models;
 using kickerapi;
 using kickerapi.Controllers;
+using kickerapi.Dtos;
 using kickerapi.Dtos.Responses;
 using kickerapi.Dtos.Responses.Player;
 using kickerapi.QueryParameters;
@@ -45,7 +46,7 @@ namespace Tests.Controllers
 
             response = await _controller.GetRanking(new PlayersRatingParameters()
             {
-                OrderBy = "Rating"
+                OrderBy = null
             });
             Assert.Equal(200, response.StatusCode);
 
@@ -73,7 +74,7 @@ namespace Tests.Controllers
 
             var response = await _controller.GetRanking(new PlayersRatingParameters()
             {
-                OrderBy = "AttackRating"
+                OrderBy = Position.Attacker
             });
             Assert.Equal(200, response.StatusCode);
 
@@ -101,7 +102,7 @@ namespace Tests.Controllers
 
             var response = await _controller.GetRanking(new PlayersRatingParameters()
             {
-                OrderBy = "DefendRating"
+                OrderBy = Position.Defender
             });
             Assert.Equal(200, response.StatusCode);
 

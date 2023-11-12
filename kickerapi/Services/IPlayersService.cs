@@ -1,4 +1,5 @@
 ﻿using ClassLibrary.Models;
+using kickerapi.Dtos;
 
 namespace kickerapi.Services
 {
@@ -6,6 +7,6 @@ namespace kickerapi.Services
     {
         public Task<Player> GetPlayer(string playerId);
         public IQueryable<Player> GetPlayers(string? search);
-        public IQueryable<Player> GetPlayersRanking(string? orderBy);
+        public IQueryable<Player> GetPlayersRanking(Position? orderBy);
     }
 }
