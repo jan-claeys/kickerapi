@@ -11,9 +11,16 @@ namespace kickerapi
 
         }
 
-        public DbSet<Player> Players { get; set; }
-        public DbSet<Match> Matches { get; set; }
-        public DbSet<Team> Teams { get; set; }
+        // For testing
+        public KickerContext()
+        {
+
+        }
+
+        // Need to be virtual for mocking
+        public virtual DbSet<Player> Players { get; set; }
+        public virtual DbSet<Match> Matches { get; set; }
+        public virtual DbSet<Team> Teams { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
