@@ -9,7 +9,7 @@ namespace kickerapi.Services
     {
         public MatchesService(KickerContext context) : base(context)
         {
-           
+
         }
 
         // Returns all matches for a player (confirmed or unconfirmed) for a optional currentplayer position ordered by date ascending
@@ -17,7 +17,7 @@ namespace kickerapi.Services
         {
             return _context.Matches
                 .WhereIf(x => x.Team1.Attacker == player || x.Team2.Attacker == player, playerPosition == Position.Attacker)
-                .WhereIf(x => x.Team1.Defender == player|| x.Team2.Defender == player, playerPosition == Position.Defender)
+                .WhereIf(x => x.Team1.Defender == player || x.Team2.Defender == player, playerPosition == Position.Defender)
                 .WhereIf(x => x.Team1.Attacker == player || x.Team1.Defender == player || x.Team2.Attacker == player || x.Team2.Defender == player, playerPosition == null)
                 .WhereIf(x => x.Team1.IsConfirmed && x.Team2.IsConfirmed && x.IsCalculatedInRating, isConfirmed)
                 .WhereIf(x => !x.Team1.IsConfirmed || !x.Team2.IsConfirmed || !x.IsCalculatedInRating, !isConfirmed)
@@ -38,8 +38,8 @@ namespace kickerapi.Services
         public async Task<Match> GetMatchWithTeams(Team team)
         {
             return await _context.Matches.Where(x => x.Team1 == team || x.Team2 == team)
-                .Include(x=>x.Team1)
-                .Include(x=>x.Team2)
+                .Include(x => x.Team1)
+                .Include(x => x.Team2)
                 .FirstOrDefaultAsync() ?? throw new Exception("Match not found");
         }
 
@@ -49,6 +49,14 @@ namespace kickerapi.Services
                 .Where(x => !x.IsCalculatedInRating)
                 .Where(x => (x.Team1.Attacker == player || x.Team1.Defender == player) && !x.Team1.IsConfirmed)
                 .Where(x => (x.Team2.Attacker == player || x.Team2.Defender == player) && !x.Team1.IsConfirmed);
+        }
+
+        public IQueryable<Match> GetMatchesUnderReview(Player player)
+        {
+            return GetMatches(player, false)
+                .Where(x => !x.IsCalculatedInRating)
+                .Where(x => (x.Team1.Attacker == player || x.Team1.Defender == player) && x.Team1.IsConfirmed)
+                .Where(x => (x.Team2.Attacker == player || x.Team2.Defender == player) && x.Team1.IsConfirmed);
         }
 
         public async void AddMatch(Match match)

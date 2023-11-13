@@ -79,12 +79,14 @@ namespace ClassLibrary.Models
             Rating = (AttackRating + DefendRating) / 2;
         }
 
+        [ExcludeFromCodeCoverage]
         public override bool Equals(object? obj)
         {
             return obj is Player player &&
                    Id == player.Id;
         }
 
+        [ExcludeFromCodeCoverage]
         public override int GetHashCode()
         {
             return HashCode.Combine(Id);

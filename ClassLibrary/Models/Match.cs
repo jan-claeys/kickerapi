@@ -88,12 +88,14 @@ namespace ClassLibrary.Models
             return new List<Player> { Team1.Attacker, Team1.Defender, Team2.Attacker, Team2.Defender };
         }
 
+        [ExcludeFromCodeCoverage]
         public override bool Equals(object? obj)
         {
             return obj is Match match &&
                    Id == match.Id;
         }
 
+        [ExcludeFromCodeCoverage]
         public override int GetHashCode()
         {
             return HashCode.Combine(Id);
