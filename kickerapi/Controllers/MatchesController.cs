@@ -46,8 +46,8 @@ namespace kickerapi.Controllers
 
             foreach (var match in matches)
             {
-                var playerTeam = match.Team1.Attacker.Id == player.Id || match.Team1.Defender.Id == player.Id ? match.Team1 : match.Team2;
-                var opponentTeam = match.Team1.Attacker.Id == player.Id || match.Team1.Defender.Id == player.Id ? match.Team2 : match.Team1;
+                var playerTeam = match.Team1.Attacker == player || match.Team1.Defender == player ? match.Team1 : match.Team2;
+                var opponentTeam = match.Team1.Attacker == player|| match.Team1.Defender == player ? match.Team2 : match.Team1;
 
                 var matchDto = new MatchDto
                 {
@@ -56,7 +56,7 @@ namespace kickerapi.Controllers
                     IsCalculatedInRating = match.IsCalculatedInRating,
                     PlayerTeam = _mapper.Map<TeamDto>(playerTeam),
                     OpponentTeam = _mapper.Map<TeamDto>(opponentTeam),
-                    PlayerPosition = playerTeam.Attacker.Id == player.Id ? Position.Attacker : Position.Defender,
+                    PlayerPosition = playerTeam.Attacker == player ? Position.Attacker : Position.Defender,
                 };
 
                 res.Add(matchDto);

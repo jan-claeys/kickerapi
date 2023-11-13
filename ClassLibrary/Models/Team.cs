@@ -45,5 +45,16 @@ namespace ClassLibrary.Models
         {
             IsConfirmed = true;
         }
+
+        public override bool Equals(object? obj)
+        {
+            return obj is Team team &&
+                   Id == team.Id;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Id);
+        }
     }
 }
