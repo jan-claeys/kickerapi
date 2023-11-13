@@ -10,5 +10,7 @@ namespace kickerapi.Services
         public Task<Match> GetMatchWithTeams(Team team);
         public void AddMatch(Match match);
         public void RemoveMatch(Match match);
+        public IQueryable<Match> GetMatchesToReview(Player player);
+        public IQueryable<Match> GetMatchesUnderReview(Player player);
     }
 }

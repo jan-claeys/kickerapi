@@ -42,26 +42,35 @@ namespace kickerapi.Controllers
                 .OrderByDescending(x => x.Date)
                 .Paging(parameters.PageNumber, parameters.PageSize).ToListAsync();
 
-            var res = new List<MatchDto>();
+            var res = _mapper.Map<List<MatchDto>>(matches, options => options.Items["currentPlayer"] = player);
+            return Ok(res);
+        }
 
-            foreach (var match in matches)
-            {
-                var playerTeam = match.Team1.Attacker == player || match.Team1.Defender == player ? match.Team1 : match.Team2;
-                var opponentTeam = match.Team1.Attacker == player|| match.Team1.Defender == player ? match.Team2 : match.Team1;
+        [HttpGet("toreview")]
+        [ProducesResponseType(typeof(List<MatchDto>), StatusCodes.Status200OK)]
+        public async Task<IStatusCodeActionResult> ToReview([FromQuery] MatchParameters parameters)
+        {
+            Player player = await _securityService.GetUserAsync(User);
 
-                var matchDto = new MatchDto
-                {
-                    Id = match.Id,
-                    Date = match.Date,
-                    IsCalculatedInRating = match.IsCalculatedInRating,
-                    PlayerTeam = _mapper.Map<TeamDto>(playerTeam),
-                    OpponentTeam = _mapper.Map<TeamDto>(opponentTeam),
-                    PlayerPosition = playerTeam.Attacker == player ? Position.Attacker : Position.Defender,
-                };
+            var matches = await _matchService.GetMatchesToReview(player)
+                .OrderByDescending(x => x.Date)
+                .Paging(parameters.PageNumber, parameters.PageSize).ToListAsync();
 
-                res.Add(matchDto);
-            }
+            var res = _mapper.Map<List<MatchDto>>(matches, options => options.Items["currentPlayer"] = player);
+            return Ok(res);
+        }
 
+        [HttpGet("underreview")]
+        [ProducesResponseType(typeof(List<MatchDto>), StatusCodes.Status200OK)]
+        public async Task<IStatusCodeActionResult> UnderReview([FromQuery] MatchParameters parameters)
+        {
+            Player player = await _securityService.GetUserAsync(User);
+
+            var matches = await _matchService.GetMatchesUnderReview(player)
+                .OrderByDescending(x => x.Date)
+                .Paging(parameters.PageNumber, parameters.PageSize).ToListAsync();
+
+            var res = _mapper.Map<List<MatchDto>>(matches, options => options.Items["currentPlayer"] = player);
             return Ok(res);
         }
 

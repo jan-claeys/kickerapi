@@ -27,12 +27,12 @@ namespace kickerapi.Services
         // Returns all players ordered by rating descending, default by rating or by attackrating or defendrating
         public IQueryable<Player> GetPlayersRanking(Position? orderBy)
         {
+            //switch does not need default case because orderBy is nullable and their only 2 positions
             Expression<Func<Player, int>> order = orderBy switch
             {
                 null => x => x.Rating,
                 Position.Attacker => x => x.AttackRating,
-                Position.Defender => x => x.DefendRating,
-                _ => x => x.Rating,
+                Position.Defender => x => x.DefendRating
             };
 
             return _context.Players.OrderByDescending(order);
