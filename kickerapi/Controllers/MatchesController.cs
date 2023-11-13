@@ -48,7 +48,7 @@ namespace kickerapi.Controllers
 
         [HttpGet("toreview")]
         [ProducesResponseType(typeof(List<MatchDto>), StatusCodes.Status200OK)]
-        public async Task<IStatusCodeActionResult> ToReview([FromQuery] MatchParameters parameters)
+        public async Task<IStatusCodeActionResult> ToReview([FromQuery] PagingParameters parameters)
         {
             Player player = await _securityService.GetUserAsync(User);
 
@@ -62,7 +62,7 @@ namespace kickerapi.Controllers
 
         [HttpGet("underreview")]
         [ProducesResponseType(typeof(List<MatchDto>), StatusCodes.Status200OK)]
-        public async Task<IStatusCodeActionResult> UnderReview([FromQuery] MatchParameters parameters)
+        public async Task<IStatusCodeActionResult> UnderReview([FromQuery] PagingParameters parameters)
         {
             Player player = await _securityService.GetUserAsync(User);
 

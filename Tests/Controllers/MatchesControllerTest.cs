@@ -22,7 +22,7 @@ namespace Tests.Controllers
         private readonly MatchesController _controller;
         private readonly Player _currentPlayer;
 
-        public MatchesControllerTest(KickerContext context, IMapper _mapper): base(context)
+        public MatchesControllerTest(KickerContext context, IMapper _mapper) : base(context)
         {
             _currentPlayer = new Player("test");
             var securityServiceMock = new Mock<ISecurityService>();
@@ -144,7 +144,7 @@ namespace Tests.Controllers
 
             Assert.Equal(1, _context.Matches.Count());
             Assert.Equal(2, _context.Teams.Count());
-          
+
             Assert.Equal(_currentPlayer.Id, _context.Teams.First().Attacker.Id);
         }
 
@@ -265,6 +265,84 @@ namespace Tests.Controllers
             var result = okResult?.Value;
             var matchDtos = Assert.IsType<List<MatchDto>>(result);
             Assert.Equal(player2.Id, matchDtos[0].OpponentTeam?.Attacker?.Id);
+        }
+
+        [Fact]
+        public async void ItReturnsMatchesToReview()
+        {
+            var player1 = new Player("test1");
+            var player2 = new Player("test2");
+            var player3 = new Player("test3");
+
+            var team1 = new Team(_currentPlayer, player1, 0);
+            var team2 = new Team(player2, player3, 0);
+            team2.Confirm();
+
+            var match1 = new Match(team1, team2);
+
+            var team3 = new Team(_currentPlayer, player1, 0);
+            var team4 = new Team(player2, player3, 0);
+            team3.Confirm();
+            team4.Confirm();
+
+            var match2 = new Match(team3, team4);
+
+            var team5 = new Team(player2, player1, 0);
+            var team6 = new Team(player3, _currentPlayer, 0);
+            team5.Confirm();
+
+            var match3 = new Match(team5, team6);
+
+            await _context.Matches.AddRangeAsync(match1, match2, match3);
+            await _context.SaveChangesAsync();
+
+            var response = await _controller.ToReview(new MatchParameters());
+            Assert.Equal(200, response.StatusCode);
+
+            var okResult = response as OkObjectResult;
+            var result = okResult?.Value;
+            var matchDtos = Assert.IsType<List<MatchDto>>(result);
+            Assert.Equal(2, matchDtos.Count);
+        }
+
+
+        [Fact]
+        public async void ItReturnsMatchesUnderReview()
+        {
+            var player1 = new Player("test1");
+            var player2 = new Player("test2");
+            var player3 = new Player("test3");
+
+            var team1 = new Team(_currentPlayer, player1, 0);
+            var team2 = new Team(player2, player3, 0);
+            team1.Confirm();
+
+            var match1 = new Match(team1, team2);
+
+            var team3 = new Team(_currentPlayer, player1, 0);
+            var team4 = new Team(player2, player3, 0);
+            team3.Confirm();
+            team4.Confirm();
+
+            var match2 = new Match(team3, team4);
+            match2.UpdateRatings();
+
+            var team5 = new Team(player2, player1, 0);
+            var team6 = new Team(player3, _currentPlayer, 0);
+            team6.Confirm();
+
+            var match3 = new Match(team5, team6);
+
+            await _context.Matches.AddRangeAsync(match1, match2, match3);
+            await _context.SaveChangesAsync();
+
+            var response = await _controller.UnderReview(new MatchParameters());
+            Assert.Equal(200, response.StatusCode);
+
+            var okResult = response as OkObjectResult;
+            var result = okResult?.Value;
+            var matchDtos = Assert.IsType<List<MatchDto>>(result);
+            Assert.Equal(2, matchDtos.Count);
         }
     }
 }

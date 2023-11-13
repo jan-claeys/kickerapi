@@ -47,16 +47,16 @@ namespace kickerapi.Services
         {
             return GetMatches(player, false)
                 .Where(x => !x.IsCalculatedInRating)
-                .Where(x => (x.Team1.Attacker == player || x.Team1.Defender == player) && !x.Team1.IsConfirmed)
-                .Where(x => (x.Team2.Attacker == player || x.Team2.Defender == player) && !x.Team1.IsConfirmed);
+                .Where(x => (x.Team1.Attacker == player || x.Team1.Defender == player) && !x.Team1.IsConfirmed
+                || (x.Team2.Attacker == player || x.Team2.Defender == player) && !x.Team2.IsConfirmed);
         }
 
         public IQueryable<Match> GetMatchesUnderReview(Player player)
         {
             return GetMatches(player, false)
                 .Where(x => !x.IsCalculatedInRating)
-                .Where(x => (x.Team1.Attacker == player || x.Team1.Defender == player) && x.Team1.IsConfirmed)
-                .Where(x => (x.Team2.Attacker == player || x.Team2.Defender == player) && x.Team1.IsConfirmed);
+                .Where(x => (x.Team1.Attacker == player || x.Team1.Defender == player) && x.Team1.IsConfirmed
+                || (x.Team2.Attacker == player || x.Team2.Defender == player) && x.Team2.IsConfirmed);
         }
 
         public async void AddMatch(Match match)
