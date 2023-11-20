@@ -34,7 +34,7 @@ namespace kickerapi.Controllers
                 var player = await _securityService.GetUserAsync(User);
                 var team = await _teamsService.GetTeamWithPlayers(id);
 
-                if (team.Attacker.Id != player.Id && team.Defender.Id != player.Id)
+                if (team.Attacker != player && team.Defender != player)
                     throw new Exception("You are not allowed to confirm this team");
 
                 team.Confirm();
@@ -69,7 +69,7 @@ namespace kickerapi.Controllers
                 var player = await _securityService.GetUserAsync(User);
                 var team = await _teamsService.GetTeamWithPlayers(id);
 
-                if (team.Attacker.Id != player.Id && team.Defender.Id != player.Id)
+                if (team.Attacker != player && team.Defender != player)
                     throw new Exception("You are not allowed to deny this team");
 
                 var match = await _matchService.GetMatchWithTeams(team);
