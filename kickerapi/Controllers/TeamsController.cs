@@ -24,10 +24,10 @@ namespace kickerapi.Controllers
             _teamsService = teamsService;
         }
 
-        [HttpPut("confirm/{id}")]
+        [HttpPut("{id}/confirm")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IStatusCodeActionResult> Confirm([FromRoute]int id)
+        public async Task<IStatusCodeActionResult> Confirm([FromRoute] int id)
         {
             try
             {
@@ -59,10 +59,10 @@ namespace kickerapi.Controllers
             }
         }
 
-        [HttpDelete("deny/{id}")]
+        [HttpDelete("{id}/deny")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IStatusCodeActionResult> Deny(int id)
+        public async Task<IStatusCodeActionResult> Deny([FromRoute] int id)
         {
             try
             {
