@@ -148,6 +148,37 @@ namespace Tests.Controllers
             Assert.Equal(_currentPlayer.Id, _context.Teams.First().Attacker.Id);
         }
 
+        [Fact]
+        public async void ItConfirmsTeamPlayerWhoCreatesMath()
+        {
+            var player1 = new Player("test1");
+            var player2 = new Player("test2");
+            var player3 = new Player("test3");
+
+            await _context.Players.AddAsync(_currentPlayer);
+            await _context.Players.AddAsync(player1);
+            await _context.Players.AddAsync(player2);
+            await _context.Players.AddAsync(player3);
+
+            await _context.SaveChangesAsync();
+
+            var createMatchDto = new CreateMatchDto()
+            {
+                PlayerPosition = Position.Attacker,
+                AllyId = player1.Id,
+
+                OpponentAttackerId = player2.Id,
+                OpponentDefenderId = player3.Id
+            };
+
+            var response = await _controller.Post(createMatchDto);
+            Assert.Equal(200, response.StatusCode);
+
+            var teamCurrentPlayer = _context.Teams.First(x => x.Attacker.Id == _currentPlayer.Id);
+
+            Assert.True(teamCurrentPlayer.IsConfirmed);
+        }
+
 
         [Fact]
         public async void ItCreateMatchWithPlayerDefender()

@@ -102,6 +102,9 @@ namespace kickerapi.Controllers
                 var team1 = new Team(attackerTeam1, defenderTeam1, req.PlayerScore);
                 var team2 = new Team(attackerTeam2, defenderTeam2, req.OpponentScore);
 
+                //confirm team of player who created match
+                team1.Confirm();
+
                 var match = new Match(team1, team2);
 
                 _matchService.AddMatch(match);

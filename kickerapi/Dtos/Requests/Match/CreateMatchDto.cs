@@ -9,11 +9,11 @@ namespace kickerapi.Dtos.Requests.Match
         [Required]
         public Position PlayerPosition { get; set; }
         [Required]
-        public string AllyId { get; set; }
+        public string AllyId { get; set; } = null!;
         [Required]
-        public string OpponentAttackerId { get; set; }
+        public string OpponentAttackerId { get; set; } = null!;
         [Required]
-        public string OpponentDefenderId { get; set; }
+        public string OpponentDefenderId { get; set; } = null!;
         [Required]
         public int PlayerScore { get; set; }
         [Required]

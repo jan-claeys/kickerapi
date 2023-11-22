@@ -6,9 +6,9 @@ namespace kickerapi.Dtos.Requests.Security
     {
         /// <example>test</example>
         [Required(ErrorMessage = "Name is required")]
-        public string Name { get; set; }
+        public string Name { get; set; } = null!;
         /// <example>Test1*</example>
         [Required(ErrorMessage = "Password is required")]
-        public string Password { get; set; }
+        public string Password { get; set; } = null!;
     }
 }
