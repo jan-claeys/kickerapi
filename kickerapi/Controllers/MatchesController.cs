@@ -53,11 +53,21 @@ namespace kickerapi.Controllers
             Player player = await _securityService.GetUserAsync(User);
 
             var matches = await _matchService.GetMatchesToReview(player)
-                .OrderByDescending(x => x.Date)
-                .Paging(parameters.PageNumber, parameters.PageSize).ToListAsync();
+                .OrderByDescending(x => x.Date).Paging(parameters.PageNumber, parameters.PageSize).ToListAsync();
 
             var res = _mapper.Map<List<MatchDto>>(matches, options => options.Items["currentPlayer"] = player);
             return Ok(res);
+        }
+
+        [HttpGet("toreviewcount")]
+        [ProducesResponseType(typeof(List<MatchDto>), StatusCodes.Status200OK)]
+        public async Task<IStatusCodeActionResult> ToReviewCount()
+        {
+            Player player = await _securityService.GetUserAsync(User);
+
+            var matchesCount = await _matchService.GetMatchesToReview(player).CountAsync();
+
+            return Ok(matchesCount);
         }
 
         [HttpGet("underreview")]

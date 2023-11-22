@@ -336,6 +336,43 @@ namespace Tests.Controllers
             Assert.Equal(2, matchDtos.Count);
         }
 
+        [Fact]
+        public async void ItReturnsMatchesToReviewCount()
+        {
+            var player1 = new Player("test1");
+            var player2 = new Player("test2");
+            var player3 = new Player("test3");
+
+            var team1 = new Team(_currentPlayer, player1, 0);
+            var team2 = new Team(player2, player3, 0);
+            team2.Confirm();
+
+            var match1 = new Match(team1, team2);
+
+            var team3 = new Team(_currentPlayer, player1, 0);
+            var team4 = new Team(player2, player3, 0);
+            team3.Confirm();
+            team4.Confirm();
+
+            var match2 = new Match(team3, team4);
+
+            var team5 = new Team(player2, player1, 0);
+            var team6 = new Team(player3, _currentPlayer, 0);
+            team5.Confirm();
+
+            var match3 = new Match(team5, team6);
+
+            await _context.Matches.AddRangeAsync(match1, match2, match3);
+            await _context.SaveChangesAsync();
+
+            var response = await _controller.ToReviewCount();
+            Assert.Equal(200, response.StatusCode);
+
+            var okResult = response as OkObjectResult;
+            var result = okResult?.Value;
+            var matchCount = Assert.IsType<int>(result);
+            Assert.Equal(2, matchCount);
+        }
 
         [Fact]
         public async void ItReturnsMatchesUnderReview()
