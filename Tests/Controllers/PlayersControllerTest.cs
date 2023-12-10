@@ -8,16 +8,23 @@ using kickerapi.Dtos.Responses.Player;
 using kickerapi.QueryParameters;
 using kickerapi.Services;
 using Microsoft.AspNetCore.Mvc;
+using Moq;
+using System.Security.Claims;
 
 namespace Tests.Controllers
 {
     public class PlayersControllerTest : DatabaseTest
     {
         private readonly PlayersController _controller;
+        private readonly Player _currentPlayer;
 
         public PlayersControllerTest(KickerContext context, IMapper _mapper) : base(context)
         {
-            _controller = new PlayersController(_mapper, new PlayersService(context));
+			_currentPlayer = new Player("test");
+			var securityServiceMock = new Mock<ISecurityService>();
+			securityServiceMock.Setup(x => x.GetUserAsync(It.IsAny<ClaimsPrincipal>()).Result).Returns(_currentPlayer);
+
+			_controller = new PlayersController(_mapper, new PlayersService(context), securityServiceMock.Object);
         }
 
         [Fact]
@@ -153,5 +160,17 @@ namespace Tests.Controllers
             Assert.Equal(1, players?.Count);
             Assert.Equal("brian", players?[0].Name);
         }
+
+        [Fact]
+        public async void ItGetsCurrentPlayer()
+        {
+			var response = await _controller.GetCurrent();
+			Assert.Equal(200, response.StatusCode);
+
+			var okResult = response as OkObjectResult;
+			var result = okResult?.Value;
+
+			Assert.Equal("test", Assert.IsType<PlayerDto>(result).Name);
+		}
     }
 }

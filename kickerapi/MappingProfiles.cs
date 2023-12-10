@@ -13,7 +13,7 @@ namespace kickerapi
     {
         public MappingProfiles()
         {
-            CreateProjection<Player, PlayerDto>().ForMember(d => d.Name, o => o.MapFrom(s => s.UserName));
+            CreateMap<Player, PlayerDto>().ForMember(d => d.Name, o => o.MapFrom(s => s.UserName));
             CreateMap<Player, PlayerDtoSmall>().ForMember(d => d.Name, o => o.MapFrom(s => s.UserName));
 
             CreateMap<Team, MatchDto.TeamDto>();
