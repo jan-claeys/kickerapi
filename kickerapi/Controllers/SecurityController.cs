@@ -22,6 +22,7 @@ namespace kickerapi.Controllers
         [AllowAnonymous]
         [HttpPost("Login")]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IStatusCodeActionResult> Login([FromBody] LoginDto req)
         {
@@ -44,6 +45,7 @@ namespace kickerapi.Controllers
         [AllowAnonymous]
         [HttpPost("Register")]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         public async Task<IStatusCodeActionResult> Register([FromBody] RegisterDto req)
         {
