@@ -40,7 +40,7 @@ namespace kickerapi.Services
             return await _context.Matches.Where(x => x.Team1 == team || x.Team2 == team)
                 .Include(x => x.Team1)
                 .Include(x => x.Team2)
-                .FirstOrDefaultAsync() ?? throw new Exception("Match not found");
+                .FirstOrDefaultAsync() ?? throw new NotFoundException("Match not found");
         }
 
         public IQueryable<Match> GetMatchesToReview(Player player)

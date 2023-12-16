@@ -1,4 +1,5 @@
-﻿using kickerapi.Services;
+﻿using kickerapi.Exceptions;
+using kickerapi.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
@@ -26,7 +27,7 @@ namespace kickerapi.Controllers
 
         [HttpPut("{id}/confirm")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<IStatusCodeActionResult> Confirm([FromRoute] int id)
         {
             try
@@ -35,7 +36,7 @@ namespace kickerapi.Controllers
                 var team = await _teamsService.GetTeamWithPlayers(id);
 
                 if (team.Attacker != player && team.Defender != player)
-                    throw new Exception("You are not allowed to confirm this team");
+                    throw new NotAllowedException("You are not allowed to confirm this team");
 
                 team.Confirm();
 
@@ -53,15 +54,19 @@ namespace kickerapi.Controllers
 
                 return Ok();
             }
-            catch (Exception ex)
+            catch (NotAllowedException ex)
             {
-                return BadRequest(ex.Message);
+                return StatusCode(403, ex.Message);
+            }
+            catch (NotFoundException ex)
+            {
+                return NotFound(ex.Message);
             }
         }
 
         [HttpDelete("{id}/deny")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<IStatusCodeActionResult> Deny([FromRoute] int id)
         {
             try
@@ -70,7 +75,7 @@ namespace kickerapi.Controllers
                 var team = await _teamsService.GetTeamWithPlayers(id);
 
                 if (team.Attacker != player && team.Defender != player)
-                    throw new Exception("You are not allowed to deny this team");
+                    throw new NotAllowedException("You are not allowed to deny this team");
 
                 var match = await _matchService.GetMatchWithTeams(team);
 
@@ -85,9 +90,13 @@ namespace kickerapi.Controllers
 
                 return Ok();
             }
-            catch (Exception ex)
+            catch (NotAllowedException ex)
             {
-                return BadRequest(ex.Message);
+                return StatusCode(403, ex.Message);
+            }
+            catch (NotFoundException ex)
+            {
+                return NotFound(ex.Message);
             }
         }
     }

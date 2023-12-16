@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using ClassLibrary.Exceptions;
+using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
 
 namespace ClassLibrary.Models
@@ -38,7 +39,7 @@ namespace ClassLibrary.Models
 
             if (!arePlayersUnique)
             {
-                throw new Exception("Players must be unique in match");
+                throw new DuplicatePlayerException();
             }
         }
 

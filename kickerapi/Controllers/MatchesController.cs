@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using ClassLibrary.Exceptions;
 using ClassLibrary.Models;
 using kickerapi.Dtos;
 using kickerapi.Dtos.Requests.Match;
@@ -87,6 +88,8 @@ namespace kickerapi.Controllers
         [HttpPost]
         [ProducesResponseType(typeof(MatchDto), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IStatusCodeActionResult> Post([FromBody] CreateMatchDto req)
         {
             try
@@ -122,9 +125,13 @@ namespace kickerapi.Controllers
 
                 return Ok();
             }
-            catch (Exception ex)
+            catch (DuplicatePlayerException ex)
             {
-                return BadRequest(ex.Message);
+                return UnprocessableEntity(ex.Message);
+            }
+            catch (NotFoundException ex)
+            {
+                return NotFound(ex.Message);
             }
         }
     }

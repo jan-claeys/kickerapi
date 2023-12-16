@@ -236,7 +236,7 @@ namespace Tests.Controllers
             };
 
             var response = await _controller.Post(createMatchDto);
-            Assert.Equal(400, response.StatusCode);
+            Assert.Equal(404, response.StatusCode);
 
             Assert.Equal(0, _context.Matches.Count());
             Assert.Equal(0, _context.Teams.Count());
@@ -411,6 +411,35 @@ namespace Tests.Controllers
             var result = okResult?.Value;
             var matchDtos = Assert.IsType<List<MatchDto>>(result);
             Assert.Equal(2, matchDtos.Count);
+        }
+
+
+        [Fact]
+        public async void ItReturnsErrorIfPlayerIsTwiceInTeam()
+        {
+            var player1 = new Player("test1");
+            var player2 = new Player("test2");
+
+            await _context.Players.AddAsync(_currentPlayer);
+            await _context.Players.AddAsync(player1);
+            await _context.Players.AddAsync(player2);
+
+            await _context.SaveChangesAsync();
+
+            var createMatchDto = new CreateMatchDto()
+            {
+                PlayerPosition = Position.Attacker,
+                AllyId = player1.Id,
+
+                OpponentAttackerId = player2.Id,
+                OpponentDefenderId = player1.Id
+            };
+
+            var response = await _controller.Post(createMatchDto);
+            Assert.Equal(422, response.StatusCode);
+
+            Assert.Equal(0, _context.Matches.Count());
+            Assert.Equal(0, _context.Teams.Count());
         }
     }
 }

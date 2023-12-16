@@ -1,4 +1,5 @@
-﻿using ClassLibrary.Models;
+﻿using ClassLibrary.Exceptions;
+using ClassLibrary.Models;
 
 namespace Tests.Models
 {
@@ -20,11 +21,11 @@ namespace Tests.Models
         {
             var team1 = new Team(new Player("test1") { Id = "1"}, new Player("test2") { Id = "2"}, 1);
             var team2 = new Team(new Player("test1") { Id = "2"}, new Player("test4") { Id = "4"}, 3);
-            Assert.Throws<Exception>(() => new Match(team1, team2));
+            Assert.Throws<DuplicatePlayerException>(() => new Match(team1, team2));
 
             team1 = new Team(new Player("test1") { Id = "1" }, new Player("test2") { Id = "1" }, 1);
             team2 = new Team(new Player("test1") { Id = "2" }, new Player("test4") { Id = "4" }, 3);
-            Assert.Throws<Exception>(() => new Match(team1, team2));
+            Assert.Throws<DuplicatePlayerException>(() => new Match(team1, team2));
         }
 
         [Fact]

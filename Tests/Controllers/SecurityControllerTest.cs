@@ -56,7 +56,7 @@ namespace Tests.Controllers
                 Password = "Test1*"
             };
             var response = await _controller.Register(payload);
-            Assert.Equal(400, response.StatusCode);
+            Assert.Equal(422, response.StatusCode);
         }
 
         [Fact]
@@ -69,7 +69,7 @@ namespace Tests.Controllers
             };
             var response = await _controller.Register(payload);
 
-            Assert.Equal(400, response.StatusCode);
+            Assert.Equal(422, response.StatusCode);
         }
 
         [Fact]

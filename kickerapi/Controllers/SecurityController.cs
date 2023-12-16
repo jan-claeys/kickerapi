@@ -44,22 +44,15 @@ namespace kickerapi.Controllers
         [AllowAnonymous]
         [HttpPost("Register")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         public async Task<IStatusCodeActionResult> Register([FromBody] RegisterDto req)
         {
-            var userExists = await _service.FindByNameAsync(req.Name);
-            if (userExists != null)
-                return BadRequest("Player already exists");
-
-            var player = new Player(req.Name)
-            {
-                SecurityStamp = Guid.NewGuid().ToString(),
-            };
+            var player = new Player(req.Name);
 
             var response = await _service.CreateAsync(player, req.Password);
             if (!response.Succeeded)
             {
-                return BadRequest(response.Errors);
+                return UnprocessableEntity(response.Errors.First().Description);
             }
 
             return Ok();

@@ -42,14 +42,14 @@ namespace Tests.Controllers
         }
 
         [Fact]
-        public async void ItThrowsErrorIfTeamNotExistConfirme()
+        public async void ItThrowsErrorIfTeamNotExistConfirm()
         {
             var result = await _controller.Confirm(1);
-            Assert.Equal(400, result.StatusCode);
+            Assert.Equal(404, result.StatusCode);
         }
 
         [Fact]
-        public async void ItThrowsErrorIfPlayerNotInTeamConfirme()
+        public async void ItThrowsErrorIfPlayerNotInTeamConfirm()
         {
             var player1 = new Player("test1");
             var player2 = new Player("test2");
@@ -60,7 +60,7 @@ namespace Tests.Controllers
             await _context.SaveChangesAsync();
 
             var result = await _controller.Confirm(team1.Id);
-            Assert.Equal(400, result.StatusCode);
+            Assert.Equal(403, result.StatusCode);
         }
 
 
@@ -168,7 +168,7 @@ namespace Tests.Controllers
         public async void ItThrowsErrorIfTeamNotExistDeny()
         {
             var result = await _controller.Deny(1);
-            Assert.Equal(400, result.StatusCode);
+            Assert.Equal(404, result.StatusCode);
         }
 
         [Fact]
@@ -183,7 +183,7 @@ namespace Tests.Controllers
             await _context.SaveChangesAsync();
 
             var result = await _controller.Deny(team1.Id);
-            Assert.Equal(400, result.StatusCode);
+            Assert.Equal(403, result.StatusCode);
         }
     }
 }

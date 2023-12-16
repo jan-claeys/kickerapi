@@ -13,7 +13,7 @@ namespace kickerapi.Services
 
         public async Task<Player> GetPlayer(string playerId)
         {
-            return await _context.Players.FirstOrDefaultAsync(x => x.Id == playerId) ?? throw new Exception("Player not found");
+            return await _context.Players.FirstOrDefaultAsync(x => x.Id == playerId) ?? throw new NotFoundException("Player not found");
         }
 
         // Returns all players ordered by username ascending searched by username
