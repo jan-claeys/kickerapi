@@ -7,7 +7,7 @@ namespace kickerapi.Dtos.Requests.Match
     public class CreateMatchDto
     {
         [Required]
-        public Position PlayerPosition { get; set; }
+        public Position? PlayerPosition { get; set; }
         [Required]
         public string AllyId { get; set; } = null!;
         [Required]
