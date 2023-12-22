@@ -61,7 +61,7 @@ builder.Services.AddSwaggerGen(
 builder.Services.AddDbContext<KickerContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("KickerContext")));
 
 //Identity
-builder.Services.AddIdentity<Player, IdentityRole>()
+builder.Services.AddIdentity<Player, IdentityRole>(options => options.User.RequireUniqueEmail = true)
     .AddEntityFrameworkStores<KickerContext>()
     .AddDefaultTokenProviders();
 
@@ -102,7 +102,8 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
-}else
+}
+else
 {
     app.UseHttpsRedirection();
 }
