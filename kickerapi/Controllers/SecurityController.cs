@@ -49,7 +49,7 @@ namespace kickerapi.Controllers
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         public async Task<IStatusCodeActionResult> Register([FromBody] RegisterDto req)
         {
-            var player = new Player(req.Name);
+            var player = new Player(req.Name, req.Email);
 
             var response = await _service.CreateAsync(player, req.Password);
             if (!response.Succeeded)

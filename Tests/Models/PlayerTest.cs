@@ -7,7 +7,7 @@ namespace Tests.Models
         [Fact]
         public void ItCalculatesRating()
         {
-            Player player = new Player("test");
+            Player player = new Player("test", "test@test.com");
             player.SetAttackRating(10);
             player.SetDefendRating(20);
 
@@ -40,7 +40,7 @@ namespace Tests.Models
         [Fact]
         public void ItRaisesRatingByWin()
         {
-            Player player = new Player("test");
+            Player player = new Player("test", "test@test.com");
             player.SetAttackRating(10);
             player.SetDefendRating(20);
 
@@ -55,7 +55,7 @@ namespace Tests.Models
         [Fact]
         public void ItDropsRatingByLose()
         {
-            Player player = new Player("test");
+            Player player = new Player("test", "test@test.com");
             player.SetAttackRating(10);
             player.SetDefendRating(20);
 

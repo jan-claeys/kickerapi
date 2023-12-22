@@ -8,8 +8,8 @@ namespace Tests.Models
         [Fact]
         public void ItSetsDate()
         {
-            var team1 = new Team(new Player("test1"), new Player("test2"), 0);
-            var team2 = new Team(new Player("test3"), new Player("test4"), 0);
+            var team1 = new Team(new Player("test1", "test1@test.com"), new Player("test2", "test2@test.com"), 0);
+            var team2 = new Team(new Player("test3", "test3@test.com"), new Player("test4", "test4@test.com"), 0);
 
             var match = new Match(team1, team2);
 
@@ -19,20 +19,20 @@ namespace Tests.Models
         [Fact]
         public void ItThrowsExeptionPlayersNotUnique()
         {
-            var team1 = new Team(new Player("test1") { Id = "1"}, new Player("test2") { Id = "2"}, 1);
-            var team2 = new Team(new Player("test1") { Id = "2"}, new Player("test4") { Id = "4"}, 3);
+            var team1 = new Team(new Player("test1", "test1@test.com") { Id = "1"}, new Player("test2", "test2@test.com") { Id = "2"}, 1);
+            var team2 = new Team(new Player("test1", "test1@test.com") { Id = "2"}, new Player("test4", "test4@test.com") { Id = "4"}, 3);
             Assert.Throws<DuplicatePlayerException>(() => new Match(team1, team2));
 
-            team1 = new Team(new Player("test1") { Id = "1" }, new Player("test2") { Id = "1" }, 1);
-            team2 = new Team(new Player("test1") { Id = "2" }, new Player("test4") { Id = "4" }, 3);
+            team1 = new Team(new Player("test1", "test1@test.com") { Id = "1" }, new Player("test2", "test2@test.com") { Id = "1" }, 1);
+            team2 = new Team(new Player("test1", "test1@test.com") { Id = "2" }, new Player("test4", "test4@test.com") { Id = "4" }, 3);
             Assert.Throws<DuplicatePlayerException>(() => new Match(team1, team2));
         }
 
         [Fact]
         public void ItRisesRatingByWin()
         {
-            var player1 = new Player("test1");
-            var player2 = new Player("test2");
+            var player1 = new Player("test1", "test1@test.com");
+            var player2 = new Player("test2", "test2@test.com");
 
             var oldRatingPlayer1 = 1500;
             var oldRatingPlayer2 = 2001;
@@ -41,7 +41,7 @@ namespace Tests.Models
             player2.SetDefendRating(oldRatingPlayer2);
 
             var team1 = new Team(player1, player2, 11);
-            var team2 = new Team(new Player("test3"), new Player("test4"), 5);
+            var team2 = new Team(new Player("test3", "test3@test.com"), new Player("test4", "test4@test.com"), 5);
 
             team1.Confirm();
             team2.Confirm();
@@ -59,8 +59,8 @@ namespace Tests.Models
         [Fact]
         public void ItDropsRatingByLose()
         {
-            var player1 = new Player("test1");
-            var player2 = new Player("test2");
+            var player1 = new Player("test1", "test1@test.com");
+            var player2 = new Player("test2", "test2@test.com");
 
             var oldRatingPlayer1 = 3000;
             var oldRatingPlayer2 = 3000;
@@ -69,7 +69,7 @@ namespace Tests.Models
             player2.SetDefendRating(oldRatingPlayer2);
 
             var team1 = new Team(player1, player2, 5);
-            var team2 = new Team(new Player("test3"), new Player("test4"), 11);
+            var team2 = new Team(new Player("test3", "test3@test.com"), new Player("test4", "test4@test.com"), 11);
             team1.Confirm();
             team2.Confirm();
 
@@ -87,16 +87,16 @@ namespace Tests.Models
         [Fact]
         public void ItRisesRatingMoreByBigWin()
         {
-            Team team1 = new Team(new Player("test1"), new Player("test2"), 5);
-            Team team2 = new Team(new Player("test3"), new Player("test4"), 11);
+            Team team1 = new Team(new Player("test1", "test1@test.com"), new Player("test2", "test2@test.com"), 5);
+            Team team2 = new Team(new Player("test3", "test3@test.com"), new Player("test4", "test4@test.com"), 11);
             team1.Confirm();
             team2.Confirm();
 
             var match1 = new Match(team1, team2);
             match1.UpdateRatings();
 
-            Team team3 = new Team(new Player("test5"), new Player("test6"), 2);
-            Team team4 = new Team(new Player("test7"), new Player("test8"), 11);
+            Team team3 = new Team(new Player("test5", "test5@test.com"), new Player("test6", "test6@test.com"), 2);
+            Team team4 = new Team(new Player("test7", "test7@test.com"), new Player("test8", "test8@test.com"), 11);
             team3.Confirm();
             team4.Confirm();
 
@@ -111,16 +111,16 @@ namespace Tests.Models
         [Fact]
         public void ItDropsRatingMoreByBigLose()
         {
-            Team team1 = new Team(new Player("test1"), new Player("test2"), 5);
-            Team team2 = new Team(new Player("test3"), new Player("test4"), 11);
+            Team team1 = new Team(new Player("test1", "test1@test.com"), new Player("test2", "test2@test.com"), 5);
+            Team team2 = new Team(new Player("test3", "test3@test.com"), new Player("test4", "test4@test.com"), 11);
             team1.Confirm();
             team2.Confirm();
             
             var match1 = new Match(team1, team2);
             match1.UpdateRatings();
 
-            Team team3 = new Team(new Player("test5"), new Player("test6"), 2);
-            Team team4 = new Team(new Player("test7"), new Player("test8"), 11);
+            Team team3 = new Team(new Player("test5", "test5@test.com"), new Player("test6", "test6@test.com"), 2);
+            Team team4 = new Team(new Player("test7", "test7@test.com"), new Player("test8", "test8@test.com"), 11);
             team3.Confirm();
             team4.Confirm();
 
@@ -134,8 +134,8 @@ namespace Tests.Models
         [Fact]
         public void ItDoesNotChangeRatingIfDraw()
         {
-            var player1 = new Player("test1");
-            var player2 = new Player("test2");
+            var player1 = new Player("test1", "test1@test.com");
+            var player2 = new Player("test2", "test2@test.com");
 
             var oldRatingPlayer1 = 3000;
             var oldRatingPlayer2 = 3000;
@@ -144,14 +144,14 @@ namespace Tests.Models
             player2.SetDefendRating(oldRatingPlayer2);
 
             var team1 = new Team(player1, player2, 0);
-            var team2 = new Team(new Player("test3"), new Player("test4"), 0);
+            var team2 = new Team(new Player("test3", "test3@test.com"), new Player("test4", "test4@test.com"), 0);
             team1.Confirm();
             team2.Confirm();
             var match1 = new Match(team1, team2);
             match1.UpdateRatings();
 
             var team3 = new Team(player1, player2, 5);
-            var team4 = new Team(new Player("test3"), new Player("test4"), 5);
+            var team4 = new Team(new Player("test3", "test3@test.com"), new Player("test4", "test4@test.com"), 5);
             team3.Confirm();
             team4.Confirm();
             var match2 = new Match(team3, team4);
@@ -166,8 +166,8 @@ namespace Tests.Models
         [Fact]
         public void ItDoesNotUpdateRatingIfMatchIsNotConfirmed()
         {
-            var team1 = new Team(new Player("test1"), new Player("test2"), 11);
-            var team2 = new Team(new Player("test3"), new Player("test4"), 5);
+            var team1 = new Team(new Player("test1", "test1@test.com"), new Player("test2", "test2@test.com"), 11);
+            var team2 = new Team(new Player("test3", "test3@test.com"), new Player("test4", "test4@test.com"), 5);
 
             var match = new Match(team1, team2);
             Assert.False(match.UpdateRatings());
@@ -176,8 +176,8 @@ namespace Tests.Models
         [Fact]
         public void ItDoesNotUpdateRatingIfRatingAlreadyUpdated()
         {
-            var team1 = new Team(new Player("test1"), new Player("test2"), 11);
-            var team2 = new Team(new Player("test3"), new Player("test4"), 5);
+            var team1 = new Team(new Player("test1", "test1@test.com"), new Player("test2", "test2@test.com"), 11);
+            var team2 = new Team(new Player("test3", "test3@test.com"), new Player("test4", "test4@test.com"), 5);
 
             team1.Confirm();
             team2.Confirm();

@@ -29,11 +29,11 @@ namespace Tests.Services
         [Fact]
         public void ItGetsMatchesFromPlayerNotConfirmed()
         {
-            var player1 = new Player("test1");
-            var player2 = new Player("test2");
-            var player3 = new Player("test3");
-            var player4 = new Player("test4");
-            var player5 = new Player("test5");
+            var player1 = new Player("test1", "test1@test.com");
+            var player2 = new Player("test2", "test2@test.com");
+            var player3 = new Player("test3", "test3@test.com");
+            var player4 = new Player("test4", "test4@test.com");
+            var player5 = new Player("test5", "test5@test.com");
 
             var team1 = new Team(player1, player2, 5);
             var team2 = new Team(player3, player4, 2);
@@ -70,11 +70,11 @@ namespace Tests.Services
         public void ItGetsMatchesFromPlayerConfirmed()
         {
 
-            var player1 = new Player("test1");
-            var player2 = new Player("test2");
-            var player3 = new Player("test3");
-            var player4 = new Player("test4");
-            var player5 = new Player("test5");
+            var player1 = new Player("test1", "test1@test.com");
+            var player2 = new Player("test2", "test2@test.com");
+            var player3 = new Player("test3", "test3@test.com");
+            var player4 = new Player("test4", "test4@test.com");
+            var player5 = new Player("test5", "test5@test.com");
 
             var team1 = new Team(player1, player2, 5);
             var team2 = new Team(player3, player4, 2);
@@ -116,10 +116,10 @@ namespace Tests.Services
         [Fact]
         public void ItGetsMatchesFromPlayerAttacker()
         {
-            var player1 = new Player("test1");
-            var player2 = new Player("test2");
-            var player3 = new Player("test3");
-            var player4 = new Player("test4");
+            var player1 = new Player("test1", "test1@test.com");
+            var player2 = new Player("test2", "test2@test.com");
+            var player3 = new Player("test3", "test3@test.com");
+            var player4 = new Player("test4", "test4@test.com");
 
             var team1 = new Team(player1, player2, 5);
             var team2 = new Team(player3, player4, 2);
@@ -148,10 +148,10 @@ namespace Tests.Services
         [Fact]
         public void ItGetsMatchesFromPlayerDeffender()
         {
-            var player1 = new Player("test1");
-            var player2 = new Player("test2");
-            var player3 = new Player("test3");
-            var player4 = new Player("test4");
+            var player1 = new Player("test1", "test1@test.com");
+            var player2 = new Player("test2", "test2@test.com");
+            var player3 = new Player("test3", "test3@test.com");
+            var player4 = new Player("test4", "test4@test.com");
 
             var team1 = new Team(player1, player2, 5);
             var team2 = new Team(player3, player4, 2);

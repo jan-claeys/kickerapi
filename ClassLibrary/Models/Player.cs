@@ -18,9 +18,10 @@ namespace ClassLibrary.Models
 
         }
 
-        public Player(string name)
+        public Player(string name, string email)
         {
             UserName = name;
+            Email = email;
 
             AttackRating = START_RATING;
             DefendRating = START_RATING;

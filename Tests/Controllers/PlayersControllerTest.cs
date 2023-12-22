@@ -20,7 +20,7 @@ namespace Tests.Controllers
 
         public PlayersControllerTest(KickerContext context, IMapper _mapper) : base(context)
         {
-			_currentPlayer = new Player("test");
+			_currentPlayer = new Player("test", "test@test.com");
 			var securityServiceMock = new Mock<ISecurityService>();
 			securityServiceMock.Setup(x => x.GetUserAsync(It.IsAny<ClaimsPrincipal>()).Result).Returns(_currentPlayer);
 
@@ -30,12 +30,12 @@ namespace Tests.Controllers
         [Fact]
         public async void ItGetsPlayersByRating()
         {
-            var player1 = new Player("test1");
+            var player1 = new Player("test1", "test1@test.com");
             player1.SetAttackRating(5);
             player1.SetDefendRating(20);
             await _context.Players.AddAsync(player1);
 
-            var player2 = new Player("test2");
+            var player2 = new Player("test2", "test2@test.com");
             player2.SetAttackRating(10);
             player2.SetDefendRating(10);
             await _context.Players.AddAsync(player2);
@@ -67,12 +67,12 @@ namespace Tests.Controllers
         [Fact]
         public async void ItGetsPlayersByAttackRating()
         {
-            var player1 = new Player("test1");
+            var player1 = new Player("test1", "test1@test.com");
             player1.SetAttackRating(5);
             player1.SetDefendRating(20);
             await _context.Players.AddAsync(player1);
 
-            var player2 = new Player("test2");
+            var player2 = new Player("test2", "test2@test.com");
             player2.SetAttackRating(10);
             player2.SetDefendRating(10);
             await _context.Players.AddAsync(player2);
@@ -95,12 +95,12 @@ namespace Tests.Controllers
         [Fact]
         public async void ItGetsPlayersByDefendRating()
         {
-            var player1 = new Player("test1");
+            var player1 = new Player("test1", "test1@test.com");
             player1.SetAttackRating(5);
             player1.SetDefendRating(20);
             await _context.Players.AddAsync(player1);
 
-            var player2 = new Player("test2");
+            var player2 = new Player("test2", "test2@test.com");
             player2.SetAttackRating(10);
             player2.SetDefendRating(10);
             await _context.Players.AddAsync(player2);
@@ -123,13 +123,13 @@ namespace Tests.Controllers
         [Fact]
         public async void ItGetsPlayersByName()
         {
-            var player3 = new Player("cindy");
+            var player3 = new Player("cindy", "cindy@test.com");
             await _context.Players.AddAsync(player3);
 
-            var player2 = new Player("brian");
+            var player2 = new Player("brian", "brian@test.com");
             await _context.Players.AddAsync(player2);
 
-            var player1 = new Player("aaron");
+            var player1 = new Player("aaron", "aaron@test.com");
             await _context.Players.AddAsync(player1);
 
             await _context.SaveChangesAsync();

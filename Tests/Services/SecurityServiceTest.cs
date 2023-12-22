@@ -21,7 +21,7 @@ namespace Tests.Services
         [Fact]
         public void ItGenerateAToken()
         {
-           Player player = new Player("test");
+           Player player = new Player("test", "test@test.com");
 
            Assert.NotNull(_service.GenerateJwtToken(player));
         }

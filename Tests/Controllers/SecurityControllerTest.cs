@@ -75,7 +75,7 @@ namespace Tests.Controllers
         [Fact]
         public async void ItLoginPlayer()
         {
-            var player = new Player("test");
+            var player = new Player("test", "test@test.com");
             await _userManager.CreateAsync(player, "Test1*");
 
             var payload = new LoginDto
@@ -91,7 +91,7 @@ namespace Tests.Controllers
         [Fact]
         public async void ItNotLoginPlayerWrongPassword()
         {
-            var player = new Player("test");
+            var player = new Player("test", "test@test.com");
             await _userManager.CreateAsync(player, "test");
 
             var payload = new LoginDto

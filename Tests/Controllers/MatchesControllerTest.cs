@@ -24,7 +24,7 @@ namespace Tests.Controllers
 
         public MatchesControllerTest(KickerContext context, IMapper _mapper) : base(context)
         {
-            _currentPlayer = new Player("test");
+            _currentPlayer = new Player("test", "test@test.com");
             var securityServiceMock = new Mock<ISecurityService>();
             securityServiceMock.Setup(x => x.GetUserAsync(It.IsAny<ClaimsPrincipal>()).Result).Returns(_currentPlayer);
 
@@ -34,10 +34,10 @@ namespace Tests.Controllers
         [Fact]
         public async void ItGetConfirmedMatchesFromCurrrentPlayer()
         {
-            var player1 = new Player("test1");
-            var player2 = new Player("test2");
-            var player3 = new Player("test3");
-            var player4 = new Player("test4");
+            var player1 = new Player("test1", "test1@test.com");
+            var player2 = new Player("test2", "test2@test.com");
+            var player3 = new Player("test3", "test3@test.com");
+            var player4 = new Player("test4", "test4@test.com");
 
             var team1 = new Team(_currentPlayer, player1, 0);
             var team2 = new Team(player2, player3, 0);
@@ -77,9 +77,9 @@ namespace Tests.Controllers
         [Fact]
         public async void ItGetNotConfirmedMatchesFromCurrrentPlayer()
         {
-            var player1 = new Player("test1");
-            var player2 = new Player("test2");
-            var player3 = new Player("test3");
+            var player1 = new Player("test1", "test1@test.com");
+            var player2 = new Player("test2", "test2@test.com");
+            var player3 = new Player("test3", "test3@test.com");
 
             var team1 = new Team(_currentPlayer, player1, 0);
             var team2 = new Team(player2, player3, 0);
@@ -119,9 +119,9 @@ namespace Tests.Controllers
         [Fact]
         public async void ItCreateMatchWithPlayerAttacker()
         {
-            var player1 = new Player("test1");
-            var player2 = new Player("test2");
-            var player3 = new Player("test3");
+            var player1 = new Player("test1", "test1@test.com");
+            var player2 = new Player("test2", "test2@test.com");
+            var player3 = new Player("test3", "test3@test.com");
 
             await _context.Players.AddAsync(_currentPlayer);
             await _context.Players.AddAsync(player1);
@@ -151,9 +151,9 @@ namespace Tests.Controllers
         [Fact]
         public async void ItConfirmsTeamPlayerWhoCreatesMath()
         {
-            var player1 = new Player("test1");
-            var player2 = new Player("test2");
-            var player3 = new Player("test3");
+            var player1 = new Player("test1", "test1@test.com");
+            var player2 = new Player("test2", "test2@test.com");
+            var player3 = new Player("test3", "test3@test.com");
 
             await _context.Players.AddAsync(_currentPlayer);
             await _context.Players.AddAsync(player1);
@@ -183,9 +183,9 @@ namespace Tests.Controllers
         [Fact]
         public async void ItCreateMatchWithPlayerDefender()
         {
-            var player1 = new Player("test1");
-            var player2 = new Player("test2");
-            var player3 = new Player("test3");
+            var player1 = new Player("test1", "test1@test.com");
+            var player2 = new Player("test2", "test2@test.com");
+            var player3 = new Player("test3", "test3@test.com");
 
             await _context.Players.AddAsync(_currentPlayer);
             await _context.Players.AddAsync(player1);
@@ -215,9 +215,9 @@ namespace Tests.Controllers
         [Fact]
         public async void ItReturnsErrorIfPlayerDoesNotExist()
         {
-            var player1 = new Player("test1");
-            var player2 = new Player("test2");
-            var player3 = new Player("test3");
+            var player1 = new Player("test1", "test1@test.com");
+            var player2 = new Player("test2", "test2@test.com");
+            var player3 = new Player("test3", "test3@test.com");
 
             await _context.Players.AddAsync(_currentPlayer);
             await _context.Players.AddAsync(player1);
@@ -245,9 +245,9 @@ namespace Tests.Controllers
         [Fact]
         public async void ItReturnplayerTeamIsTeamCurrentPlayer()
         {
-            var player1 = new Player("test1");
-            var player2 = new Player("test2");
-            var player3 = new Player("test3");
+            var player1 = new Player("test1", "test1@test.com");
+            var player2 = new Player("test2", "test2@test.com");
+            var player3 = new Player("test3", "test3@test.com");
 
             var team1 = new Team(player2, player1, 0);
             var team2 = new Team(_currentPlayer, player3, 0);
@@ -273,9 +273,9 @@ namespace Tests.Controllers
         [Fact]
         public async void ItReturnOpponentTeamIsTeamOpponentPlayers()
         {
-            var player1 = new Player("test1");
-            var player2 = new Player("test2");
-            var player3 = new Player("test3");
+            var player1 = new Player("test1", "test1@test.com");
+            var player2 = new Player("test2", "test2@test.com");
+            var player3 = new Player("test3", "test3@test.com");
 
             var team1 = new Team(_currentPlayer, player1, 0);
             var team2 = new Team(player2, player3, 0);
@@ -301,9 +301,9 @@ namespace Tests.Controllers
         [Fact]
         public async void ItReturnsMatchesToReview()
         {
-            var player1 = new Player("test1");
-            var player2 = new Player("test2");
-            var player3 = new Player("test3");
+            var player1 = new Player("test1", "test1@test.com");
+            var player2 = new Player("test2", "test2@test.com");
+            var player3 = new Player("test3", "test3@test.com");
 
             var team1 = new Team(_currentPlayer, player1, 0);
             var team2 = new Team(player2, player3, 0);
@@ -339,9 +339,9 @@ namespace Tests.Controllers
         [Fact]
         public async void ItReturnsMatchesToReviewCount()
         {
-            var player1 = new Player("test1");
-            var player2 = new Player("test2");
-            var player3 = new Player("test3");
+            var player1 = new Player("test1", "test1@test.com");
+            var player2 = new Player("test2", "test2@test.com");
+            var player3 = new Player("test3", "test3@test.com");
 
             var team1 = new Team(_currentPlayer, player1, 0);
             var team2 = new Team(player2, player3, 0);
@@ -377,9 +377,9 @@ namespace Tests.Controllers
         [Fact]
         public async void ItReturnsMatchesUnderReview()
         {
-            var player1 = new Player("test1");
-            var player2 = new Player("test2");
-            var player3 = new Player("test3");
+            var player1 = new Player("test1", "test1@test.com");
+            var player2 = new Player("test2", "test2@test.com");
+            var player3 = new Player("test3", "test3@test.com");
 
             var team1 = new Team(_currentPlayer, player1, 0);
             var team2 = new Team(player2, player3, 0);
@@ -417,8 +417,8 @@ namespace Tests.Controllers
         [Fact]
         public async void ItReturnsErrorIfPlayerIsTwiceInTeam()
         {
-            var player1 = new Player("test1");
-            var player2 = new Player("test2");
+            var player1 = new Player("test1", "test1@test.com");
+            var player2 = new Player("test2", "test2@test.com");
 
             await _context.Players.AddAsync(_currentPlayer);
             await _context.Players.AddAsync(player1);
