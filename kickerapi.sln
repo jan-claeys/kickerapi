@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33530.505
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "kickerapi", "kickerapi\kickerapi.csproj", "{F3998F7A-E5F1-4D62-8E7C-DD2A7891ECAA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Api", "kickerapi\Api.csproj", "{F3998F7A-E5F1-4D62-8E7C-DD2A7891ECAA}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ClassLibrary", "ClassLibrary\ClassLibrary.csproj", "{771C26E1-6C48-450A-A26C-EAD0C62209DB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kicker", "ClassLibrary\Kicker.csproj", "{771C26E1-6C48-450A-A26C-EAD0C62209DB}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests", "Tests\Tests.csproj", "{28486C57-B477-4BB5-ACF0-920CE53D1AC1}"
 EndProject

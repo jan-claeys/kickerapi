@@ -27,7 +27,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\kickerapi\kickerapi.csproj" />
+    <ProjectReference Include="..\kickerapi\Api.csproj" />
   </ItemGroup>
 
 </Project>
