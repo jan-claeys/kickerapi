@@ -7,7 +7,7 @@ namespace kickerapi.Services
 {
     public interface ISecurityService
     {
-        Task<Player> FindByNameAsync(string name);
+        Task<Player> FindByEmailAsync(string name);
         Task<bool> CheckPasswordAsync(Player player, string password);
         Task<IdentityResult> CreateAsync(Player player, string password);
         JwtSecurityToken GenerateJwtToken(Player player);

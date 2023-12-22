@@ -29,9 +29,9 @@ namespace kickerapi.Services
             return await _userManager.CreateAsync(player, password);
         }
 
-        public async Task<Player> FindByNameAsync(string name)
+        public async Task<Player> FindByEmailAsync(string name)
         {
-            return await _userManager.FindByNameAsync(name);
+            return await _userManager.FindByEmailAsync(name);
         }
 
         [ExcludeFromCodeCoverage]

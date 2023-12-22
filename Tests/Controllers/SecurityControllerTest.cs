@@ -46,14 +46,16 @@ namespace Tests.Controllers
             var payload = new RegisterDto
             {
                 Name = "test",
-                Password = "Test1*"
+                Password = "Test1*",
+                Email = "test",
             };
             await _controller.Register(payload);
 
             payload = new RegisterDto
             {
                 Name = "test",
-                Password = "Test1*"
+                Password = "Test1*",
+                Email = "test",
             };
             var response = await _controller.Register(payload);
             Assert.Equal(422, response.StatusCode);
@@ -65,7 +67,8 @@ namespace Tests.Controllers
             var payload = new RegisterDto
             {
                 Name = "test",
-                Password = "test"
+                Password = "test",
+                Email = "test",
             };
             var response = await _controller.Register(payload);
 
@@ -75,12 +78,12 @@ namespace Tests.Controllers
         [Fact]
         public async void ItLoginPlayer()
         {
-            var player = new Player("test", "test@test.com");
+            var player = new Player("test", "test@tillit.be");
             await _userManager.CreateAsync(player, "Test1*");
 
             var payload = new LoginDto
             {
-                Name = "test",
+                Email = "test",
                 Password = "Test1*"
             };
 
@@ -91,12 +94,12 @@ namespace Tests.Controllers
         [Fact]
         public async void ItNotLoginPlayerWrongPassword()
         {
-            var player = new Player("test", "test@test.com");
+            var player = new Player("test", "test@tillit.be");
             await _userManager.CreateAsync(player, "test");
 
             var payload = new LoginDto
             {
-                Name = "test",
+                Email = "test",
                 Password = "test1"
             };
 
@@ -109,7 +112,7 @@ namespace Tests.Controllers
         {
             var payload = new LoginDto
             {
-                Name = "test",
+                Email = "test",
                 Password = "test"
             };
 
