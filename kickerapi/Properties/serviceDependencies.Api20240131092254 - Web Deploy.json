@@ -1,0 +1,12 @@
+{
+  "dependencies": {
+    "mssql1": {
+      "serviceConnectorResourceId": "/subscriptions/[parameters('subscriptionId')]/resourcegroups/[parameters('resourceGroupName')]/providers/Microsoft.Web/sites/Api20240131092254/providers/Microsoft.ServiceLinker/linkers/ConnectionStringsKickerContext_6B00B6E8F1",
+      "secretStore": "AzureAppSettings",
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.Sql/servers/kicker-tillit/databases/kicker",
+      "type": "mssql.azure",
+      "connectionId": "ConnectionStrings:KickerContext",
+      "dynamicId": null
+    }
+  }
+}
