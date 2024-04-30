@@ -1,6 +1,4 @@
-﻿using System.Runtime.Serialization;
-
-namespace ClassLibrary.Exceptions
+﻿namespace ClassLibrary.Exceptions
 {
     [Serializable]
     public class DuplicatePlayerException : Exception

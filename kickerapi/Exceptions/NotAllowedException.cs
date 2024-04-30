@@ -1,6 +1,4 @@
-﻿using System.Runtime.Serialization;
-
-namespace kickerapi.Exceptions
+﻿namespace kickerapi.Exceptions
 {
     [Serializable]
     internal class NotAllowedException : Exception

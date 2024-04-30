@@ -1,5 +1,4 @@
 ﻿using ClassLibrary.Models;
-using kickerapi.Migrations;
 
 namespace kickerapi.Services
 {

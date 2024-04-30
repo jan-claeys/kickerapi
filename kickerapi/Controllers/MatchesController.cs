@@ -3,7 +3,6 @@ using ClassLibrary.Exceptions;
 using ClassLibrary.Models;
 using kickerapi.Dtos;
 using kickerapi.Dtos.Requests.Match;
-using kickerapi.Dtos.Responses;
 using kickerapi.Dtos.Responses.Match;
 using kickerapi.QueryParameters;
 using kickerapi.Services;
@@ -11,7 +10,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.EntityFrameworkCore;
-using static kickerapi.Dtos.Responses.Match.MatchDto;
 
 namespace kickerapi.Controllers
 {

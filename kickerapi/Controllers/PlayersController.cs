@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using ClassLibrary.Models;
-using kickerapi.Dtos.Responses;
 using kickerapi.Dtos.Responses.Player;
 using kickerapi.QueryParameters;
 using kickerapi.Services;
@@ -8,7 +7,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.EntityFrameworkCore;
-using System.Linq.Expressions;
 
 namespace kickerapi.Controllers
 {

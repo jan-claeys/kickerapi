@@ -3,7 +3,6 @@ using ClassLibrary.Models;
 using kickerapi;
 using kickerapi.Controllers;
 using kickerapi.Dtos;
-using kickerapi.Dtos.Responses;
 using kickerapi.Dtos.Responses.Player;
 using kickerapi.QueryParameters;
 using kickerapi.Services;

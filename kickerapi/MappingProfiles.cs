@@ -3,8 +3,6 @@ using ClassLibrary.Models;
 using kickerapi.Dtos;
 using kickerapi.Dtos.Responses.Match;
 using kickerapi.Dtos.Responses.Player;
-using System.Numerics;
-using System.Text.RegularExpressions;
 using Match = ClassLibrary.Models.Match;
 
 namespace kickerapi

@@ -1,13 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using kickerapi.Dtos;
 using kickerapi.Services;
-using Microsoft.EntityFrameworkCore;
 using Moq;
-using Xunit;
-
 using ClassLibrary.Models;
 using kickerapi;
 using Match = ClassLibrary.Models.Match;

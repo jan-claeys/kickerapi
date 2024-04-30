@@ -4,7 +4,6 @@ using kickerapi;
 using kickerapi.Controllers;
 using kickerapi.Dtos;
 using kickerapi.Dtos.Requests.Match;
-using kickerapi.Dtos.Responses;
 using kickerapi.Dtos.Responses.Match;
 using kickerapi.QueryParameters;
 using kickerapi.Services;
@@ -12,7 +11,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 using System.Security.Claims;
-using static kickerapi.Dtos.Requests.Match.CreateMatchDto;
 using Match = ClassLibrary.Models.Match;
 
 namespace Tests.Controllers

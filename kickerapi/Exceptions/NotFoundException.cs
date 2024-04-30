@@ -1,6 +1,4 @@
-﻿using System.Runtime.Serialization;
-
-namespace kickerapi.Services
+﻿namespace kickerapi.Services
 {
     [Serializable]
     internal class NotFoundException : Exception
