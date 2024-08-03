@@ -13,7 +13,6 @@ namespace kickerapi.Controllers
     public class SecurityController : Controller
     {
         private readonly ISecurityService _service;
-        private readonly string _domain = "@tillit.be";
 
         public SecurityController(ISecurityService service)
         {
@@ -27,7 +26,7 @@ namespace kickerapi.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IStatusCodeActionResult> Login([FromBody] LoginDto req)
         {
-            var email = req.Email + _domain;
+            var email = req.Email;
             var player = await _service.FindByEmailAsync(email);
 
             if (player == null || !await _service.CheckPasswordAsync(player, req.Password))
@@ -51,7 +50,7 @@ namespace kickerapi.Controllers
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         public async Task<IStatusCodeActionResult> Register([FromBody] RegisterDto req)
         {
-            var email = req.Email + _domain;
+            var email = req.Email;
             var player = new Player(req.Name, email);
 
             var response = await _service.CreateAsync(player, req.Password);

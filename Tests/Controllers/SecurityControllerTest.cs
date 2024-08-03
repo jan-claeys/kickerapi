@@ -83,7 +83,7 @@ namespace Tests.Controllers
 
             var payload = new LoginDto
             {
-                Email = "test",
+                Email = "test@tillit.be",
                 Password = "Test1*"
             };
 
