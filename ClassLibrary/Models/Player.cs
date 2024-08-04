@@ -9,6 +9,7 @@ namespace ClassLibrary.Models
         public int Rating { get; private set; }
         public int AttackRating { get; private set; } = 1500;
         public int DefendRating { get; private set; } = 1500;
+        public bool IsAdmin { get; private set; }
 
         [ExcludeFromCodeCoverage]
         //ef
